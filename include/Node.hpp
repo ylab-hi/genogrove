@@ -42,8 +42,17 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
+        std::vector<std::pair<dtp::Interval, Node*>> getKeys();
+
+        std::vector<Node*> getChildren();
+
+
+        void setIsLeaf(bool leaf);
+        bool getIsLeaf();
 
         // operations
+        void addChild(Node* child);
+
 
 
     private:
@@ -52,7 +61,6 @@ class Node {
         std::vector<Node*> children; // children of the Node
         Node* next;
         bool isLeaf; // is the Node a leaf
-
 };
 
 #endif //IBPTREE_NODE_HPP
