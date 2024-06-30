@@ -10,3 +10,8 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 // getter & setter
 void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
 bool Node::getIsLeaf() { return this->isLeaf; }
+
+
+void Node::addChild(Node *child) {
+    this->children.push_back(child);
+}
