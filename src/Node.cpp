@@ -11,7 +11,4 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
 bool Node::getIsLeaf() { return this->isLeaf; }
 
-
-void Node::addChild(Node *child) {
-    this->children.push_back(child);
-}
+void Node::addChild(Node *child) { this->children.push_back(child); }

@@ -25,11 +25,12 @@ void IBPTree::insert(std::string key, T& data) {
     insertIter(root, data);
     if(root->getKeys().size() == this->order) {
         Node* newRoot = new Node(this->order);
-        newRoot->children
+        newRoot->addChild(root);
+        splitNode(newRoot, 0);
+        root = newRoot;
+        this->rootnodes[key] = root;
 
     }
-
-
 }
 
 
