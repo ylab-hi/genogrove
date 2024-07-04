@@ -25,9 +25,12 @@ class IBPTree {
          */
         template <typename T>
         void insert(std::string key, T& data);
+
         template <typename T>
         void insertIter(Node* node, T& data);
         void splitNode(Node* parent, int index);
+
+
 
 
 

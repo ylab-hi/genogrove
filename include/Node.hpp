@@ -46,14 +46,13 @@ class Node {
 
         std::vector<Node*> getChildren();
 
-
         void setIsLeaf(bool leaf);
         bool getIsLeaf();
 
         // operations
         void addChild(Node* child);
-
-
+        Node* getChild(int index);
+        
 
     private:
         int order; // order of the Node

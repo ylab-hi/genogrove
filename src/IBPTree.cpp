@@ -39,7 +39,7 @@ void IBPTree::splitNode(Node* parent, int index) {
     Node* newChild = new Node(this->order);
     int mid = ((this->order+2-1)/2); // value for order=6
 
-    newChild->isLeaf = child->isLeaf;
+    newChild->setIsLeaf(child->getIsLeaf());
     newChild->keys.assign(child->keys.begin() + mid, child->keys.end());
     child->keys.resize(this->order-1);
 
