@@ -23,6 +23,7 @@ class Data {
         void setInterval(dtp::Interval interval);
         template <typename T>
         T getData();
+        template <typename T>
         void setData(T data);
 
         // operations
@@ -83,8 +84,10 @@ class Node {
         void addChild(Node* child, int index);
         void assignChilds(std::vector<Node*>::iterator start, std::vector<Node*>::iterator end);
         void resizeChildren(int size);
-
         Node* getChild(int index);
+
+        template <typename T>
+        void addData(dtp::Interval interval, T data);
 
 private:
         int order; // order of the Node

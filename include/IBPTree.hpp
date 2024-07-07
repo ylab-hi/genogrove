@@ -24,11 +24,14 @@ class IBPTree {
          * @param the data element to insert
          */
         template <typename T>
-        void insert(std::string key, T& data);
-
+        void insert(std::string key, dtp::Interval interval, T& data);
         template <typename T>
-        void insertIter(Node* node, T& data);
+        void insertIter(Node* node, dtp::Interval interval, T& data);
+        /*
+         * @brief split a node in the IBPTree
+         */
         void splitNode(Node* parent, int index);
+
 
 
 

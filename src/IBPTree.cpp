@@ -20,7 +20,7 @@ Node* IBPTree::getRoot(std::string key) {
 
 
 template <typename T>
-void IBPTree::insert(std::string key, T& data) {
+void IBPTree::insert(std::string key, dtp::Interval interval, T& data) {
     Node* root = getRoot(key);
     insertIter(root, data);
     if(root->getKeys().size() == this->order) {
@@ -29,7 +29,22 @@ void IBPTree::insert(std::string key, T& data) {
         splitNode(newRoot, 0);
         root = newRoot;
         this->rootnodes[key] = root;
+    }
+}
 
+template <typename T>
+void IBPTree::insertIter(Node* node, dtp::Interval interval, T& data) {
+    if(node->getIsLeaf()) {
+        node->addData(interval, data);
+    } else {
+        int childnum = 0;
+        while(childnum < node->getKeys().size() && interval.first > node->getKeys()[childnum].first.first) {
+            childnum++;
+        }
+        insertIter(node->getChild(childnum), interval, data);
+        if(node->getChild(childnum)->getKeys().size() == this->order) {
+            splitNode(node, childnum);
+        }
     }
 }
 

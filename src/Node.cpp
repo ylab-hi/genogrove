@@ -27,10 +27,6 @@ void Node::assignKeys(std::vector<std::pair<dtp::Interval, Node*>>::iterator sta
 }
 
 
-void Node::addChild(Node *child, int index) {
-    this->children.insert(this->children.begin() + index, child);
-}
-Node* Node::getChild(int index) { return this->children[index]; }
 
 /*
  * This method moves the keys from one node to another
@@ -53,7 +49,21 @@ void Node::assignChilds(std::vector<Node*>::iterator start,
                         std::vector<Node*>::iterator end) {
     this->children.assign(start, end);
 }
+void Node::addChild(Node *child, int index) {
+    this->children.insert(this->children.begin() + index, child);
+}
 void Node::resizeChildren(int size) { this->children.resize(size); }
+Node* Node::getChild(int index) { return this->children[index]; }
+
+/*
+ * This method adds a new data element to the Node. It compares the intervals of the node
+ */
+template <typename T>
+void Node::addData(dtp::Interval interval, T data) {
+    int i=0;
+    while(i < this->keys.size() && this->keys[i].first.first < interval.first) { i++; }
+    this->keys.insert(this->keys.begin() + i, {interval, data});
+}
 
 
 
