@@ -20,6 +20,8 @@ FetchContent_MakeAvailable(googletest)
 enable_testing() # enable the testing framework
 include(GoogleTest)
 
+file(GLOB SOURCES "src/*.cpp")
+list(REMOVE_ITEM SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 file(GLOB TEST_SOURCES "tests/*.cpp")
 add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
 target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")

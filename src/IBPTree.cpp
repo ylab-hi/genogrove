@@ -1,6 +1,7 @@
 #include "IBPTree.hpp"
 
 IBPTree::IBPTree(int k) : order(k), rootnodes{} {}
+IBPTree::~IBPTree() {}
 
 int IBPTree::getOrder() { return this->order; }
 void IBPTree::setOrder(int k) { this->order = k; }
