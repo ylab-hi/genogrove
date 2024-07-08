@@ -1,8 +1,11 @@
 #include "IBPTree.hpp"
 
-IBPTree::IBPTree(int k) {
-    this->order = k;
-}
+IBPTree::IBPTree(int k) : order(k), rootnodes{} {}
+
+int IBPTree::getOrder() { return this->order; }
+void IBPTree::setOrder(int k) { this->order = k; }
+std::map<std::string, Node*> IBPTree::getRootnodes() { return this->rootnodes; }
+void IBPTree::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
 
 Node* IBPTree::getRoot(std::string key) {
     Node* root;

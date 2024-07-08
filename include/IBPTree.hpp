@@ -13,6 +13,12 @@ class IBPTree {
         IBPTree(int k); // create a new IBPTree with a given order k
         ~IBPTree(); // destructor
 
+        // getter & setter
+        int getOrder();
+        void setOrder(int k);
+        std::map<std::string, Node*> getRootnodes();
+        void setRootnodes(std::map<std::string, Node*> rootnodes);
+
         /*
          * @brief get the root node of the IBPTree for a given key (or create a new one)
          * @param the key associated with the root node
@@ -37,15 +43,9 @@ class IBPTree {
          */
         void tree2SIF(std::string filename);
 
-
-
-
-
-
     private:
         std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree
         int order; // order of the IBPTree
-
 };
 
 #endif //IBPTREE_IBPTREE_HPP
