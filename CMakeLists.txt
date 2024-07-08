@@ -16,12 +16,12 @@ FetchContent_Declare(
         URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
         DOWNLOAD_EXTRACT_TIMESTAMP true
 )
-# enable the testing framework
-enable_testing()
+FetchContent_MakeAvailable(googletest)
+enable_testing() # enable the testing framework
+include(GoogleTest)
 
 file(GLOB TEST_SOURCES "tests/*.cpp")
 add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
 target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(IBPTree_Test GTest::gtest_main)
-include(GoogleTest)
 gtest_discover_tests(IBPTree_Test)
