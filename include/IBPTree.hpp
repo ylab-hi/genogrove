@@ -32,6 +32,11 @@ class IBPTree {
          */
         void splitNode(Node* parent, int index);
 
+        /*
+         *
+         */
+        void tree2SIF(std::string filename);
+
 
 
 

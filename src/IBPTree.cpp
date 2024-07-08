@@ -4,9 +4,6 @@ IBPTree::IBPTree(int k) {
     this->order = k;
 }
 
-
-// operations on the tree
-
 Node* IBPTree::getRoot(std::string key) {
     Node* root;
     if(this->rootnodes.find(key) == this->rootnodes.end()) {
@@ -17,7 +14,6 @@ Node* IBPTree::getRoot(std::string key) {
     }
     return root;
 }
-
 
 template <typename T>
 void IBPTree::insert(std::string key, dtp::Interval interval, T& data) {

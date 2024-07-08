@@ -8,9 +8,9 @@
 // Class
 #include "DataTypes.hpp"
 
+template <typename T>
 class Data {
     public:
-        template <typename T>
         Data(dtp::Interval interval, T data);
         ~Data();
 
@@ -21,16 +21,13 @@ class Data {
         // getter & setter
         dtp::Interval getInterval();
         void setInterval(dtp::Interval interval);
-        template <typename T>
         T getData();
-        template <typename T>
         void setData(T data);
 
         // operations
 
     private:
         dtp::Interval interval; // interval of the data
-        template <typename T>
         T data; // data of the Node
 };
 
