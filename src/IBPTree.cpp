@@ -19,7 +19,7 @@ template <typename T>
 Node<T>* IBPTree<T>::getRoot(std::string key) {
     Node<T>* root;
     if(this->rootnodes.find(key) == this->rootnodes.end()) {
-        root = new Node(this->order);
+        root = new Node<T>(this->order);
         root->setIsLeaf(true); // root node becomes a leaf node
     } else {
         root = this->rootnodes[key];
@@ -32,7 +32,7 @@ void IBPTree<T>::insert(std::string key, dtp::Interval interval, T& data) {
     Node<T>* root = getRoot(key);
     insertIter(root, data);
     if(root->getKeys().size() == this->order) {
-        Node<T>* newRoot = new Node(this->order);
+        Node<T>* newRoot = new Node<T>(this->order);
         newRoot->addChild(root, 0);
         splitNode(newRoot, 0);
         root = newRoot;
@@ -56,10 +56,11 @@ void IBPTree<T>::insertIter(Node<T>* node, dtp::Interval interval, T& data) {
     }
 }
 
+template <typename T>
 void IBPTree<T>::splitNode(Node<T>* parent, int index) {
     // std::cout << "Splitting node " << parent->keysToString() << " at index " << index << "\n";
-    Node* child = parent->getChild(index);
-    Node* newChild = new Node(this->order);
+    Node<T>* child = parent->getChild(index);
+    Node<T>* newChild = new Node<T>(this->order);
     int mid = ((this->order+2-1)/2); // value for order=6
 
     // move overflowing keys to new child node (and resize the original node)
@@ -82,7 +83,7 @@ void IBPTree<T>::splitNode(Node<T>* parent, int index) {
 
 template <typename T>
 std::vector<T> IBPTree<T>::search(std::string key, dtp::Interval interval) {
-    Node* root = getRoot(key);
+    Node<T>* root = getRoot(key);
     std::vector<T> searchResult;
     searchIter(root, interval, searchResult);
 }
