@@ -1,15 +1,23 @@
 #include "IBPTree.hpp"
 
-IBPTree::IBPTree(int k) : order(k), rootnodes{} {}
-IBPTree::~IBPTree() {}
+// constructor
+template <typename T>
+IBPTree<T>::IBPTree(int k) : order(k), rootnodes{} {}
+template <typename T>
+IBPTree<T>::~IBPTree() {}
 
-int IBPTree::getOrder() { return this->order; }
-void IBPTree::setOrder(int k) { this->order = k; }
-std::map<std::string, Node*> IBPTree::getRootnodes() { return this->rootnodes; }
-void IBPTree::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
+template <typename T>
+int IBPTree<T>::getOrder() { return this->order; }
+template <typename T>
+void IBPTree<T>::setOrder(int k) { this->order = k; }
+template <typename T>
+std::map<std::string, Node<T>*> IBPTree<T>::getRootnodes() { return this->rootnodes; }
+template <typename T>
+void IBPTree<T>::setRootnodes(std::map<std::string, Node<T>*> rootnodes) { this->rootnodes = rootnodes; }
 
-Node* IBPTree::getRoot(std::string key) {
-    Node* root;
+template <typename T>
+Node<T>* IBPTree<T>::getRoot(std::string key) {
+    Node<T>* root;
     if(this->rootnodes.find(key) == this->rootnodes.end()) {
         root = new Node(this->order);
         root->setIsLeaf(true); // root node becomes a leaf node
@@ -20,11 +28,11 @@ Node* IBPTree::getRoot(std::string key) {
 }
 
 template <typename T>
-void IBPTree::insert(std::string key, dtp::Interval interval, T& data) {
-    Node* root = getRoot(key);
+void IBPTree<T>::insert(std::string key, dtp::Interval interval, T& data) {
+    Node<T>* root = getRoot(key);
     insertIter(root, data);
     if(root->getKeys().size() == this->order) {
-        Node* newRoot = new Node(this->order);
+        Node<T>* newRoot = new Node(this->order);
         newRoot->addChild(root, 0);
         splitNode(newRoot, 0);
         root = newRoot;
@@ -33,7 +41,7 @@ void IBPTree::insert(std::string key, dtp::Interval interval, T& data) {
 }
 
 template <typename T>
-void IBPTree::insertIter(Node* node, dtp::Interval interval, T& data) {
+void IBPTree<T>::insertIter(Node<T>* node, dtp::Interval interval, T& data) {
     if(node->getIsLeaf()) {
         node->addData(interval, data);
     } else {
@@ -48,7 +56,7 @@ void IBPTree::insertIter(Node* node, dtp::Interval interval, T& data) {
     }
 }
 
-void IBPTree::splitNode(Node* parent, int index) {
+void IBPTree<T>::splitNode(Node<T>* parent, int index) {
     // std::cout << "Splitting node " << parent->keysToString() << " at index " << index << "\n";
     Node* child = parent->getChild(index);
     Node* newChild = new Node(this->order);
@@ -71,6 +79,35 @@ void IBPTree::splitNode(Node* parent, int index) {
         child->resizeChildren(mid + 1);
     }
 }
+
+template <typename T>
+std::vector<T> IBPTree<T>::search(std::string key, dtp::Interval interval) {
+    Node* root = getRoot(key);
+    std::vector<T> searchResult;
+    searchIter(root, interval, searchResult);
+}
+
+template <typename T>
+void IBPTree<T>::searchIter(Node<T>* node, const dtp::Interval& interval, std::vector<T>& searchResult) {
+    if(node->getIsLeaf()) {
+        for(int i=0; i < node->getKeys().size(); ++i) {
+            if(overlaps(node->getKeys()[i].first, interval)) {
+                searchResult.push_back(node->getKeys()[i].second->getData());
+            }
+        }
+    }
+}
+
+template <typename T>
+bool IBPTree<T>::overlaps(dtp::Interval intvl1, dtp::Interval intvl2) {
+    dtp::Interval intvl = {std::max(intvl1.first, intvl2.first),
+                           std::min(intvl1.second, intvl2.second)};
+    return intvl.first <= intvl.second;
+}
+
+
+
+
 
 
 

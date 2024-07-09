@@ -1,44 +1,57 @@
 #include "Node.hpp"
 
+/*
 template <typename T>
-Data<T>::Data(dtp::Interval interval, T data) : interval(interval), data(data) {}
+Data<T>::Data(dtp::Interval interval, T data) : interval(interval), data(data) {}*/
 
 // constructor
-Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
+template <typename T>
+Node<T>::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 
 // getter & setter
-int Node::getOrder() { return this->order; }
-void Node::setOrder(int k) { this->order = k; }
-std::vector<std::pair<dtp::Interval, Node*>> Node::getKeys() { return this->keys; }
-void Node::setKeys(std::vector<std::pair<dtp::Interval, Node*>> keys) { this->keys = keys; }
-std::vector<Node*> Node::getChildren() { return this->children; }
-void Node::setChildren(std::vector<Node*> children) { this->children = children; }
-void Node::setNext(Node* next) { this->next = next; }
-Node* Node::getNext() { return this->next; }
-void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
-bool Node::getIsLeaf() { return this->isLeaf; }
+template <typename T>
+int Node<T>::getOrder() { return this->order; }
+template <typename T>
+void Node<T>::setOrder(int k) { this->order = k; }
+template <typename T>
+std::vector<std::pair<dtp::Interval, T*>> Node<T>::getKeys() { return this->keys; }
+template <typename T>
+void Node<T>::setKeys(std::vector<std::pair<dtp::Interval, T*>> keys) { this->keys = keys; }
+template <typename T>
+std::vector<Node<T>*> Node<T>::getChildren() { return this->children; }
+template <typename T>
+void Node<T>::setChildren(std::vector<Node*> children) { this->children = children; }
+template <typename T>
+void Node<T>::setNext(Node* next) { this->next = next; }
+template <typename T>
+Node<T>* Node<T>::getNext() { return this->next; }
+template <typename T>
+void Node<T>::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
+template <typename T>
+bool Node<T>::getIsLeaf() { return this->isLeaf; }
 
-void Node::addKey(std::pair<dtp::Interval, Node*> key, int index) {
+template <typename T>
+void Node<T>::addKey(std::pair<dtp::Interval, Node*> key, int index) {
     this->keys.insert(this->keys.begin() + index, key);
 }
-void Node::assignKeys(std::vector<std::pair<dtp::Interval, Node*>>::iterator start,
+template <typename T>
+void Node<T>::assignKeys(std::vector<std::pair<dtp::Interval, Node*>>::iterator start,
                       std::vector<std::pair<dtp::Interval, Node*>>::iterator end) {
     this->keys.assign(start, end);
 }
 
-
-
-
-
 /*
  * This method moves the keys from one node to another
  */
-void Node::moveKeys(int mid, Node* child) {
+template <typename T>
+void Node<T>::moveKeys(int mid, Node* child) {
     this->keys.assign(child->getKeys().begin() + mid, child->getKeys().end());
 }
-void Node::resizeKeys() { this->keys.resize(this->order-1); }
+template <typename T>
+void Node<T>::resizeKeys() { this->keys.resize(this->order-1); }
 
-dtp::Interval Node::updateKey() {
+template <typename T>
+dtp::Interval Node<T>::updateKey() {
     dtp::Interval intvl = {std::string::npos, 0};
     for(int i=0; i < keys.size(); i++) {
         if(keys[i].first.first < intvl.first) { intvl.first = keys[i].first.first; }
@@ -47,21 +60,25 @@ dtp::Interval Node::updateKey() {
     return intvl;
 }
 
-void Node::assignChilds(std::vector<Node*>::iterator start,
+template <typename T>
+void Node<T>::assignChilds(std::vector<Node*>::iterator start,
                         std::vector<Node*>::iterator end) {
     this->children.assign(start, end);
 }
-void Node::addChild(Node *child, int index) {
+template <typename T>
+void Node<T>::addChild(Node<T> *child, int index) {
     this->children.insert(this->children.begin() + index, child);
 }
-void Node::resizeChildren(int size) { this->children.resize(size); }
-Node* Node::getChild(int index) { return this->children[index]; }
+template <typename T>
+void Node<T>::resizeChildren(int size) { this->children.resize(size); }
+template <typename T>
+Node<T>* Node<T>::getChild(int index) { return this->children[index]; }
 
 /*
  * This method adds a new data element to the Node. It compares the intervals of the node
  */
 template <typename T>
-void Node::addData(dtp::Interval interval, T data) {
+void Node<T>::addData(dtp::Interval interval, T data) {
     int i=0;
     while(i < this->keys.size() && this->keys[i].first.first < interval.first) { i++; }
     this->keys.insert(this->keys.begin() + i, {interval, data});

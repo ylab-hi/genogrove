@@ -4,10 +4,12 @@
 // Standard
 #include <iostream>
 #include <vector>
+#include <memory>
 
 // Class
 #include "DataTypes.hpp"
 
+/*
 template <typename T>
 class Data {
     public:
@@ -29,9 +31,9 @@ class Data {
     private:
         dtp::Interval interval; // interval of the data
         T data; // data of the Node
-};
+};*/
 
-
+template <typename T>
 class Node {
     public:
         Node(int k); // create a new Node with a given order k
@@ -40,8 +42,8 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
-        std::vector<std::pair<dtp::Interval, Node*>> getKeys();
-        void setKeys(std::vector<std::pair<dtp::Interval, Node*>> keys);
+        std::vector<std::pair<dtp::Interval, T*>> getKeys();
+        void setKeys(std::vector<std::pair<dtp::Interval, T*>> keys);
         std::vector<Node*> getChildren();
         void setChildren(std::vector<Node*> children);
         void setNext(Node* next);
@@ -83,12 +85,11 @@ class Node {
         void resizeChildren(int size);
         Node* getChild(int index);
 
-        template <typename T>
         void addData(dtp::Interval interval, T data);
 
 private:
         int order; // order of the Node
-        std::vector<std::pair<dtp::Interval, Node*>> keys;
+        std::vector<std::pair<dtp::Interval, T*>> keys;
         std::vector<Node*> children; // children of the Node
         Node* next;
         bool isLeaf; // is the Node a leaf
