@@ -20,11 +20,11 @@ Node* IBPTree::getRoot(std::string& key) {
     return root;
 }
 
-void IBPTree::insert(std::string key, dtp::Interval interval, T& data) {
-    Node<T>* root = getRoot(key);
-    insertIter(root, data);
+void IBPTree::insert(std::string key, dtp::Interval interval, std::shared_ptr<void> data) {
+    Node* root = getRoot(key);
+    insertIter(root, interval, data);
     if(root->getKeys().size() == this->order) {
-        Node<T>* newRoot = new Node<T>(this->order);
+        Node* newRoot = new Node(this->order);
         newRoot->addChild(root, 0);
         splitNode(newRoot, 0);
         root = newRoot;
@@ -32,7 +32,7 @@ void IBPTree::insert(std::string key, dtp::Interval interval, T& data) {
     }
 }
 
-void IBPTree::insertIter(Node<T>* node, dtp::Interval interval, T& data) {
+void IBPTree::insertIter(Node* node, dtp::Interval interval, std::shared_ptr<void> data) {
     if(node->getIsLeaf()) {
         node->addData(interval, data);
     } else {
@@ -47,10 +47,10 @@ void IBPTree::insertIter(Node<T>* node, dtp::Interval interval, T& data) {
     }
 }
 
-void IBPTree::splitNode(Node<T>* parent, int index) {
+void IBPTree::splitNode(Node* parent, int index) {
     // std::cout << "Splitting node " << parent->keysToString() << " at index " << index << "\n";
-    Node<T>* child = parent->getChild(index);
-    Node<T>* newChild = new Node<T>(this->order);
+    Node* child = parent->getChild(index);
+    Node* newChild = new Node(this->order);
     int mid = ((this->order+2-1)/2); // value for order=6
 
     // move overflowing keys to new child node (and resize the original node)
@@ -75,14 +75,32 @@ std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interva
     Node* root = getRoot(key);
     std::vector<std::shared_ptr<void>> searchResult;
     searchIter(root, interval, searchResult);
+    return searchResult;
 }
 
-void IBPTree::searchIter(Node<T>* node, const dtp::Interval& interval, std::vector<T>& searchResult) {
+void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
     if(node->getIsLeaf()) {
-        for(int i=0; i < node->getKeys().size(); ++i) {
-            if(overlaps(node->getKeys()[i].first, interval)) {
-                searchResult.push_back(node->getKeys()[i].second->getData());
+        for (int i = 0; i < node->getKeys().size(); ++i) {
+            if (overlaps(node->getKeys()[i].first, interval)) {
+                searchResult.push_back(node->getKeys()[i].second);
             }
+        }
+
+        // check if the intervals overlaps with the next node (if so then search the next node)
+        if (node->getNext() != nullptr) {
+            if (overlaps(node->getKeys()[0].first, interval)) {
+                searchIter(node->getNext(), interval, searchResult);
+            }
+        }
+    } else {
+        int i = 0;
+        while(i < node->getKeys().size() &&
+              (interval.first > node->getKeys()[i].first.first &&
+               (interval.first > node->getKeys()[i].first.second))){
+            i++;
+        }
+        if(node->getChildren()[i] != nullptr) {
+            searchIter(node->getChildren()[i], interval, searchResult);
         }
     }
 }

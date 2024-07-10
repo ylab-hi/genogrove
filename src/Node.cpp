@@ -22,8 +22,8 @@ bool Node::getIsLeaf() { return this->isLeaf; }
 void Node::addKey(std::pair<dtp::Interval, std::shared_ptr<void>> key, int index) {
     this->keys.insert(this->keys.begin() + index, key);
 }
-void Node::assignKeys(std::vector<std::pair<dtp::Interval, Node*>>::iterator start,
-                      std::vector<std::pair<dtp::Interval, Node*>>::iterator end) {
+void Node::assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
+                      std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end) {
     this->keys.assign(start, end);
 }
 

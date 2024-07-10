@@ -61,8 +61,8 @@ class Node {
          * @param start the start of the range
          * @param end the end of the range
          */
-        void assignKeys(std::vector<std::pair<dtp::Interval, Node*>>::iterator start,
-                        std::vector<std::pair<dtp::Interval, Node*>>::iterator end);
+        void assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
+                        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end);
 
         /*
          * @brief moves keys from one node to another
