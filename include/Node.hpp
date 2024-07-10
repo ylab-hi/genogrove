@@ -33,7 +33,6 @@ class Data {
         T data; // data of the Node
 };*/
 
-template <typename T>
 class Node {
     public:
         Node(int k); // create a new Node with a given order k
@@ -42,8 +41,8 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
-        std::vector<std::pair<dtp::Interval, T*>> getKeys();
-        void setKeys(std::vector<std::pair<dtp::Interval, T*>> keys);
+        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> getKeys();
+        void setKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys);
         std::vector<Node*> getChildren();
         void setChildren(std::vector<Node*> children);
         void setNext(Node* next);
@@ -56,7 +55,7 @@ class Node {
          * @param key the key (Interval, Node) to add
          * @param index the index at which to add the key
          */
-        void addKey(std::pair<dtp::Interval, Node*> key, int index);
+        void addKey(std::pair<dtp::Interval, std::shared_ptr<void>> key, int index);
         /*
          * @brief assign a range of keys to the Node
          * @param start the start of the range
@@ -85,11 +84,11 @@ class Node {
         void resizeChildren(int size);
         Node* getChild(int index);
 
-        void addData(dtp::Interval interval, T data);
+        void addData(dtp::Interval interval, std::shared_ptr<void> data);
 
 private:
         int order; // order of the Node
-        std::vector<std::pair<dtp::Interval, T*>> keys;
+        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys;
         std::vector<Node*> children; // children of the Node
         Node* next;
         bool isLeaf; // is the Node a leaf
