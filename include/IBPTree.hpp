@@ -23,7 +23,7 @@ class IBPTree {
          * @brief get the root node of the IBPTree for a given key (or create a new one)
          * @param the key associated with the root node
          */
-        Node* getRoot(std::string& key);
+        Node* getRoot(std::string key);
 
         /*
          * @brief insert a new data element into the IBPTree

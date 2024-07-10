@@ -9,11 +9,12 @@ void IBPTree::setOrder(int k) { this->order = k; }
 std::map<std::string, Node*> IBPTree::getRootnodes() { return this->rootnodes; }
 void IBPTree::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
 
-Node* IBPTree::getRoot(std::string& key) {
+Node* IBPTree::getRoot(std::string key) {
     Node* root;
     if(this->rootnodes.find(key) == this->rootnodes.end()) {
         root = new Node(this->order);
         root->setIsLeaf(true); // root node becomes a leaf node
+        this->rootnodes.insert(std::make_pair(key, root));
     } else {
         root = this->rootnodes[key];
     }
@@ -34,7 +35,10 @@ void IBPTree::insert(std::string key, dtp::Interval interval, std::shared_ptr<vo
 
 void IBPTree::insertIter(Node* node, dtp::Interval interval, std::shared_ptr<void> data) {
     if(node->getIsLeaf()) {
+        std::cout << "Inserting data into leaf node\n";
+        std::cout << node->getKeys().size() << "\n";
         node->addData(interval, data);
+        std::cout << node->getKeys().size() << "\n";
     } else {
         int childnum = 0;
         while(childnum < node->getKeys().size() && interval.first > node->getKeys()[childnum].first.first) {
@@ -75,6 +79,7 @@ std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interva
     Node* root = getRoot(key);
     std::vector<std::shared_ptr<void>> searchResult;
     searchIter(root, interval, searchResult);
+
     return searchResult;
 }
 
