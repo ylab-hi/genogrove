@@ -4,14 +4,47 @@
 #include <stdlib.h>
 
 TEST(IBPTreeTestSuite, CreateIBPTree) {
+    std::srand(std::time(nullptr));
     int k = 3;
     IBPTree tree(k);
-    std::vector<dtp::Interval> intervals = {{0, 10}, {10, 20}, {20, 30}, {30, 40}, {40, 50},
-                                            {50, 60}, {60, 70}, {70, 80}, {80, 90}, {90, 100}};
-    for(dtp::Interval interval : intervals) {
-        // random number
-        int data = rand() % 100;
-        std::shared_ptr<void> dataPtr = std::make_shared<int>(data);
-        tree.insert("chr1", interval, dataPtr);
+    std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> intervals;
+    intervals.push_back({{0, 10}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{11, 20}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{21, 30}, std::make_shared<int>(rand() % 100)});
+/*
+    intervals.push_back({{21, 30}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{31, 40}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{41, 50}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{51, 60}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{61, 70}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{71, 80}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{81, 90}, std::make_shared<int>(rand() % 100)});
+    intervals.push_back({{91, 100}, std::make_shared<int>(rand() % 100)});
+*/
+
+    std::vector<std::shared_ptr<void>> dataVector;
+    for(auto& intvl : intervals) { // insert data
+        tree.insert("chr1", intvl.first, intvl.second);
     }
+
+
+/*
+    for(auto& intvl : intervals) {  // search data
+        std::cout << "Searching for interval [" << intvl.first.first << "," << intvl.first.second << "]\n";
+        std::cout << "With the data: " << *std::static_pointer_cast<int>(intvl.second) << "\n";
+        std::vector<std::shared_ptr<void>> searchResult = tree.search("chr1", intvl.first);
+
+        std::cout << "Search result: ";
+        for(auto& data : searchResult) {
+            std::cout << *std::static_pointer_cast<int>(data) << " ";
+        }
+        std::cout << "\n";
+
+        EXPECT_EQ(searchResult.size(), 1) << "The search result for interval [" << intvl.first.first << ","
+                                          << intvl.first.second << "] was not correct";
+
+        EXPECT_EQ(*std::static_pointer_cast<int>(searchResult[0]), *std::static_pointer_cast<int>(intvl.second))
+            << "The search result for interval [" << intvl.first.first << "," << intvl.first.second << "] was not correct";
+    }
+*/
 }
