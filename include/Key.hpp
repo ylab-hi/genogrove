@@ -1,0 +1,4 @@
+#ifndef IBPTREE_KEY_HPP
+#define IBPTREE_KEY_HPP
+
+#endif //IBPTREE_KEY_HPP
