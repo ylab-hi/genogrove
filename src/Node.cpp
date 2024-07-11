@@ -10,8 +10,8 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 // getter & setter
 int Node::getOrder() { return this->order; }
 void Node::setOrder(int k) { this->order = k; }
-std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>& Node::getKeys() { return this->keys; }
-void Node::setKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys) { this->keys = keys; }
+std::vector<Key>& Node::getKeys() { return this->keys; }
+void Node::setKeys(std::vector<Key> keys) { this->keys = keys; }
 std::vector<Node*> Node::getChildren() { return this->children; }
 void Node::setChildren(std::vector<Node*> children) { this->children = children; }
 void Node::setNext(Node* next) { this->next = next; }
@@ -19,8 +19,8 @@ Node* Node::getNext() { return this->next; }
 void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
 bool Node::getIsLeaf() { return this->isLeaf; }
 
-void Node::addKey(std::pair<dtp::Interval, std::shared_ptr<void>> key, int index) {
-    this->keys.insert(this->keys.begin() + index, key);
+void Node::addKey(Key& key, int index) {
+    this->keys.insert(this->keys.begin() + index, key)
 }
 void Node::assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
                       std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end) {
@@ -57,11 +57,12 @@ Node* Node::getChild(int index) { return this->children[index]; }
 /*
  * This method adds a new data element to the Node. It compares the intervals of the node
  */
+/*
 void Node::addData(dtp::Interval interval, std::shared_ptr<void> data) {
     int i=0;
     while(i < this->keys.size() && this->keys[i].first.first < interval.first) { i++; }
     this->keys.insert(this->keys.begin() + i, {interval, data});
-}
+}*/
 
 
 

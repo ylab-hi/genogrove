@@ -8,6 +8,7 @@
 
 // Class
 #include "DataTypes.hpp"
+#include "Key.hpp"
 
 class Node {
     public:
@@ -17,8 +18,8 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
-        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>& getKeys();
-        void setKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys);
+        std::vector<Key>& getKeys();
+        void setKeys(std::vector<Key> keys);
         std::vector<Node*> getChildren();
         void setChildren(std::vector<Node*> children);
         void setNext(Node* next);
@@ -31,7 +32,8 @@ class Node {
          * @param key the key (Interval, Node) to add
          * @param index the index at which to add the key
          */
-        void addKey(std::pair<dtp::Interval, std::shared_ptr<void>> key, int index);
+
+        void addKey(Key& key, int index);
         /*
          * @brief assign a range of keys to the Node
          * @param start the start of the range
@@ -64,7 +66,7 @@ class Node {
 
 private:
         int order; // order of the Node
-        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys;
+        std::vector<Key> keys;
         std::vector<Node*> children; // children of the Node
         Node* next;
         bool isLeaf; // is the Node a leaf

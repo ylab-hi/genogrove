@@ -21,26 +21,27 @@ Node* IBPTree::getRoot(std::string key) {
     return root;
 }
 
-void IBPTree::insert(std::string key, dtp::Interval interval, std::shared_ptr<void> data) {
-    Node* root = getRoot(key);
-    insertIter(root, interval, data);
+void IBPTree::insert(std::string chrom, Key& key) {
+    Node* root = getRoot(chrom);
+    insertIter(root, key);
     if(root->getKeys().size() == this->order) {
         Node* newRoot = new Node(this->order);
         newRoot->addChild(root, 0);
         splitNode(newRoot, 0);
         root = newRoot;
-        this->rootnodes[key] = root;
+        this->rootnodes[chrom] = root;
     }
 }
 
-void IBPTree::insertIter(Node* node, dtp::Interval interval, std::shared_ptr<void> data) {
+void IBPTree::insertIter(Node* node, Key& key);
     if(node->getIsLeaf()) {
-        node->addData(interval, data);
+        node->addKey(key);
     } else {
         int childnum = 0;
         while(childnum < node->getKeys().size() && interval.first > node->getKeys()[childnum].first.first) {
             childnum++;
         }
+        // TODO: add > operator on Key
         insertIter(node->getChild(childnum), interval, data);
         if(node->getChild(childnum)->getKeys().size() == this->order) {
             splitNode(node, childnum);
