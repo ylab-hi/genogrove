@@ -4,6 +4,15 @@ Key::Key() : interval({std::string::npos, std::string::npos}),
     data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
 Key::~Key() {}
 
+// operators opverloading
+book Key::operator<(const Key& other) const {
+    return this->interval.first < other.interval.first;
+}
+book Key::operator>(const Key& other) const {
+    return this->interval.first > other.interval.first;
+}
+
+
 // getter & setter
 dtp::Interval Key::getInterval() { return this->interval; }
 void Key::setInterval(dtp::Interval interval) { this->interval = interval; }

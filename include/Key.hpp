@@ -9,6 +9,9 @@ class Key {
         Key();
         ~Key();
 
+        bool operator<(const Key& other) const;
+        bool operator>(const Key& other) const;
+
     private:
         dtp::Interval interval;
         std::shared_ptr<void> data;
