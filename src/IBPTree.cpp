@@ -35,10 +35,7 @@ void IBPTree::insert(std::string key, dtp::Interval interval, std::shared_ptr<vo
 
 void IBPTree::insertIter(Node* node, dtp::Interval interval, std::shared_ptr<void> data) {
     if(node->getIsLeaf()) {
-        std::cout << "Inserting data into leaf node\n";
-        std::cout << node->getKeys().size() << "\n";
         node->addData(interval, data);
-        std::cout << node->getKeys().size() << "\n";
     } else {
         int childnum = 0;
         while(childnum < node->getKeys().size() && interval.first > node->getKeys()[childnum].first.first) {
@@ -52,7 +49,6 @@ void IBPTree::insertIter(Node* node, dtp::Interval interval, std::shared_ptr<voi
 }
 
 void IBPTree::splitNode(Node* parent, int index) {
-    // std::cout << "Splitting node " << parent->keysToString() << " at index " << index << "\n";
     Node* child = parent->getChild(index);
     Node* newChild = new Node(this->order);
     int mid = ((this->order+2-1)/2); // value for order=6

@@ -9,30 +9,6 @@
 // Class
 #include "DataTypes.hpp"
 
-/*
-template <typename T>
-class Data {
-    public:
-        Data(dtp::Interval interval, T data);
-        ~Data();
-
-        // operator overloading
-        bool operator<(const dtp::Interval& other) const;
-        bool operator>(const dtp::Interval& other) const;
-
-        // getter & setter
-        dtp::Interval getInterval();
-        void setInterval(dtp::Interval interval);
-        T getData();
-        void setData(T data);
-
-        // operations
-
-    private:
-        dtp::Interval interval; // interval of the data
-        T data; // data of the Node
-};*/
-
 class Node {
     public:
         Node(int k); // create a new Node with a given order k
@@ -41,7 +17,7 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
-        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> getKeys();
+        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>& getKeys();
         void setKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys);
         std::vector<Node*> getChildren();
         void setChildren(std::vector<Node*> children);

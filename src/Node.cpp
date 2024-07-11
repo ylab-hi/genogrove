@@ -10,7 +10,7 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 // getter & setter
 int Node::getOrder() { return this->order; }
 void Node::setOrder(int k) { this->order = k; }
-std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> Node::getKeys() { return this->keys; }
+std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>& Node::getKeys() { return this->keys; }
 void Node::setKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>> keys) { this->keys = keys; }
 std::vector<Node*> Node::getChildren() { return this->children; }
 void Node::setChildren(std::vector<Node*> children) { this->children = children; }
