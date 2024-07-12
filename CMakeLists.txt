@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(IBPTree VERSION 0.1.0)
+project(gengrove VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp)
