@@ -20,6 +20,14 @@ void Node::insertKey(Key& key) {
     while(i < this->keys.size() && this->keys[i] < key) { i++; }
     this->keys.insert(this->keys.begin() + i, key);
 }
+void Node::assignKeys(std::vector<Key>::iterator start, std::vector<Key>::iterator end) {
+    this->keys.assign(start, end);
+}
+void Node::resizeKeys(int size) { this->keys.resize(size); }
+
+
+
+
 //void Node::assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
 //                      std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end) {
 //    this->keys.assign(start, end);
@@ -49,8 +57,9 @@ void Node::insertKey(Key& key) {
 void Node::addChild(Node *child, int index) {
     this->children.insert(this->children.begin() + index, child);
 }
+Node* Node::getChild(int index) { return this->children[index]; }
+
 //void Node::resizeChildren(int size) { this->children.resize(size); }
-//Node* Node::getChild(int index) { return this->children[index]; }
 //
 ///*
 // * This method adds a new data element to the Node. It compares the intervals of the node

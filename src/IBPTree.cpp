@@ -36,33 +36,32 @@ void IBPTree::insert(std::string chrom, Key& key) {
 void IBPTree::insertIter(Node* node, Key& key) {
     if(node->getIsLeaf()) {
         node->insertKey(key);
+    } else {
+        int childnum = 0;
+        while(childnum < node->getKeys().size() && key > node->getKeys()[childnum]) { childnum++; }
+        insertIter(node->getChild(childnum), key);
+        if(node->getChild(childnum)->getKeys().size() == this->order) {
+            splitNode(node, childnum);
+        }
     }
-//        node->addKey(key);
-//    } else {
-//        int childnum = 0;
-//        while(childnum < node->getKeys().size() && interval.first > node->getKeys()[childnum].first.first) {
-//            childnum++;
-//        }
-//        // TODO: add > operator on Key
-//        insertIter(node->getChild(childnum), interval, data);
-//        if(node->getChild(childnum)->getKeys().size() == this->order) {
-//            splitNode(node, childnum);
-//        }
-//    }
 }
 
-//
-//void IBPTree::splitNode(Node* parent, int index) {
-//    Node* child = parent->getChild(index);
-//    Node* newChild = new Node(this->order);
-//    int mid = ((this->order+2-1)/2); // value for order=6
-//
-//    // move overflowing keys to new child node (and resize the original node)
-//    newChild->setIsLeaf(child->getIsLeaf());
-//    newChild->assignKeys(child->getKeys().begin() + mid, child->getKeys().end());
-//    child->resizeKeys(); // resize the original node
-//
-//    // update parent
+void IBPTree::splitNode(Node* parent, int index) {
+    Node* child = parent->getChild(index);
+    Node* newChild = new Node(this->order);
+    int mid = ((this->order+2-1)/2); // value for order=6
+
+    // move overflowing keys to new child node (and resize the original node)
+    newChild->setIsLeaf(child->getIsLeaf());
+    newChild->assignKeys(child->getKeys().begin() + mid, child->getKeys().end());
+    child->resizeKeys(this->order-1); // resize the original node
+
+    // update parent
+    parent->addChild(newChild, index + 1);
+//    parent->insertKey(
+
+
+
 //    parent->addChild(newChild, index + 1);
 //    parent->addKey({child->updateKey(), nullptr}, index);
 //
@@ -73,6 +72,16 @@ void IBPTree::insertIter(Node* node, Key& key) {
 //        newChild->assignKeys(child->getKeys().begin() + mid, child->getKeys().end());
 //        child->resizeChildren(mid + 1);
 //    }
+
+
+}
+
+//
+//void IBPTree::splitNode(Node* parent, int index) {
+//    Node* child = parent->getChild(index);
+//    Node* newChild = new Node(this->order);
+//    int mid = ((this->order+2-1)/2); // value for order=6
+//
 //}
 //
 //std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interval interval) {

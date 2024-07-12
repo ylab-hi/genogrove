@@ -40,6 +40,10 @@ class Node {
 //         * @param start the start of the range
 //         * @param end the end of the range
 //         */
+        void assignKeys(std::vector<Key>::iterator start, std::vector<Key>::iterator end);
+        void resizeKeys(int size);
+
+
 //        void assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
 //                        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end);
 //
@@ -59,9 +63,13 @@ class Node {
 //        dtp::Interval updateKey();
 //
         void addChild(Node* child, int index);
+        Node* getChild(int index);
+
+
+
+
 //        void assignChilds(std::vector<Node*>::iterator start, std::vector<Node*>::iterator end);
 //        void resizeChildren(int size);
-//        Node* getChild(int index);
 //
 //        void addData(dtp::Interval interval, std::shared_ptr<void> data);
 
