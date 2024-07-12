@@ -6,7 +6,9 @@
 
 // Class
 #include "Node.hpp"
-#include "DataTypes.hpp"
+
+// Forward declaration
+class Node;
 
 class IBPTree {
     public:
