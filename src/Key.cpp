@@ -5,10 +5,10 @@ Key::Key() : interval({std::string::npos, std::string::npos}),
 Key::~Key() {}
 
 // operators opverloading
-book Key::operator<(const Key& other) const {
+bool Key::operator<(const Key& other) const {
     return this->interval.first < other.interval.first;
 }
-book Key::operator>(const Key& other) const {
+bool Key::operator>(const Key& other) const {
     return this->interval.first > other.interval.first;
 }
 
