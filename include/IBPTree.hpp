@@ -30,8 +30,8 @@ class IBPTree {
          * @brief insert a new data element into the IBPTree
          * @param the data element to insert
          */
-        void insert(std::string chrom, Key& key);
-        void insertIter(Node* node, Key& key);
+        void insert(std::string chrom, Key* key);
+        void insertIter(Node* node, Key* key);
         /*
          * @brief split a node in the IBPTree
          */

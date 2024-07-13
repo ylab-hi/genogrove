@@ -20,8 +20,8 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
-        std::vector<Key>& getKeys();
-        void setKeys(std::vector<Key> keys);
+        std::vector<Key*> getKeys();
+        void setKeys(std::vector<Key*> keys);
         std::vector<Node*> getChildren();
         void setChildren(std::vector<Node*> children);
         void setNext(Node* next);
@@ -34,7 +34,9 @@ class Node {
          * @param key the key (Interval, Node) to add
          * @param index the index at which to add the key
          */
-        void insertKey(Key& key);
+        void insertKey(Key* key);
+        void insertKey(Key* key, int index);
+        void updateKey(Node* node);
 //        /*
 //         * @brief assign a range of keys to the Node
 //         * @param start the start of the range
@@ -75,7 +77,7 @@ class Node {
 
 private:
         int order; // order of the Node
-        std::vector<Key> keys;
+        std::vector<Key*> keys;
         std::vector<Node*> children; // children of the Node
         Node* next;
         bool isLeaf; // is the Node a leaf

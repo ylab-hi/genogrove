@@ -21,24 +21,24 @@ Node* IBPTree::getRoot(std::string key) {
     return root;
 }
 
-void IBPTree::insert(std::string chrom, Key& key) {
+void IBPTree::insert(std::string chrom, Key* key) {
     Node* root = getRoot(chrom);
     insertIter(root, key);
     if(root->getKeys().size() == this->order) {
         Node* newRoot = new Node(this->order);
         newRoot->addChild(root, 0);
-//        splitNode(newRoot, 0);
+        splitNode(newRoot, 0);
         root = newRoot;
         this->rootnodes[chrom] = root;
     }
 }
 
-void IBPTree::insertIter(Node* node, Key& key) {
+void IBPTree::insertIter(Node* node, Key* key) {
     if(node->getIsLeaf()) {
         node->insertKey(key);
     } else {
         int childnum = 0;
-        while(childnum < node->getKeys().size() && key > node->getKeys()[childnum]) { childnum++; }
+        while(childnum < node->getKeys().size() && *key > *node->getKeys()[childnum]) { childnum++; }
         insertIter(node->getChild(childnum), key);
         if(node->getChild(childnum)->getKeys().size() == this->order) {
             splitNode(node, childnum);
@@ -58,6 +58,9 @@ void IBPTree::splitNode(Node* parent, int index) {
 
     // update parent
     parent->addChild(newChild, index + 1);
+    parent->
+
+
 //    parent->insertKey(
 
 
