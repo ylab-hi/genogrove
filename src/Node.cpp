@@ -23,10 +23,13 @@ void Node::insertKey(Key* key) {
 void Node::insertKey(Key* key, int index) {
     this->keys.insert(this->keys.begin() + index, key);
 }
+/*
 void Node::updateKey(Node* node) {
+    dtp::Interval intvl = {std::string::npos, 0};
+    for(int i=0; )
 
 }
-
+*/
 
 
 
@@ -68,6 +71,18 @@ void Node::addChild(Node *child, int index) {
     this->children.insert(this->children.begin() + index, child);
 }
 Node* Node::getChild(int index) { return this->children[index]; }
+
+/*
+ * Calculates the (parent) node interval based on the keys (of the child)
+ */
+dtp::Interval Node::calculateNodeInterval() {
+    dtp::Interval intvl = {std::string::npos, 0};
+    for(int i=0; i < keys.size(); i++) {
+        if(keys[i]->getInterval().first < intvl.first) { intvl.first = keys[i]->getInterval().first; }
+        if(keys[i]->getInterval().second > intvl.second) { intvl.second = keys[i]->getInterval().second; }
+    }
+    return intvl;
+}
 
 //void Node::resizeChildren(int size) { this->children.resize(size); }
 //

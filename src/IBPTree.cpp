@@ -58,11 +58,8 @@ void IBPTree::splitNode(Node* parent, int index) {
 
     // update parent
     parent->addChild(newChild, index + 1);
-    parent->
-
-
-//    parent->insertKey(
-
+    Key parentKey(child->calculateNodeInterval());
+    parent->insertKey(&parentKey, index);
 
 
 //    parent->addChild(newChild, index + 1);

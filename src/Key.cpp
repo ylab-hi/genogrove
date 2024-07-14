@@ -1,7 +1,7 @@
 #include "Key.hpp"
 
-Key::Key() : interval({std::string::npos, std::string::npos}),
-    data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
+Key::Key(dtp::Interval intvl) : interval(intvl),
+    data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}\
 Key::~Key() {}
 
 // operators opverloading

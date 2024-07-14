@@ -36,7 +36,6 @@ class Node {
          */
         void insertKey(Key* key);
         void insertKey(Key* key, int index);
-        void updateKey(Node* node);
 //        /*
 //         * @brief assign a range of keys to the Node
 //         * @param start the start of the range
@@ -67,7 +66,10 @@ class Node {
         void addChild(Node* child, int index);
         Node* getChild(int index);
 
-
+        /*
+         * @brief calculates the (parent) node interval based on the keys (of the child)
+         */
+        dtp::Interval calculateNodeInterval();
 
 
 //        void assignChilds(std::vector<Node*>::iterator start, std::vector<Node*>::iterator end);

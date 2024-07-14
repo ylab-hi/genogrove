@@ -10,7 +10,7 @@
 
 class Key {
     public:
-        Key();
+        Key(dtp::Interval interval);
         ~Key();
 
         bool operator<(const Key& other) const;
