@@ -41,7 +41,7 @@ class Node {
 //         * @param start the start of the range
 //         * @param end the end of the range
 //         */
-        void assignKeys(std::vector<Key>::iterator start, std::vector<Key>::iterator end);
+        void assignKeys(std::vector<Key*>::iterator start, std::vector<Key*>::iterator end);
         void resizeKeys(int size);
 
 

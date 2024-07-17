@@ -56,10 +56,19 @@ void IBPTree::splitNode(Node* parent, int index) {
     newChild->assignKeys(child->getKeys().begin() + mid, child->getKeys().end());
     child->resizeKeys(this->order-1); // resize the original node
 
-    // update parent
+    // update parent (new child node)
     parent->addChild(newChild, index + 1);
-    Key parentKey(child->calculateNodeInterval());
+    Key parentKey(newChild->calculateNodeInterval());
     parent->insertKey(&parentKey, index);
+
+    // update parent (original child node)
+    Node* originalChild = parent->getChild(index);
+    parent->
+
+    if(child->getIsLeaf()) {
+        newChild->setNext(child->getNext());
+    }
+
 
 
 //    parent->addChild(newChild, index + 1);
