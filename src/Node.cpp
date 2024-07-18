@@ -6,9 +6,9 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 // getter & setter
 int Node::getOrder() { return this->order; }
 void Node::setOrder(int k) { this->order = k; }
-std::vector<Key*> Node::getKeys() { return this->keys; }
+std::vector<Key*>& Node::getKeys() { return this->keys; }
 void Node::setKeys(std::vector<Key*> keys) { this->keys = keys; }
-std::vector<Node*> Node::getChildren() { return this->children; }
+std::vector<Node*>& Node::getChildren() { return this->children; }
 void Node::setChildren(std::vector<Node*> children) { this->children = children; }
 void Node::setNext(Node* next) { this->next = next; }
 Node* Node::getNext() { return this->next; }
@@ -24,21 +24,24 @@ void Node::insertKey(Key* key, int index) {
     this->keys.insert(this->keys.begin() + index, key);
 }
 /*
+ * Calculates the (parent) node interval based on the keys (of the child)
+ */
+dtp::Interval Node::calcParentKey() {
+    dtp::Interval intvl = {std::string::npos, 0};
+    for(int i=0; i < keys.size(); i++) {
+        if(keys[i]->getInterval().first < intvl.first) { intvl.first = keys[i]->getInterval().first; }
+        if(keys[i]->getInterval().second > intvl.second) { intvl.second = keys[i]->getInterval().second; }
+    }
+    return intvl;
+}
+
+/*
 void Node::updateKey(Node* node) {
     dtp::Interval intvl = {std::string::npos, 0};
     for(int i=0; )
 
 }
 */
-
-
-
-void Node::assignKeys(std::vector<Key>::iterator start, std::vector<Key>::iterator end) {
-    this->keys.assign(start, end);
-}
-void Node::resizeKeys(int size) { this->keys.resize(size); }
-
-
 
 
 //void Node::assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
@@ -67,22 +70,11 @@ void Node::resizeKeys(int size) { this->keys.resize(size); }
 //                        std::vector<Node*>::iterator end) {
 //    this->children.assign(start, end);
 //}
-void Node::addChild(Node *child, int index) {
+void Node::addChild(Node* child, int index) {
     this->children.insert(this->children.begin() + index, child);
 }
 Node* Node::getChild(int index) { return this->children[index]; }
 
-/*
- * Calculates the (parent) node interval based on the keys (of the child)
- */
-dtp::Interval Node::calculateNodeInterval() {
-    dtp::Interval intvl = {std::string::npos, 0};
-    for(int i=0; i < keys.size(); i++) {
-        if(keys[i]->getInterval().first < intvl.first) { intvl.first = keys[i]->getInterval().first; }
-        if(keys[i]->getInterval().second > intvl.second) { intvl.second = keys[i]->getInterval().second; }
-    }
-    return intvl;
-}
 
 //void Node::resizeChildren(int size) { this->children.resize(size); }
 //

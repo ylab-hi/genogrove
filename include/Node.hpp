@@ -8,6 +8,7 @@
 
 // Class
 #include "Key.hpp"
+#include "DataTypes.hpp"
 
 // Forward declaration
 class Key;
@@ -20,9 +21,9 @@ class Node {
         // getter & setter
         int getOrder();
         void setOrder(int k);
-        std::vector<Key*> getKeys();
+        std::vector<Key*>& getKeys();
         void setKeys(std::vector<Key*> keys);
-        std::vector<Node*> getChildren();
+        std::vector<Node*>& getChildren();
         void setChildren(std::vector<Node*> children);
         void setNext(Node* next);
         Node* getNext();
@@ -36,17 +37,10 @@ class Node {
          */
         void insertKey(Key* key);
         void insertKey(Key* key, int index);
-//        /*
-//         * @brief assign a range of keys to the Node
-//         * @param start the start of the range
-//         * @param end the end of the range
-//         */
-        void assignKeys(std::vector<Key*>::iterator start, std::vector<Key*>::iterator end);
-        void resizeKeys(int size);
-
-
-//        void assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
-//                        std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end);
+        /*
+         * @brief calculates the (parent) node interval based on the keys (of the child)
+         */
+        dtp::Interval calcParentKey();
 //
 //        /*
 //         * @brief moves keys from one node to another
@@ -65,12 +59,6 @@ class Node {
 //
         void addChild(Node* child, int index);
         Node* getChild(int index);
-
-        /*
-         * @brief calculates the (parent) node interval based on the keys (of the child)
-         */
-        dtp::Interval calculateNodeInterval();
-
 
 //        void assignChilds(std::vector<Node*>::iterator start, std::vector<Node*>::iterator end);
 //        void resizeChildren(int size);

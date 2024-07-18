@@ -53,36 +53,21 @@ void IBPTree::splitNode(Node* parent, int index) {
 
     // move overflowing keys to new child node (and resize the original node)
     newChild->setIsLeaf(child->getIsLeaf());
-    newChild->assignKeys(child->getKeys().begin() + mid, child->getKeys().end());
-    child->resizeKeys(this->order-1); // resize the original node
+    newChild->getKeys().assign(child->getKeys().begin() + mid, child->getKeys().end());
+    child->getKeys().resize(this->order-1); // resize the original node
 
     // update parent (new child node)
-    parent->addChild(newChild, index + 1);
-    Key parentKey(newChild->calculateNodeInterval());
-    parent->insertKey(&parentKey, index);
-
-    // update parent (original child node)
-    Node* originalChild = parent->getChild(index);
-    parent->
+    parent->getChildren().insert(parent->getChildren().begin() + index + 1, newChild);
+    Key parentKey(child->calcParentKey()); // create a new key for the parent
+    parent->getKeys().insert(child->getKeys().begin() + index, &parentKey);
 
     if(child->getIsLeaf()) {
         newChild->setNext(child->getNext());
+        child->setNext(newChild);
+    } else {
+        newChild->getChildren().assign(child->getChildren().begin() + mid, child->getChildren().end());
+        child->getChildren().resize(mid + 1);
     }
-
-
-
-//    parent->addChild(newChild, index + 1);
-//    parent->addKey({child->updateKey(), nullptr}, index);
-//
-//    if(child->getIsLeaf()) {
-//        newChild->setNext(child->getNext());
-//        child->setNext(newChild);
-//    } else {
-//        newChild->assignKeys(child->getKeys().begin() + mid, child->getKeys().end());
-//        child->resizeChildren(mid + 1);
-//    }
-
-
 }
 
 //
