@@ -26,7 +26,9 @@ Node* IBPTree::insertRoot(std::string key) {
 }
 
 void IBPTree::insert(std::string chrom, Key* key) {
+    // get the root node for the given chromosome (or create a new tree if it does not exist)
     Node* root = getRoot(chrom);
+    if(root == nullptr) { root = insertRoot(chrom);}
     insertIter(root, key);
     if(root->getKeys().size() == this->order) {
         Node* newRoot = new Node(this->order);
@@ -75,8 +77,9 @@ void IBPTree::splitNode(Node* parent, int index) {
 }
 
 std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interval interval) {
-    Node* root = getRoot(key); // get the root node
     std::vector<std::shared_ptr<void>> searchResult;
+    Node* root = getRoot(key); // get the root node
+    if(root == nullptr) { return searchResult; } // return empty vector, as there is no root node for the given key
     searchIter(root, interval, searchResult);
     return searchResult;
 }
