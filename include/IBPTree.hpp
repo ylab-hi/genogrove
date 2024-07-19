@@ -22,10 +22,15 @@ class IBPTree {
         void setRootnodes(std::map<std::string, Node*> rootnodes);
 
         /*
-         * @brief get the root node of the IBPTree for a given key (or create a new one)
+         * @brief get the root node of the IBPTree for a given key
          * @param the key associated with the root node
          */
         Node* getRoot(std::string key);
+        /*
+         * @brief insert a new root node into the IBPTree
+         */
+        Node* insertRoot(std::string key);
+
         /*
          * @brief insert a new data element into the IBPTree
          * @param the data element to insert

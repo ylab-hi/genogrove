@@ -10,14 +10,18 @@ std::map<std::string, Node*> IBPTree::getRootnodes() { return this->rootnodes; }
 void IBPTree::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
 
 Node* IBPTree::getRoot(std::string key) {
-    Node* root;
-    if(this->rootnodes.find(key) == this->rootnodes.end()) {
-        root = new Node(this->order);
-        root->setIsLeaf(true); // root node becomes a leaf node
-        this->rootnodes.insert(std::make_pair(key, root));
-    } else {
+    Node *root = nullptr;
+    // check if there is a root node for the given key
+    if (this->rootnodes.find(key) != this->rootnodes.end()) {
         root = this->rootnodes[key];
     }
+    return root;
+}
+
+Node* IBPTree::insertRoot(std::string key) {
+    Node* root = new Node(this->order);
+    root->setIsLeaf(true); // root node becomes a leaf node
+    this->rootnodes.insert(std::make_pair(key, root));
     return root;
 }
 
