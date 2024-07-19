@@ -74,6 +74,7 @@ std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interva
     Node* root = getRoot(key); // get the root node
     std::vector<std::shared_ptr<void>> searchResult;
     searchIter(root, interval, searchResult);
+    return searchResult;
 }
 
 void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
@@ -93,8 +94,11 @@ void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<
     } else {
         int i = 0;
         while(i < node->getKeys().size() &&
-                (interval.first > node-> )
-
+                (interval.first > node->getKeys()[i]->getInterval().first &&
+                interval.first > node->getKeys()[i]->getInterval().second)) { i++; }
+        if(node->getChildren()[i] != nullptr) {
+            searchIter(node->getChildren()[i], interval, searchResult);
+        }
     }
 }
 
@@ -103,47 +107,3 @@ bool IBPTree::overlaps(dtp::Interval intvl1, dtp::Interval intvl2) {
                            std::min(intvl1.second, intvl2.second)};
     return intvl.first <= intvl.second;
 }
-
-
-//void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
-//    if(node->getIsLeaf()) {
-//        for (int i = 0; i < node->getKeys().size(); ++i) {
-//            if (overlaps(node->getKeys()[i].first, interval)) {
-//                searchResult.push_back(node->getKeys()[i].second);
-//            }
-//        }
-//
-//        // check if the intervals overlaps with the next node (if so then search the next node)
-//        if (node->getNext() != nullptr) {
-//            if (overlaps(node->getKeys()[0].first, interval)) {
-//                searchIter(node->getNext(), interval, searchResult);
-//            }
-//        }
-//    } else {
-//        int i = 0;
-//        while(i < node->getKeys().size() &&
-//              (interval.first > node->getKeys()[i].first.first &&
-//               (interval.first > node->getKeys()[i].first.second))){
-//            i++;
-//        }
-//        if(node->getChildren()[i] != nullptr) {
-//            searchIter(node->getChildren()[i], interval, searchResult);
-//        }
-//    }
-//}
-//
-//bool IBPTree::overlaps(dtp::Interval intvl1, dtp::Interval intvl2) {
-//    dtp::Interval intvl = {std::max(intvl1.first, intvl2.first),
-//                           std::min(intvl1.second, intvl2.second)};
-//    return intvl.first <= intvl.second;
-//}
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
