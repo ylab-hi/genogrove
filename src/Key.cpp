@@ -1,7 +1,12 @@
 #include "Key.hpp"
 
 Key::Key(dtp::Interval intvl) : interval(intvl),
-    data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}\
+    data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
+
+Key::Key(dtp::Interval intvl, std::shared_ptr<void> data) : interval(intvl),
+    data(data), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
+
+
 Key::~Key() {}
 
 // operators opverloading

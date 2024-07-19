@@ -11,6 +11,7 @@
 class Key {
     public:
         Key(dtp::Interval interval);
+        Key(dtp::Interval interval, std::shared_ptr<void> data);
         ~Key();
 
         bool operator<(const Key& other) const;

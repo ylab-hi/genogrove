@@ -70,22 +70,41 @@ void IBPTree::splitNode(Node* parent, int index) {
     }
 }
 
-//
-//void IBPTree::splitNode(Node* parent, int index) {
-//    Node* child = parent->getChild(index);
-//    Node* newChild = new Node(this->order);
-//    int mid = ((this->order+2-1)/2); // value for order=6
-//
-//}
-//
-//std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interval interval) {
-//    Node* root = getRoot(key);
-//    std::vector<std::shared_ptr<void>> searchResult;
-//    searchIter(root, interval, searchResult);
-//
-//    return searchResult;
-//}
-//
+std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interval interval) {
+    Node* root = getRoot(key); // get the root node
+    std::vector<std::shared_ptr<void>> searchResult;
+    searchIter(root, interval, searchResult);
+}
+
+void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
+    if(node->getIsLeaf()) {
+        for(int i = 0; i < node->getKeys().size(); ++i) {
+            if(overlaps(node->getKeys()[i]->getInterval(), interval)) {
+                searchResult.push_back(node->getKeys()[i]->getData());
+            }
+        }
+
+        // check if the intervals overlaps with the next node (if so then search the next node)
+        if(node->getNext() != nullptr) {
+            if(overlaps(node->getKeys()[node->getKeys().size()-1]->getInterval(), interval)) {
+                searchIter(node->getNext(), interval, searchResult);
+            }
+        }
+    } else {
+        int i = 0;
+        while(i < node->getKeys().size() &&
+                (interval.first > node-> )
+
+    }
+}
+
+bool IBPTree::overlaps(dtp::Interval intvl1, dtp::Interval intvl2) {
+    dtp::Interval intvl = {std::max(intvl1.first, intvl2.first),
+                           std::min(intvl1.second, intvl2.second)};
+    return intvl.first <= intvl.second;
+}
+
+
 //void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
 //    if(node->getIsLeaf()) {
 //        for (int i = 0; i < node->getKeys().size(); ++i) {
