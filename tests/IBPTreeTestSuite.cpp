@@ -21,15 +21,15 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     intervals.push_back({{81, 90}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{91, 100}, std::make_shared<int>(rand() % 100)});
 */
-
+    // insert data into the tree
     std::vector<std::shared_ptr<void>> dataVector;
     for(auto& intvl : intervals) { // insert data
-        tree.insert("chr1", intvl.first, intvl.second);
+        KeyPtr key = std::make_shared<Key>(intvl.first, intvl.second);
+        tree.insert("chr1", key);
     }
 
-
-/*
-    for(auto& intvl : intervals) {  // search data
+    // search for data within the tree
+    for(auto& intvl : intervals) {
         std::cout << "Searching for interval [" << intvl.first.first << "," << intvl.first.second << "]\n";
         std::cout << "With the data: " << *std::static_pointer_cast<int>(intvl.second) << "\n";
         std::vector<std::shared_ptr<void>> searchResult = tree.search("chr1", intvl.first);
@@ -38,13 +38,9 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
         for(auto& data : searchResult) {
             std::cout << *std::static_pointer_cast<int>(data) << " ";
         }
-        std::cout << "\n";
-
         EXPECT_EQ(searchResult.size(), 1) << "The search result for interval [" << intvl.first.first << ","
                                           << intvl.first.second << "] was not correct";
-
         EXPECT_EQ(*std::static_pointer_cast<int>(searchResult[0]), *std::static_pointer_cast<int>(intvl.second))
             << "The search result for interval [" << intvl.first.first << "," << intvl.first.second << "] was not correct";
     }
-*/
 }
