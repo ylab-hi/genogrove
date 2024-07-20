@@ -6,8 +6,8 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 // getter & setter
 int Node::getOrder() { return this->order; }
 void Node::setOrder(int k) { this->order = k; }
-std::vector<Key*>& Node::getKeys() { return this->keys; }
-void Node::setKeys(std::vector<Key*> keys) { this->keys = keys; }
+std::vector<std::shared_ptr<Key>>& Node::getKeys() { return this->keys; }
+void Node::setKeys(std::vector<std::shared_ptr<Key>> keys) { this->keys = keys; }
 std::vector<Node*>& Node::getChildren() { return this->children; }
 void Node::setChildren(std::vector<Node*> children) { this->children = children; }
 void Node::setNext(Node* next) { this->next = next; }
@@ -15,12 +15,13 @@ Node* Node::getNext() { return this->next; }
 void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
 bool Node::getIsLeaf() { return this->isLeaf; }
 
-void Node::insertKey(Key* key) {
+void Node::insertKey(std::shared_ptr<Key> key) {
     int i=0;
-    while(i < this->keys.size() && this->keys[i] < key) { i++; }
+    while(i < this->keys.size() && key > this->keys[i]) { i++; }
     this->keys.insert(this->keys.begin() + i, key);
+    std::cout << "Inserted key: " << key->getInterval().first << "," << key->getInterval().second << "\n";
 }
-void Node::insertKey(Key* key, int index) {
+void Node::insertKey(std::shared_ptr<Key> key, int index) {
     this->keys.insert(this->keys.begin() + index, key);
 }
 /*

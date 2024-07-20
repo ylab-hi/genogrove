@@ -25,7 +25,7 @@ Node* IBPTree::insertRoot(std::string key) {
     return root;
 }
 
-void IBPTree::insert(std::string chrom, Key* key) {
+void IBPTree::insert(std::string chrom, KeyPtr key) {
     // get the root node for the given chromosome (or create a new tree if it does not exist)
     Node* root = getRoot(chrom);
     if(root == nullptr) { root = insertRoot(chrom);}
@@ -39,9 +39,10 @@ void IBPTree::insert(std::string chrom, Key* key) {
     }
 }
 
-void IBPTree::insertIter(Node* node, Key* key) {
+void IBPTree::insertIter(Node* node, KeyPtr key) {
     if(node->getIsLeaf()) {
         node->insertKey(key);
+        std::cout << "inserted: " << key->getInterval().first << "," << key->getInterval().second << "\n";
     } else {
         int childnum = 0;
         while(childnum < node->getKeys().size() && *key > *node->getKeys()[childnum]) { childnum++; }
@@ -64,8 +65,8 @@ void IBPTree::splitNode(Node* parent, int index) {
 
     // update parent (new child node)
     parent->getChildren().insert(parent->getChildren().begin() + index + 1, newChild);
-    Key parentKey(child->calcParentKey()); // create a new key for the parent
-    parent->getKeys().insert(child->getKeys().begin() + index, &parentKey);
+    KeyPtr parentKey = std::make_shared<Key>(child->calcParentKey()); // create a new key for the parent
+    parent->getKeys().insert(parent->getKeys().begin() + index, parentKey);
 
     if(child->getIsLeaf()) {
         newChild->setNext(child->getNext());
@@ -86,6 +87,7 @@ std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interva
 
 void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
     if(node->getIsLeaf()) {
+
         for(int i = 0; i < node->getKeys().size(); ++i) {
             if(overlaps(node->getKeys()[i]->getInterval(), interval)) {
                 searchResult.push_back(node->getKeys()[i]->getData());
