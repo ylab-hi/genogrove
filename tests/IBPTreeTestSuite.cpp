@@ -11,7 +11,6 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     intervals.push_back({{0, 10}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{11, 20}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{21, 30}, std::make_shared<int>(rand() % 100)});
-/*
     intervals.push_back({{21, 30}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{31, 40}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{41, 50}, std::make_shared<int>(rand() % 100)});
@@ -20,6 +19,9 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     intervals.push_back({{71, 80}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{81, 90}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{91, 100}, std::make_shared<int>(rand() % 100)});
+
+
+/*
 */
     // insert data into the tree
     std::vector<std::shared_ptr<void>> dataVector;
