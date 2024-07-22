@@ -11,7 +11,6 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     intervals.push_back({{0, 10}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{11, 20}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{21, 30}, std::make_shared<int>(rand() % 100)});
-    intervals.push_back({{21, 30}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{31, 40}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{41, 50}, std::make_shared<int>(rand() % 100)});
     intervals.push_back({{51, 60}, std::make_shared<int>(rand() % 100)});
@@ -27,19 +26,22 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     std::vector<std::shared_ptr<void>> dataVector;
     for(auto& intvl : intervals) { // insert data
         KeyPtr key = std::make_shared<Key>(intvl.first, intvl.second);
+        std::cout << "Inserting key: " << key->getInterval().first << "," << key->getInterval().second;
+        std::cout << " with the data: " << *std::static_pointer_cast<int>(intvl.second) << "\n";
         tree.insert("chr1", key);
     }
 
     // search for data within the tree
     for(auto& intvl : intervals) {
-        std::cout << "Searching for interval [" << intvl.first.first << "," << intvl.first.second << "]\n";
-        std::cout << "With the data: " << *std::static_pointer_cast<int>(intvl.second) << "\n";
+        std::cout << "Searching for interval [" << intvl.first.first << "," << intvl.first.second << "]";
+        std::cout << " with the data: " << *std::static_pointer_cast<int>(intvl.second);
         std::vector<std::shared_ptr<void>> searchResult = tree.search("chr1", intvl.first);
 
-        std::cout << "Search result: ";
+        std::cout << " -> search result: ";
         for(auto& data : searchResult) {
             std::cout << *std::static_pointer_cast<int>(data) << " ";
         }
+        std::cout << "\n";
         EXPECT_EQ(searchResult.size(), 1) << "The search result for interval [" << intvl.first.first << ","
                                           << intvl.first.second << "] was not correct";
         EXPECT_EQ(*std::static_pointer_cast<int>(searchResult[0]), *std::static_pointer_cast<int>(intvl.second))
