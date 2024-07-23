@@ -1,6 +1,8 @@
-# IBPTree
+# genogrove
 
-IBPTRee is a C++ implementation of the IBPTree data structure. 
+[![CMake Multi Platform](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml)
+
+Interval B+ Tree (IBPTree) C++ Library
 
 ## Usage
 
