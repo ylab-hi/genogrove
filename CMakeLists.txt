@@ -13,9 +13,11 @@ target_include_directories(IBPTree PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 include(FetchContent)
 FetchContent_Declare(
         googletest
-        https://github.com/google/googletest/archive/refs/tags/v1.15.0.zip
-        DOWNLOAD_EXTRACT_TIMESTAMP true
+        GIT_REPOSITORY https://github.com/google/googletest.git
+        GIT_TAG        v1.15.0
 )
+#https://github.com/google/googletest/archive/refs/tags/v1.15.0.zip
+#DOWNLOAD_EXTRACT_TIMESTAMP true
 FetchContent_MakeAvailable(googletest)
 enable_testing() # enable the testing framework
 include(GoogleTest)
