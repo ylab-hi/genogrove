@@ -13,7 +13,7 @@ target_include_directories(IBPTree PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 include(FetchContent)
 FetchContent_Declare(
         googletest
-        https://github.com/google/googletest/releases/download/v1.15.0/googletest-1.15.0.tar.gz
+        https://github.com/google/googletest/archive/refs/tags/v1.15.0.zip
         DOWNLOAD_EXTRACT_TIMESTAMP true
 )
 FetchContent_MakeAvailable(googletest)
@@ -26,4 +26,5 @@ file(GLOB TEST_SOURCES "tests/*.cpp")
 add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
 target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_link_libraries(IBPTree_Test GTest::gtest_main)
+
 gtest_discover_tests(IBPTree_Test)
