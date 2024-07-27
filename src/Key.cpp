@@ -10,8 +10,22 @@ Key::Key(dtp::Interval intvl, std::shared_ptr<void> data) : interval(intvl),
 Key::~Key() {}
 
 // operators opverloading
-bool Key::operator<(const Key& other) const { return this->interval.first < other.interval.first; }
-bool Key::operator>(const Key& other) const { return this->interval.first > other.interval.first; }
+bool Key::operator<(const Key& other) const {
+    if(this->interval.first < other.interval.first &&
+        this->interval.first < other.interval.second) {
+        return true;
+    } else {
+        return false;
+    }
+}
+bool Key::operator>(const Key& other) const {
+    if(this->interval.first > other.interval.first &&
+        this->interval.first > other.interval.second) {
+        return true;
+    } else {
+        return false;
+    }
+}
 
 // getter & setter
 dtp::Interval Key::getInterval() { return this->interval; }
