@@ -1,13 +1,17 @@
 cmake_minimum_required(VERSION 3.22)
-project(gengrove VERSION 0.1.0)
+project(genogrove VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp)
 
-##### IBPTree #####
+##### genogrove library #####
 file(GLOB SOURCES "src/*.cpp")
-add_executable(IBPTree ${SOURCES})
-target_include_directories(IBPTree PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+#add_library(genogrove ${SOURCES})
+#target_include_directories(genogrove PUBLIC
+#        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+#        $<INSTALL_INTERFACE:include>
+#)
+add_executable(genogrove ${SOURCES})
 
 ##### Tests #####
 include(FetchContent)
@@ -16,8 +20,6 @@ FetchContent_Declare(
         GIT_REPOSITORY https://github.com/google/googletest.git
         GIT_TAG        v1.15.0
 )
-#https://github.com/google/googletest/archive/refs/tags/v1.15.0.zip
-#DOWNLOAD_EXTRACT_TIMESTAMP true
 FetchContent_MakeAvailable(googletest)
 enable_testing() # enable the testing framework
 include(GoogleTest)
@@ -30,3 +32,30 @@ target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/incl
 target_link_libraries(IBPTree_Test GTest::gtest_main)
 
 gtest_discover_tests(IBPTree_Test)
+
+######## Install #######
+#include(GNUInstallDirs)
+#install(TARGETS genogrove
+#        EXPORT ${PROJECT_NAME}Targets
+#        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
+#        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+#        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#)
+#install(EXPORT genogroveTargets
+#        FILE ${PROJECT_NAME}Targets.cmake
+#        NAMESPACE ${PROJECT_NAME}::
+#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
+#)
+#install(DIRECTORY include/genogrove
+#        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
+#)
+#
+## Export package for use from the build tree
+#export(EXPORT ${PROJECT_NAME}Targets
+#        FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
+#        NAMESPACE ${PROJECT_NAME}::
+#)
+
+
+
