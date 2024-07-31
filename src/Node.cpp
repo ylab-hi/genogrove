@@ -6,8 +6,8 @@ Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
 // getter & setter
 int Node::getOrder() { return this->order; }
 void Node::setOrder(int k) { this->order = k; }
-std::vector<std::shared_ptr<Key>>& Node::getKeys() { return this->keys; }
-void Node::setKeys(std::vector<std::shared_ptr<Key>> keys) { this->keys = keys; }
+std::vector<Key*>& Node::getKeys() { return this->keys; }
+void Node::setKeys(std::vector<Key*>& keys) { this->keys = keys; }
 std::vector<Node*>& Node::getChildren() { return this->children; }
 void Node::setChildren(std::vector<Node*> children) { this->children = children; }
 void Node::setNext(Node* next) { this->next = next; }
@@ -15,23 +15,45 @@ Node* Node::getNext() { return this->next; }
 void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
 bool Node::getIsLeaf() { return this->isLeaf; }
 
-void Node::insertKey(std::shared_ptr<Key> key) {
+void Node::insertKey(Key* key) {
+    std::cout << "insert key: ";
+    std::cout << "[" << key->getInterval().getStart() << "," << key->getInterval().getEnd() << "]\n";
+    std::cout << "keys in node: ";
+    for(int i = 0; i < this->keys.size(); ++i) {
+        std::cout << "[" << this->keys[i]->getInterval().getStart() << ","
+                  << this->keys[i]->getInterval().getEnd() << "] ";
+    }
+    std::cout << "\n";
+
+    for(int i = 0; i < this->keys.size(); ++i) {
+        std::cout << key->getInterval().getStart() << "," << key->getInterval().getEnd();
+        std::cout << " > " << getKeys()[i]->getInterval().getStart() << "," << getKeys()[i]->getInterval().getEnd();
+        std::cout << ": " << (key->getInterval() > this->keys[i]->getInterval()) << "\n";
+
+        if(key->getInterval().getStart() > this->keys[i]->getInterval().getStart()) {
+            std::cout << "getter and setter check: ";
+            std::cout << key->getInterval().getStart() << "," << key->getInterval().getEnd();
+            std::cout << " > " << getKeys()[i]->getInterval().getStart() << "," << getKeys()[i]->getInterval().getEnd();
+            std::cout << ": " << (key->getInterval().getStart() > this->keys[i]->getInterval().getStart()) << "\n";
+        }
+    }
+
     int i=0;
-    while(i < this->keys.size() && key > this->keys[i]) { i++; }
+    while(i < this->keys.size() && key->getInterval() > this->keys[i]->getInterval()) { i++; }
+    std::cout << "at index: " << i << "\n";
     this->keys.insert(this->keys.begin() + i, key);
-    std::cout << "Inserted key: " << key->getInterval().first << "," << key->getInterval().second << "\n";
 }
-void Node::insertKey(std::shared_ptr<Key> key, int index) {
+void Node::insertKey(Key* key, int index) {
     this->keys.insert(this->keys.begin() + index, key);
 }
 /*
  * Calculates the (parent) node interval based on the keys (of the child)
  */
-dtp::Interval Node::calcParentKey() {
-    dtp::Interval intvl = {std::string::npos, 0};
+Interval Node::calcParentKey() {
+    Interval intvl{std::string::npos, 0};
     for(int i=0; i < keys.size(); i++) {
-        if(keys[i]->getInterval().first < intvl.first) { intvl.first = keys[i]->getInterval().first; }
-        if(keys[i]->getInterval().second > intvl.second) { intvl.second = keys[i]->getInterval().second; }
+        if(keys[i]->getInterval().getStart() < intvl.getStart()) { intvl.setStart(keys[i]->getInterval().getStart()); }
+        if(keys[i]->getInterval().getEnd() > intvl.getEnd()) { intvl.setEnd(keys[i]->getInterval().getEnd()); }
     }
     return intvl;
 }
