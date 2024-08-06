@@ -5,15 +5,21 @@ set(CMAKE_CXX_STANDARD 20)
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp)
 
 ##### genogrove library #####
-file(GLOB SOURCES "src/*.cpp")
+#file(GLOB SOURCES "src/*.cpp")
+#
+##add_library(genogrove ${SOURCES})
+##target_include_directories(genogrove PUBLIC
+##        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+##        $<INSTALL_INTERFACE:include>
+##)
+#add_executable(genogrove ${SOURCES})
+#target_include_directories(genogrove PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
+##### Add GenoGrove as a library #####
 #add_library(genogrove ${SOURCES})
 #target_include_directories(genogrove PUBLIC
-#        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-#        $<INSTALL_INTERFACE:include>
-#)
-add_executable(genogrove ${SOURCES})
-target_include_directories(genogrove PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+#        $<BUILD)
+
 
 ##### Tests #####
 include(FetchContent)
@@ -27,7 +33,6 @@ enable_testing() # enable the testing framework
 include(GoogleTest)
 
 file(GLOB SOURCES "src/*.cpp")
-list(REMOVE_ITEM SOURCES ${CMAKE_CURRENT_SOURCE_DIR}/src/main.cpp)
 file(GLOB TEST_SOURCES "tests/*.cpp")
 add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
 target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
