@@ -25,7 +25,7 @@ Node* IBPTree::insertRoot(std::string key) {
     return root;
 }
 
-void IBPTree::insert(std::string chrom, KeyPtr key) {
+void IBPTree::insert(std::string chrom, Key& key) {
     // get the root node for the given chromosome (or create a new tree if it does not exist)
     Node* root = getRoot(chrom);
     if(root == nullptr) { root = insertRoot(chrom);}
@@ -33,19 +33,19 @@ void IBPTree::insert(std::string chrom, KeyPtr key) {
     if(root->getKeys().size() == this->order) {
         Node* newRoot = new Node(this->order);
         newRoot->addChild(root, 0);
+//        root->setIsLeaf(false); //
         splitNode(newRoot, 0);
         root = newRoot;
         this->rootnodes[chrom] = root;
     }
 }
 
-void IBPTree::insertIter(Node* node, KeyPtr key) {
+void IBPTree::insertIter(Node* node, Key& key) {
     if(node->getIsLeaf()) {
         node->insertKey(key);
-        std::cout << "inserted: " << key->getInterval().first << "," << key->getInterval().second << "\n";
     } else {
         int childnum = 0;
-        while(childnum < node->getKeys().size() && *key > *node->getKeys()[childnum]) { childnum++; }
+        while(childnum < node->getKeys().size() && key > node->getKeys()[childnum]) { childnum++; }
         insertIter(node->getChild(childnum), key);
         if(node->getChild(childnum)->getKeys().size() == this->order) {
             splitNode(node, childnum);
@@ -65,7 +65,7 @@ void IBPTree::splitNode(Node* parent, int index) {
 
     // update parent (new child node)
     parent->getChildren().insert(parent->getChildren().begin() + index + 1, newChild);
-    KeyPtr parentKey = std::make_shared<Key>(child->calcParentKey()); // create a new key for the parent
+    Key parentKey(child->calcParentKey()); // create a new key for the parent
     parent->getKeys().insert(parent->getKeys().begin() + index, parentKey);
 
     if(child->getIsLeaf()) {
@@ -77,7 +77,7 @@ void IBPTree::splitNode(Node* parent, int index) {
     }
 }
 
-std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interval interval) {
+std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, Interval interval) {
     std::vector<std::shared_ptr<void>> searchResult;
     Node* root = getRoot(key); // get the root node
     if(root == nullptr) { return searchResult; } // return empty vector, as there is no root node for the given key
@@ -85,34 +85,36 @@ std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, dtp::Interva
     return searchResult;
 }
 
-void IBPTree::searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
+void IBPTree::searchIter(Node* node, const Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
     if(node->getIsLeaf()) {
-
         for(int i = 0; i < node->getKeys().size(); ++i) {
-            if(overlaps(node->getKeys()[i]->getInterval(), interval)) {
-                searchResult.push_back(node->getKeys()[i]->getData());
+            if(overlaps(node->getKeys()[i].getInterval(), interval)) {
+                searchResult.push_back(node->getKeys()[i].getData());
             }
         }
 
         // check if the intervals overlaps with the next node (if so then search the next node)
         if(node->getNext() != nullptr) {
-            if(overlaps(node->getKeys()[node->getKeys().size()-1]->getInterval(), interval)) {
+            int lastKey = node->getKeys().size()-1;
+            if(overlaps(node->getKeys()[lastKey].getInterval(), interval)) {
                 searchIter(node->getNext(), interval, searchResult);
             }
         }
     } else {
+        if(node->getKeys()[0].getInterval().leftOf(interval)) { return; } // check if interval is left of first key
+
         int i = 0;
         while(i < node->getKeys().size() &&
-                (interval.first > node->getKeys()[i]->getInterval().first &&
-                interval.first > node->getKeys()[i]->getInterval().second)) { i++; }
+                (interval.getStart() > node->getKeys()[i].getInterval().getStart() &&
+                interval.getStart() > node->getKeys()[i].getInterval().getEnd())) { i++; }
         if(node->getChildren()[i] != nullptr) {
             searchIter(node->getChildren()[i], interval, searchResult);
         }
     }
 }
 
-bool IBPTree::overlaps(dtp::Interval intvl1, dtp::Interval intvl2) {
-    dtp::Interval intvl = {std::max(intvl1.first, intvl2.first),
-                           std::min(intvl1.second, intvl2.second)};
+bool IBPTree::overlaps(Interval intvl1, Interval intvl2) {
+    dtp::Interval intvl = {std::max(intvl1.getStart(), intvl2.getStart()),
+                           std::min(intvl1.getEnd(), intvl2.getEnd())};
     return intvl.first <= intvl.second;
 }

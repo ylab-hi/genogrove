@@ -35,18 +35,18 @@ class IBPTree {
          * @brief insert a new data element into the IBPTree
          * @param the data element to insert
          */
-        void insert(std::string chrom, KeyPtr key);
-        void insertIter(Node* node, KeyPtr key);
+        void insert(std::string chrom, Key& key);
+        void insertIter(Node* node, Key& key);
         /*
          * @brief split a node in the IBPTree
          */
         void splitNode(Node* parent, int index);
 
-        std::vector<std::shared_ptr<void>> search(std::string key, dtp::Interval interval);
-        void searchIter(Node* node, const dtp::Interval& interval, std::vector<std::shared_ptr<void>>& searchResult);
+        std::vector<std::shared_ptr<void>> search(std::string key, Interval interval);
+        void searchIter(Node* node, const Interval& interval, std::vector<std::shared_ptr<void>>& searchResult);
 
         // operations
-        bool overlaps(dtp::Interval interval1, dtp::Interval interval2);
+        bool overlaps(Interval interval1, Interval interval2);
 
         /*
          *

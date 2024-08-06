@@ -6,12 +6,14 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp.in ${CMAKE_CURRENT
 
 ##### genogrove library #####
 file(GLOB SOURCES "src/*.cpp")
+
 #add_library(genogrove ${SOURCES})
 #target_include_directories(genogrove PUBLIC
 #        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
 #        $<INSTALL_INTERFACE:include>
 #)
 add_executable(genogrove ${SOURCES})
+target_include_directories(genogrove PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 ##### Tests #####
 include(FetchContent)
