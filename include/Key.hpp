@@ -7,19 +7,23 @@
 
 // Class
 #include "DataTypes.hpp"
+#include "Interval.hpp"
+
+class Interval;
 
 class Key {
     public:
-        Key(dtp::Interval interval);
-        Key(dtp::Interval interval, std::shared_ptr<void> data);
+        Key();
+        Key(Interval interval);
+        Key(Interval interval, std::shared_ptr<void> data);
         ~Key();
 
         bool operator<(const Key& other) const;
         bool operator>(const Key& other) const;
 
         // getter & setter
-        dtp::Interval getInterval();
-        void setInterval(dtp::Interval interval);
+        Interval getInterval();
+        void setInterval(Interval interval);
         std::shared_ptr<void> getData();
         void setData(std::shared_ptr<void> data);
         Key* getSingleLink();
@@ -28,7 +32,7 @@ class Key {
         void setMultiLink(std::vector<Key*> multiLink);
 
     private:
-        dtp::Interval interval;
+        Interval interval;
         std::shared_ptr<void> data;
         Key* singleLink;
         std::vector<Key*> multiLink;
