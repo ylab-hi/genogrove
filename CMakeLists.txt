@@ -16,9 +16,54 @@ configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp.in ${CMAKE_CURRENT
 #target_include_directories(genogrove PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 ##### Add GenoGrove as a library #####
-#add_library(genogrove ${SOURCES})
-#target_include_directories(genogrove PUBLIC
-#        $<BUILD)
+file(GLOB SOURCES "src/*.cpp")
+add_library(genogrove ${SOURCES})
+target_include_directories(genogrove PUBLIC
+        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+        $<INSTALL_INTERFACE:include>
+)
+
+# install targets
+install(TARGETS genogrove
+        EXPORT genogrove-targets
+        LIBRARY DESTINATION lib
+        ARCHIVE DESTINATION lib
+        RUNTIME DESTINATION bin
+        INCLUDES DESTINATION include
+)
+
+install(FILES include/genogrove.hpp DESTINATION include) # install the main header file
+install(DIRECTORY include/genogrove DESTINATION include) # install the other header files
+
+
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
+        VERSION ${PROJECT_VERSION}
+        COMPATIBILITY AnyNewerVersion
+)
+
+# create Config.cmake file
+configure_package_config_file(
+        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/genogrove-config.cmake.in"
+        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
+        INSTALL_DESTINATION lib/cmake/genogrove
+)
+
+# generate and install cmake config files
+install(EXPORT genogrove-targets
+        FILE genogrove-targets.cmake
+        NAMESPACE genogrove::
+        DESTINATION lib/cmake/genogrove
+)
+
+install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/genogroveConfigVersion.cmake"
+        DESTINATION lib/cmake/genogrove
+)
+
+
 
 
 ##### Tests #####
