@@ -35,7 +35,7 @@ install(TARGETS genogrove
         INCLUDES DESTINATION include
 )
 
-install(FILES include/genogrove.hpp ${CMAKE_CURRENT_BINARY_DIR}/genogrove_export.hDESTINATION include) # install the main header file
+install(FILES include/genogrove.hpp ${CMAKE_CURRENT_BINARY_DIR}/genogrove_export.h DESTINATION include) # install the main header file
 install(DIRECTORY include/genogrove DESTINATION include) # install the other header files
 
 export(EXPORT genogrove-targets
