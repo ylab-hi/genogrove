@@ -23,6 +23,9 @@ target_include_directories(genogrove PUBLIC
         $<INSTALL_INTERFACE:include>
 )
 
+include(GenerateExportHeader)
+generate_export_header(genogrove)
+
 # install targets
 install(TARGETS genogrove
         EXPORT genogrove-targets
@@ -32,15 +35,19 @@ install(TARGETS genogrove
         INCLUDES DESTINATION include
 )
 
-install(FILES include/genogrove.hpp DESTINATION include) # install the main header file
+install(FILES include/genogrove.hpp ${CMAKE_CURRENT_BINARY_DIR}/genogrove_export.hDESTINATION include) # install the main header file
 install(DIRECTORY include/genogrove DESTINATION include) # install the other header files
 
+export(EXPORT genogrove-targets
+        FILE "${CMAKE_CURRENT_BINARY_DIR}/genogrove-targets.cmake"
+        NAMESPACE genogrove::
+)
 
 include(CMakePackageConfigHelpers)
 write_basic_package_version_file(
         "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
         VERSION ${PROJECT_VERSION}
-        COMPATIBILITY AnyNewerVersion
+        COMPATIBILITY SameMajorVersion
 )
 
 # create Config.cmake file
@@ -59,7 +66,7 @@ install(EXPORT genogrove-targets
 
 install(FILES
         "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/genogroveConfigVersion.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
         DESTINATION lib/cmake/genogrove
 )
 
