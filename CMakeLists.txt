@@ -63,9 +63,6 @@ install(FILES
         DESTINATION lib/cmake/genogrove
 )
 
-
-
-
 ##### Tests #####
 include(FetchContent)
 FetchContent_Declare(
@@ -84,30 +81,4 @@ target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/incl
 target_link_libraries(IBPTree_Test GTest::gtest_main)
 
 gtest_discover_tests(IBPTree_Test)
-
-######## Install #######
-#include(GNUInstallDirs)
-#install(TARGETS genogrove
-#        EXPORT ${PROJECT_NAME}Targets
-#        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#        ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-#        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
-#        INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-#)
-#install(EXPORT genogroveTargets
-#        FILE ${PROJECT_NAME}Targets.cmake
-#        NAMESPACE ${PROJECT_NAME}::
-#        DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/${PROJECT_NAME}
-#)
-#install(DIRECTORY include/genogrove
-#        DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
-#)
-#
-## Export package for use from the build tree
-#export(EXPORT ${PROJECT_NAME}Targets
-#        FILE "${CMAKE_CURRENT_BINARY_DIR}/${PROJECT_NAME}Targets.cmake"
-#        NAMESPACE ${PROJECT_NAME}::
-#)
-
-
 
