@@ -1,4 +1,4 @@
-#include "Key.hpp"
+#include "genogrove/Key.hpp"
 
 // constructor
 Key::Key() : interval(std::string::npos, std::string::npos),

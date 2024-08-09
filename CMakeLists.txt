@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.22)
 project(genogrove VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 
-configure_file(${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/Config.hpp)
+configure_file(include/genogrove/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/genogrove/Config.hpp)
 
 ##### genogrove library #####
 #file(GLOB SOURCES "src/*.cpp")
@@ -41,7 +41,7 @@ install(TARGETS genogrove
         INCLUDES DESTINATION include
 )
 
-install(FILES include/genogrove.hpp DESTINATION include)
+install(FILES include/genogrove/all.hpp DESTINATION include)
 install(DIRECTORY include/
         DESTINATION include
         FILES_MATCHING PATTERN "*.hpp"

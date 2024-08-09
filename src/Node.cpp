@@ -1,4 +1,4 @@
-#include "Node.hpp"
+#include "genogrove/Node.hpp"
 
 // constructor
 Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}

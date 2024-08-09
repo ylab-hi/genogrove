@@ -1,4 +1,4 @@
-#include "Interval.hpp"
+#include "genogrove/Interval.hpp"
 
 Interval::Interval() : start(std::string::npos), end(std::string::npos) {}
 Interval::Interval(size_t start, size_t end) : start(start), end(end) {}

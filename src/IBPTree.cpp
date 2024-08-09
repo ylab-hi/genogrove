@@ -1,4 +1,4 @@
-#include "IBPTree.hpp"
+#include "genogrove/IBPTree.hpp"
 
 // constructor
 IBPTree::IBPTree(int k) : order(k), rootnodes{} {}
