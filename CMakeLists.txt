@@ -69,16 +69,16 @@ configure_package_config_file(
         INSTALL_DESTINATION lib/cmake/genogrove
 )
 
+install(FILES
+        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
+        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
+        DESTINATION lib/cmake/genogrove
+)
+
 # generate and install cmake config files
 install(EXPORT genogrove-targets
         FILE genogrove-targets.cmake
         NAMESPACE genogrove::
-        DESTINATION lib/cmake/genogrove
-)
-
-install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
         DESTINATION lib/cmake/genogrove
 )
 
