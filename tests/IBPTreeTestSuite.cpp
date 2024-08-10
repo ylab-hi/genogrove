@@ -6,8 +6,8 @@
 TEST(IBPTreeTestSuite, CreateIBPTree) {
     std::srand(std::time(nullptr));
     int k = 3;
-    IBPTree tree(k);
-    std::vector<std::pair<Interval, std::shared_ptr<void>>> intervals;
+    genogrove::IBPTree tree(k);
+    std::vector<std::pair<genogrove::Interval, std::shared_ptr<void>>> intervals;
 
     intervals.push_back({{0, 10}, std::make_shared<int>(rand() % 100)});
     for(int i=11; i < 10000000; i+=10) {
@@ -20,7 +20,7 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     // insert data into the tree
     std::vector<std::shared_ptr<void>> dataVector;
     for(auto& intvl : intervals) { // insert data
-        Key key{intvl.first, intvl.second};
+        genogrove::Key key{intvl.first, intvl.second};
 //        std::cout << "Inserting key: " << key.getInterval().getStart() << "," << key.getInterval().getEnd();
 //        std::cout << " with the data: " << *std::static_pointer_cast<int>(intvl.second) << "\n";
         tree.insert("chr1", key);

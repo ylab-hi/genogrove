@@ -9,9 +9,10 @@
 #include "DataTypes.hpp"
 #include "Interval.hpp"
 
-class Interval;
+namespace genogrove {
+    class Interval; // forward declaration
 
-class Key {
+    class Key {
     public:
         Key();
         Key(Interval interval);
@@ -36,6 +37,7 @@ class Key {
         std::shared_ptr<void> data;
         Key* singleLink;
         std::vector<Key*> multiLink;
-};
+    };
+}
 
 #endif //IBPTREE_KEY_HPP

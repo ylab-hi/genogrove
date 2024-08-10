@@ -1,38 +1,50 @@
 #include "genogrove/Node.hpp"
 
-// constructor
-Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false}   {}
+namespace genogrove {
+    // constructor
+    Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false} {}
 
-// getter & setter
-int Node::getOrder() { return this->order; }
-void Node::setOrder(int k) { this->order = k; }
-std::vector<Key>& Node::getKeys() { return this->keys; }
-void Node::setKeys(std::vector<Key>& keys) { this->keys = keys; }
-std::vector<Node*>& Node::getChildren() { return this->children; }
-void Node::setChildren(std::vector<Node*> children) { this->children = children; }
-void Node::setNext(Node* next) { this->next = next; }
-Node* Node::getNext() { return this->next; }
-void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
-bool Node::getIsLeaf() { return this->isLeaf; }
+    // getter & setter
+    int Node::getOrder() { return this->order; }
+    void Node::setOrder(int k) { this->order = k; }
+    std::vector<Key> &Node::getKeys() { return this->keys; }
+    void Node::setKeys(std::vector<Key> &keys) { this->keys = keys; }
+    std::vector<Node *> &Node::getChildren() { return this->children; }
+    void Node::setChildren(std::vector<Node *> children) { this->children = children; }
+    void Node::setNext(Node *next) { this->next = next; }
+    Node *Node::getNext() { return this->next; }
+    void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
+    bool Node::getIsLeaf() { return this->isLeaf; }
 
-void Node::insertKey(Key& key) {
-    int i=0;
-    while(i < this->keys.size() && key.getInterval() > this->keys[i].getInterval()) { i++; }
-    this->keys.insert(this->keys.begin() + i, key);
-}
-void Node::insertKey(Key& key, int index) {
-    this->keys.insert(this->keys.begin() + index, key);
-}
-/*
- * Calculates the (parent) node interval based on the keys (of the child)
- */
-Interval Node::calcParentKey() {
-    Interval intvl{std::string::npos, 0};
-    for(int i=0; i < keys.size(); i++) {
-        if(keys[i].getInterval().getStart() < intvl.getStart()) { intvl.setStart(keys[i].getInterval().getStart()); }
-        if(keys[i].getInterval().getEnd() > intvl.getEnd()) { intvl.setEnd(keys[i].getInterval().getEnd()); }
+    void Node::insertKey(Key &key) {
+        int i = 0;
+        while (i < this->keys.size() && key.getInterval() > this->keys[i].getInterval()) { i++; }
+        this->keys.insert(this->keys.begin() + i, key);
     }
-    return intvl;
+
+    void Node::insertKey(Key &key, int index) {
+        this->keys.insert(this->keys.begin() + index, key);
+    }
+
+    /*
+     * Calculates the (parent) node interval based on the keys (of the child)
+     */
+    Interval Node::calcParentKey() {
+        Interval intvl{std::string::npos, 0};
+        for (int i = 0; i < keys.size(); i++) {
+            if (keys[i].getInterval().getStart() < intvl.getStart()) {
+                intvl.setStart(keys[i].getInterval().getStart());
+            }
+            if (keys[i].getInterval().getEnd() > intvl.getEnd()) { intvl.setEnd(keys[i].getInterval().getEnd()); }
+        }
+        return intvl;
+    }
+
+    void Node::addChild(Node *child, int index) {
+        this->children.insert(this->children.begin() + index, child);
+    }
+    Node *Node::getChild(int index) { return this->children[index]; }
+
 }
 
 /*
@@ -70,10 +82,6 @@ void Node::updateKey(Node* node) {
 //                        std::vector<Node*>::iterator end) {
 //    this->children.assign(start, end);
 //}
-void Node::addChild(Node* child, int index) {
-    this->children.insert(this->children.begin() + index, child);
-}
-Node* Node::getChild(int index) { return this->children[index]; }
 
 
 //void Node::resizeChildren(int size) { this->children.resize(size); }
@@ -90,5 +98,7 @@ Node* Node::getChild(int index) { return this->children[index]; }
 //
 //
 //
+
+
 
 
