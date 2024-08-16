@@ -1,6 +1,7 @@
 # genogrove
 
 [![CMake Multi Platform](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml)
+[![Downloads](https://img.shields.io/github/downloads/ylab-hi/genogrove/total.svg)](https://img.shields.io/github/downloads/ylab-hi/genogrove/total.svg)
 
 Interval B+ Tree (IBPTree) C++ Library
 
@@ -14,8 +15,6 @@ At first, install genogrove from source. For that, download the source code by e
 In the source directory, create a build directory and navigate to it
 ```
     cd genogrove
-    mkdir build
-    cd build
 ```
 Next, configure the build by running cmake
 ```
