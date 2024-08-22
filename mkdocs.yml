@@ -1,0 +1,8 @@
+site_name: genogrove
+site_url: https://ylab-hi.github.io/genogrove/
+repo_url: https://github.com/ylab-hi/genogrove
+repo_name: ylab-hi/genogrove
+theme:
+  name: material
+
+
