@@ -10,6 +10,8 @@
 namespace genogrove {
     class Node; // forward declaration
 
+    using AnyVector = std::vector<std::shared_ptr<genogrove::AnyBase>>;
+
     class IBPTree {
         public:
             IBPTree(int k); // create a new IBPTree with a given order k
@@ -26,10 +28,17 @@ namespace genogrove {
              * @param the key associated with the root node
              */
             Node* getRoot(std::string key);
+
             /*
              * @brief insert a new root node into the IBPTree
              */
             Node* insertRoot(std::string key);
+
+            template<typename T>
+            void insertData(std::string chrom, Interval intvl, T data) {
+                Key key(intvl, data);
+                insert(chrom, key);
+            }
 
             /*
              * @brief insert a new data element into the IBPTree
@@ -42,8 +51,8 @@ namespace genogrove {
              */
             void splitNode(Node* parent, int index);
 
-            std::vector<std::shared_ptr<void>> search(std::string key, Interval interval);
-            void searchIter(Node* node, const Interval& interval, std::vector<std::shared_ptr<void>>& searchResult);
+            AnyVector search(std::string key, Interval interval);
+            void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
 
             // operations
             bool overlaps(Interval interval1, Interval interval2);
