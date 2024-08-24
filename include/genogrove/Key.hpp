@@ -4,7 +4,9 @@
 // Standard
 #include <memory>
 #include <vector>
+#include <typeindex>
 #include <optional>
+#include <any>
 
 // Class
 #include "DataTypes.hpp"
@@ -18,6 +20,7 @@ namespace genogrove {
             virtual ~AnyBase() = default;
             virtual std::string getTypeName() const = 0;
             virtual bool hasData() const = 0;
+            virtual std::any getAnyData() const = 0;
     };
 
     template<typename T>
@@ -44,10 +47,13 @@ namespace genogrove {
         template<typename T>
         Key(Interval intvl, T&& data) {
             this->interval = intvl;
-            auto any = std::make_shared<AnyType<std::decay_t<T>>>(std::forward<T>(data));
-            this->data = std::static_pointer_cast<AnyBase>(any);
-            this->singleLink = nullptr;
-            this->multiLink = std::vector<Key*>();
+            this->
+
+
+
+//            this->data = std::make_shared<AnyType<std::decay_t<T>>>(std::forward<T>(data));
+//            this->singleLink = nullptr;
+//            this->multiLink = std::vector<Key*>();
         }
         ~Key();
 
@@ -59,6 +65,8 @@ namespace genogrove {
         void setInterval(Interval interval);
         std::shared_ptr<AnyBase> getData();
         void setData(std::shared_ptr<AnyBase> data);
+        std::type_index getDataType();
+        void setDataType(std::type_index datatype);
         Key* getSingleLink();
         void setSingleLink(Key* singleLink);
         std::vector<Key*> getMultiLink();
@@ -67,6 +75,7 @@ namespace genogrove {
     private:
         Interval interval;
         std::shared_ptr<AnyBase> data;
+        std::type_index dataType;
         Key* singleLink;
         std::vector<Key*> multiLink;
     };
