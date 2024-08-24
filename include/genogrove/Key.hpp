@@ -20,7 +20,6 @@ namespace genogrove {
             virtual ~AnyBase() = default;
             virtual std::string getTypeName() const = 0;
             virtual bool hasData() const = 0;
-            virtual std::any getAnyData() const = 0;
     };
 
     template<typename T>
@@ -45,16 +44,12 @@ namespace genogrove {
         Key();
         Key(Interval interval);
         template<typename T>
-        Key(Interval intvl, T&& data) {
-            this->interval = intvl;
-            this->
-
-
-
-//            this->data = std::make_shared<AnyType<std::decay_t<T>>>(std::forward<T>(data));
-//            this->singleLink = nullptr;
-//            this->multiLink = std::vector<Key*>();
-        }
+        Key(Interval intvl, T&& data) :
+            interval(intvl),
+            data(std::make_shared<AnyType<std::decay_t<T>>>(data)),
+            dataType(typeid(std::decay_t<T>)),
+            singleLink(nullptr),
+            multiLink(std::vector<Key*>()) {}
         ~Key();
 
         bool operator<(const Key& other) const;
