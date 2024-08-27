@@ -11,6 +11,7 @@
 // Class
 #include "DataTypes.hpp"
 #include "Interval.hpp"
+#include "TypeRegistry.hpp"
 
 namespace genogrove {
     class Interval; // forward declaration
@@ -55,7 +56,9 @@ namespace genogrove {
             interval(intvl),
             data(std::make_shared<AnyType<std::decay_t<T>>>(data)),
             singleLink(nullptr),
-            multiLink(std::vector<Key*>()) {}
+            multiLink(std::vector<Key*>()) {
+                TypeRegistry::instance().registerType(typeid(T).name(), typeid(T));
+            }
         ~Key();
 
         bool operator<(const Key& other) const;
