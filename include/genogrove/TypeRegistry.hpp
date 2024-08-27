@@ -6,6 +6,7 @@
 #include <unordered_map>
 #include <typeindex>
 #include <stdexcept>
+#include <any>
 
 class TypeRegistry {
     public:
@@ -15,7 +16,7 @@ class TypeRegistry {
         }
 
         void registerType(const std::string& typeName, const std::type_index& typeIndex) {
-            typeMap[typeName] = typeIndex;
+            typeMap.insert(std::make_pair(typeName, typeIndex));
         }
 
         std::type_index getTypeIndex(const std::string& typeName) const {
@@ -24,6 +25,11 @@ class TypeRegistry {
                 return it->second;
             }
             throw std::runtime_error("Type not found");
+        }
+
+        template<typename T>
+        T cast(const std::any& value) const {
+            return std::any_cast<T>(value);
         }
 
     private:
