@@ -9,14 +9,17 @@
 #include <any>
 #include <iostream>
 #include <functional>
+#include <typeinfo>
+#include <memory>
 
 // Class
 #include "AnyBase.hpp"
+#include "AnyType.hpp"
 
 namespace genogrove {
     class AnyBase;
 
-    using ProcessFunction = std::function<std::shared_ptr<AnyBase>(std::shared_ptr<void>)>;
+    using castFunction = std::function<void(const std::shared_ptr<AnyBase>&)>;
 
     class TypeRegistry {
     public:
@@ -26,19 +29,25 @@ namespace genogrove {
         }
 
         TypeRegistry(const TypeRegistry &) = delete;
-
         TypeRegistry &operator=(const TypeRegistry &) = delete;
 
-        void registerType(const std::string &name, std::type_index index);
+        template<typename T>
+        static void registerType() {
+            if (castFunctions.find(typeid(T)) == castFunctions.end()) {
+                castFunctions[typeid(T)] = [](const std::shared_ptr<AnyBase>& obj) {
+                    auto castedObj = std::dynamic_pointer_cast<AnyType<T>>(obj);
+                    if(!castedObj) {
+                        std::cerr << "Failed to cast object to type " << typeid(T).name() << std::endl;
+                    }
+                };
+            }
+        }
 
-        std::type_index getType(const std::string &name) const;
+        static void cast(const std::shared_ptr<AnyBase>& obj);
 
     private:
         TypeRegistry() = default;
-
-        static std::unordered_map<std::string, std::type_index> typeMap;
-        static std::unordered_map<std::type_index, ProcessFunction> processFunctions;
-
+        static std::unordered_map<std::type_index, castFunction> castFunctions;
     };
 }
 

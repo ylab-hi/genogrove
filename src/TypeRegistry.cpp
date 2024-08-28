@@ -2,18 +2,23 @@
 
 namespace genogrove {
     // static members
-    std::unordered_map<std::string, std::type_index> TypeRegistry::typeMap;
-    std::unordered_map<std::type_index, std::string> TypeRegistry::processFunctions;
+    std::unordered_map<std::type_index, castFunction> TypeRegistry::castFunctions;
 
-    void TypeRegistry::registerType(const std::string& name, std::type_index index) {
-        typeMap.insert(std::make_pair(name, index));
-    }
+//    template<typename T>
+//    static void TypeRegistry::registerType() {
+//        if(castFunctions.find(typeid(T)) == castFunctions.end()) {
+//            castFunctions[typeid(T)] = [](const std::shared_ptr<AnyBase>& obj) {
+//                auto castedObj = std::dynamic_pointer_cast<AnyType<T>>(obj);
+//            };
+//        }
+//    }
 
-    std::type_index TypeRegistry::getType(const std::string& name) const {
-        auto it = typeMap.find(name);
-        if(it != typeMap.end()) {
-            return it->second;
+    void TypeRegistry::cast(const std::shared_ptr<AnyBase>& obj) {
+        auto it = castFunctions.find(typeid(obj->getDataType()));
+        if(it != castFunctions.end()) {
+            it->second(obj);
+        } else {
+            std::cerr << "Type not registered " << std::endl;
         }
-        return std::type_index(typeid(void));
     }
 }
