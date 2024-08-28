@@ -51,7 +51,7 @@ namespace genogrove {
              */
             void splitNode(Node* parent, int index);
 
-            AnyVector search(std::string key, Interval interval);
+            std::vector<std::any> search(std::string key, Interval interval);
             void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
 
             // operations
