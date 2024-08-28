@@ -78,15 +78,25 @@ namespace genogrove {
         }
     }
 
-    std::vector<std::shared_ptr<void>> IBPTree::search(std::string key, Interval interval) {
-        std::vector<std::shared_ptr<void>> searchResult;
+    std::vector<std::any> IBPTree::search(std::string key, Interval interval) {
+        AnyVector searchResult{};
+        std::vector<std::any> searchResultTyped{};
+
         Node* root = getRoot(key); // get the root node
-        if(root == nullptr) { return searchResult; } // return empty vector, as there is no root node for the given key
+        if(root == nullptr) { return searchResultTyped; } // return empty vector, as there is no root node for the given key
         searchIter(root, interval, searchResult);
-        return searchResult;
+
+        // cast the data to the correct type
+        for(auto& data : searchResult) {
+            // cast the data to the correct type
+            std::type_index dataTypeName = data->getDataType();
+            std::any dataTypes = TypeRegistry::cast(data, dataTypeName);
+            searchResultTyped.push_back(dataTypes);
+        }
+        return searchResultTyped;
     }
 
-    void IBPTree::searchIter(Node* node, const Interval& interval, std::vector<std::shared_ptr<void>>& searchResult) {
+    void IBPTree::searchIter(Node* node, const Interval& interval, AnyVector& searchResult) {
         if(node->getIsLeaf()) {
             for(int i = 0; i < node->getKeys().size(); ++i) {
                 if(overlaps(node->getKeys()[i].getInterval(), interval)) {
