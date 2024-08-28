@@ -2,12 +2,10 @@
 
 namespace genogrove {
     // constructor
-    Key::Key() : interval(std::string::npos, std::string::npos),
-                 data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
-    Key::Key(Interval intvl) : interval(intvl),
-                               data(nullptr), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
-    Key::Key(Interval intvl, std::shared_ptr<void> data) : interval(intvl),
-                                                           data(data), singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
+    Key::Key() : interval(std::string::npos, std::string::npos), data(nullptr),
+        singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
+    Key::Key(Interval intvl) : interval(intvl), data(nullptr),
+        singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
     Key::~Key() {}
 
     // operators opverloading
@@ -17,8 +15,8 @@ namespace genogrove {
     // getter & setter
     Interval Key::getInterval() { return this->interval; }
     void Key::setInterval(Interval interval) { this->interval = interval; }
-    std::shared_ptr<void> Key::getData() { return this->data; }
-    void Key::setData(std::shared_ptr<void> data) { this->data = data; }
+    std::shared_ptr<AnyBase> Key::getData() { return this->data; }
+    void Key::setData(std::shared_ptr<AnyBase> data) {this->data = data;}
     Key* Key::getSingleLink() { return this->singleLink; }
     void Key::setSingleLink(Key* singleLink) { this->singleLink = singleLink; }
     std::vector<Key*> Key::getMultiLink() { return this->multiLink; }
