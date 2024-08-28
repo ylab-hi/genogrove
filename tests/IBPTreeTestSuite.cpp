@@ -13,7 +13,7 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     genogrove::TypeRegistry::registerType<int>();
 
     intervals.push_back({{0, 10}, rand() % 100});
-    for(size_t i=11; i < 1000; i+=10) {
+    for(size_t i=11; i < 10000000; i+=10) {
         intervals.push_back({{i, i+9}, rand() % 100});
     }
     auto startInsertion = std::chrono::steady_clock::now();
@@ -38,4 +38,7 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
         EXPECT_EQ(std::any_cast<int>(searchResult[0]), intvl.second) << "The search result for interval ["
             << intvl.first.getStart() << "," << intvl.first.getEnd() << "] was not correct (data mismatch)";
     }
+    auto endSearch = std::chrono::steady_clock::now();
+    std::chrono::duration<double> searchDuration = endSearch - startSearch;
+    std::cout << "Time taken for search: " << searchDuration.count() << " seconds\n\n";
 }
