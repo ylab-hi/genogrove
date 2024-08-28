@@ -13,12 +13,13 @@ namespace genogrove {
 //        }
 //    }
 
-    void TypeRegistry::cast(const std::shared_ptr<AnyBase>& obj) {
-        auto it = castFunctions.find(typeid(obj->getDataType()));
+    std::any TypeRegistry::cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex) {
+        auto it = castFunctions.find(typeIndex);
         if(it != castFunctions.end()) {
-            it->second(obj);
+            return it->second(obj);
         } else {
             std::cerr << "Type not registered " << std::endl;
+            return std::any();
         }
     }
 }
