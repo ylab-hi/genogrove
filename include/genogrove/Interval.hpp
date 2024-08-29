@@ -18,11 +18,11 @@ namespace genogrove {
             bool operator<(const Interval& other) const;
             bool operator>(const Interval& other) const;
 
-            bool overlap(const Interval& other) const;
             /*
              * @brief check if provided interval is left of class interval (no overlaps)
              */
             bool leftOf(const Interval& other) const;
+            static bool overlap(const Interval& intvl1, const Interval& intvl2);
 
             // getter & setter
             size_t getStart() const;

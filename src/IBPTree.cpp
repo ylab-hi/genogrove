@@ -99,7 +99,7 @@ namespace genogrove {
     void IBPTree::searchIter(Node* node, const Interval& interval, AnyVector& searchResult) {
         if(node->getIsLeaf()) {
             for(int i = 0; i < node->getKeys().size(); ++i) {
-                if(overlaps(node->getKeys()[i].getInterval(), interval)) {
+                if(Interval::overlap(node->getKeys()[i].getInterval(), interval)) {
                     searchResult.push_back(node->getKeys()[i].getData());
                 }
             }
@@ -107,7 +107,7 @@ namespace genogrove {
             // check if the intervals overlaps with the next node (if so then search the next node)
             if(node->getNext() != nullptr) {
                 int lastKey = node->getKeys().size()-1;
-                if(overlaps(node->getKeys()[lastKey].getInterval(), interval)) {
+                if(Interval::overlap(node->getKeys()[lastKey].getInterval(), interval)) {
                     searchIter(node->getNext(), interval, searchResult);
                 }
             }
@@ -122,12 +122,6 @@ namespace genogrove {
                 searchIter(node->getChildren()[i], interval, searchResult);
             }
         }
-    }
-
-    bool IBPTree::overlaps(Interval intvl1, Interval intvl2) {
-        dtp::Interval intvl = {std::max(intvl1.getStart(), intvl2.getStart()),
-                               std::min(intvl1.getEnd(), intvl2.getEnd())};
-        return intvl.first <= intvl.second;
     }
 } // namespace
 

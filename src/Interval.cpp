@@ -27,10 +27,6 @@ namespace genogrove {
     size_t Interval::getEnd() const { return this->end; }
     void Interval::setEnd(size_t end) { this->end = end; }
 
-    bool Interval::overlap(const Interval& other) const {
-        return std::max(this->start, other.start) - std::min(this->end, other.end) <= 0;
-    }
-
     /*
      * @brief check if the parameter interval is left of the current interval
      * @param other the interval to check
@@ -39,4 +35,11 @@ namespace genogrove {
     bool Interval::leftOf(const Interval& other) const {
         return other.end < this->start;
     }
+    bool Interval::overlap(const Interval& intvl1, const Interval& intvl2) {
+        Interval intvl = {std::max(intvl1.getStart(), intvl2.getStart()),
+                          std::min(intvl1.getEnd(), intvl2.getEnd())};
+        return intvl.getStart() <= intvl.getEnd();
+    }
+
 } // namespace
+

@@ -54,9 +54,6 @@ namespace genogrove {
             std::vector<std::any> search(std::string key, Interval interval);
             void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
 
-            // operations
-            bool overlaps(Interval interval1, Interval interval2);
-
             /*
              *
              */
