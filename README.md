@@ -2,6 +2,7 @@
 
 [![CMake Multi Platform](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml)
 [![Downloads](https://img.shields.io/github/downloads/ylab-hi/genogrove/total.svg)](https://img.shields.io/github/downloads/ylab-hi/genogrove/total.svg)
+[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](http://www.gnu.org/licenses/gpl-3.0)
 
 Interval B+ Tree (IBPTree) C++ Library
 
