@@ -41,14 +41,12 @@ install(TARGETS genogrove
         INCLUDES DESTINATION include
 )
 
-install(FILES include/genogrove/all.hpp DESTINATION include)
-install(DIRECTORY include/
-        DESTINATION include
+install(FILES include/genogrove/all.hpp DESTINATION include/genogrove)
+install(DIRECTORY include/genogrove
+        DESTINATION include/genogrove
         FILES_MATCHING PATTERN "*.hpp"
-        PATTERN "genogrove.hpp" EXCLUDE
 )
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/genogrove_export.h DESTINATION include)
-
+install(FILES ${CMAKE_CURRENT_BINARY_DIR}/genogrove_export.h DESTINATION include/genogrove)
 
 export(EXPORT genogrove-targets
         FILE "${CMAKE_CURRENT_BINARY_DIR}/genogrove-targets.cmake"
