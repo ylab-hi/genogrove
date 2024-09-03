@@ -14,6 +14,7 @@
 
 // Class
 #include "AnyType.hpp"
+#include "TypedData.hpp"
 
 namespace genogrove {
     class AnyBase;
@@ -32,20 +33,20 @@ namespace genogrove {
 
         template<typename T>
         static void registerType() {
+
             std::type_index typeIndex = typeid(T);
             if (castFunctions.find(typeIndex) == castFunctions.end()) {
-                castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> std::any {
+                castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> TypedData<T> {
                     auto castedObj = std::dynamic_pointer_cast<
                             AnyType<typename std::remove_reference<T>::type>>(obj);
                     if(!castedObj) {
                         std::cerr << "Failed to cast object to type " << typeid(T).name() << std::endl;
                     }
-                    return std::any(castedObj->getData());
+                    return TypedData<T>(castedObj->getData());
                 };
             }
         }
-
-        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
+//        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
 
     private:
         TypeRegistry() = default;
