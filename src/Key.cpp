@@ -1,7 +1,9 @@
 #include "genogrove/Key.hpp"
 
 namespace genogrove {
-    // constructor
+    /**
+     * @details The default constructor create an empty Key object
+     */
     Key::Key() : interval(std::string::npos, std::string::npos), data(nullptr),
         singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
     Key::Key(Interval intvl) : interval(intvl), data(nullptr),
