@@ -43,7 +43,15 @@ namespace genogrove {
 
     void IBPTree::insertIter(Node* node, Key& key) {
         if(node->getIsLeaf()) {
+            std::cout << "insert: [" << key.getInterval().getStart() << "," << key.getInterval().getEnd() << "]" << std::endl;
             node->insertKey(key);
+            std::cout << "Node size: " << node->getKeys().size() << std::endl;
+            // iterate through node keys - data
+            std::cout << "key info:" << std::endl;
+            for(auto& el: node->getKeys()) {
+                std::cout << el.getInterval().getStart() << "," << el.getInterval().getEnd() << std::endl;
+                std::cout << "data: " << el.getData() << std::endl;
+            }
         } else {
             int childnum = 0;
             while(childnum < node->getKeys().size() && key > node->getKeys()[childnum]) { childnum++; }
@@ -80,11 +88,13 @@ namespace genogrove {
 
     std::vector<std::any> IBPTree::search(std::string key, Interval interval) {
         AnyVector searchResult{};
-        std::vector<std::any> searchResultTyped{};
+        std::vector<TypedData> searchResultTyped{};
 
         Node* root = getRoot(key); // get the root node
         if(root == nullptr) { return searchResultTyped; } // return empty vector, as there is no root node for the given key
         searchIter(root, interval, searchResult);
+
+        std::cout << "search result size: " << searchResult.size() << std::endl;
 
         // cast the data to the correct type
         for(auto& data : searchResult) {
