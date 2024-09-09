@@ -32,8 +32,8 @@ namespace genogrove {
         TypeRegistry &operator=(const TypeRegistry &) = delete;
 
         template<typename T>
-        static void registerType() {
-
+        static void registerType(std::string typeName) {
+            typeNames[typeid(T)] = typeName; // store the type name
             std::type_index typeIndex = typeid(T);
             if (castFunctions.find(typeIndex) == castFunctions.end()) {
                 castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> TypedData<T> {
@@ -51,6 +51,7 @@ namespace genogrove {
     private:
         TypeRegistry() = default;
         static std::unordered_map<std::type_index, castFunction> castFunctions;
+        static std::unordered_map<std::type_index, std::string> typeNames;
     };
 }
 
