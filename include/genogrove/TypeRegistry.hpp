@@ -42,7 +42,7 @@ namespace genogrove {
                     if(!castedObj) {
                         std::cerr << "Failed to cast object to type " << typeid(T).name() << std::endl;
                     }
-                    return TypedData<T>(castedObj->getData());
+                    return castedObj->getData();
                 };
             }
         }
@@ -50,8 +50,8 @@ namespace genogrove {
 
     private:
         TypeRegistry() = default;
-        static std::unordered_map<std::type_index, castFunction> castFunctions;
         static std::unordered_map<std::type_index, std::string> typeNames;
+        static std::unordered_map<std::type_index, castFunction> castFunctions;
     };
 }
 
