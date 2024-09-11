@@ -78,7 +78,7 @@ namespace genogrove {
         }
     }
 
-    AnyVector IBPTree::search(std::string key, Interval interval) {
+    AnyVector IBPTree::overlaps(std::string key, Interval interval) {
         AnyVector searchResult{};
 //
         Node* root = getRoot(key); // get the root node
