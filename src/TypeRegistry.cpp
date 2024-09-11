@@ -3,6 +3,7 @@
 namespace genogrove {
     // static members
     std::unordered_map<std::type_index, castFunction> TypeRegistry::castFunctions;
+    std::unordered_map<std::type_index, std::string> TypeRegistry::typeNames;
 
 //    template<typename T>
 //    static void TypeRegistry::registerType() {
