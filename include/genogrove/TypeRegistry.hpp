@@ -36,7 +36,7 @@ namespace genogrove {
             typeNames[typeid(T)] = typeName; // store the type name
             std::type_index typeIndex = typeid(T);
             if (castFunctions.find(typeIndex) == castFunctions.end()) {
-                castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> TypedData<T> {
+                castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> T {
                     auto castedObj = std::dynamic_pointer_cast<
                             AnyType<typename std::remove_reference<T>::type>>(obj);
                     if(!castedObj) {
@@ -46,6 +46,8 @@ namespace genogrove {
                 };
             }
         }
+        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
+
 //        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
 
     private:
