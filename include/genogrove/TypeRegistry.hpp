@@ -46,7 +46,12 @@ namespace genogrove {
                 };
             }
         }
-        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
+        template<typename T>
+        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex) {
+            auto it = castFunctions.find(typeIndex);
+            if(it != castFunctions.)
+
+        }
 
 //        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
 
