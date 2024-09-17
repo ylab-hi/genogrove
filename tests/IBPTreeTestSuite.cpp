@@ -37,7 +37,7 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
                                           << "," << intvl.first.getEnd() << "] was not correct (count mismatch)";
         // cast the data to the correct type
         std::type_index dataTypeName = searchResult[0]->getDataType();
-        auto typed = genogrove::TypeRegistry::cast(searchResult[0], dataTypeName);
+        int typed = genogrove::TypeRegistry::cast(searchResult[0], dataTypeName);
 
 
 
