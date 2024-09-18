@@ -48,8 +48,14 @@ namespace genogrove {
         }
 
         template<typename T>
-        static auto cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex) {
-            
+        static auto cast(const std::shared_ptr<AnyBase>& obj) {
+            std::type_index type = typeid(T);
+            // check if the type has been registered
+            if(castFunctions.find(type) == castFunctions.end()) {
+                std::cerr << "Type " << type.name() << " has not been registered" << std::endl;
+            } else {
+                return castFunctions[type](obj);
+            }
         }
 
 //        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
