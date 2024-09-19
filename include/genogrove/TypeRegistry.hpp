@@ -19,7 +19,8 @@
 namespace genogrove {
     class AnyBase;
 
-    using castFunction = std::function<std::any(const std::shared_ptr<AnyBase>&)>;
+    template<typename T>
+    using castFunction = std::function<T(const std::shared_ptr<AnyBase>&)>;
 
     class TypeRegistry {
     public:
@@ -35,8 +36,8 @@ namespace genogrove {
         static void registerType(std::string typeName) {
             typeNames[typeid(T)] = typeName; // store the type name
             std::type_index typeIndex = typeid(T);
-            if (castFunctions.find(typeIndex) == castFunctions.end()) {
-                castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> T {
+            if (castFunctions<T>.find(typeIndex) == castFunctions<T>.end()) {
+                castFunctions<T>[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> T {
                     auto castedObj = std::dynamic_pointer_cast<
                             AnyType<typename std::remove_reference<T>::type>>(obj);
                     if(!castedObj) {
@@ -48,23 +49,28 @@ namespace genogrove {
         }
 
         template<typename T>
-        static auto cast(const std::shared_ptr<AnyBase>& obj) {
+        static T cast(const std::shared_ptr<AnyBase>& obj) {
             std::type_index type = typeid(T);
+            auto& typedCastFunctions = castFunctions<T>;
             // check if the type has been registered
-            if(castFunctions.find(type) == castFunctions.end()) {
+            if(castFunctions<T>.find(type) == castFunctions<T>.end()) {
                 std::cerr << "Type " << type.name() << " has not been registered" << std::endl;
+                return EXIT_FAILURE;
             } else {
-                return castFunctions[type](obj);
+                return castFunctions<T>[type](obj);
             }
         }
-
-//        static std::any cast(const std::shared_ptr<AnyBase>& obj, std::type_index typeIndex);
 
     private:
         TypeRegistry() = default;
         static std::unordered_map<std::type_index, std::string> typeNames;
-        static std::unordered_map<std::type_index, castFunction> castFunctions;
+        template<typename T>
+        static std::unordered_map<std::type_index, castFunction<T>> castFunctions;
     };
 }
+
+//    template<typename T>
+//    std::unordered_map<std::type_index, genogrove::castFunction<T>> genogrove::TypeRegistry::castFunctions;
+
 
 #endif //GENOGROVE_TYPEREGISTRY_HPP
