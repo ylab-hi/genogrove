@@ -84,18 +84,6 @@ namespace genogrove {
         Node* root = getRoot(key); // get the root node
         if(root == nullptr) { return searchResult; } // return empty vector, as there is no root node for the given key
         searchIter(root, interval, searchResult);
-
-
-
-//        std::cout << "search result size: " << searchResult.size() << std::endl;
-//        // cast the data to the correct type
-//        for(auto& data : searchResult) {
-//            // cast the data to the correct type
-//            std::type_index dataTypeName = data->getDataType();
-//            std::any dataTypes = TypeRegistry::cast(data, dataTypeName);
-//            searchResultTyped.push_back(dataTypes);
-//        }
-//        return searchResultTyped;
         return searchResult;
     }
 
