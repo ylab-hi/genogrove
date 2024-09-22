@@ -11,6 +11,7 @@
 #include <functional>
 #include <typeinfo>
 #include <memory>
+#include <stdexcept>
 
 // Class
 #include "AnyType.hpp"
@@ -19,7 +20,6 @@
 namespace genogrove {
     class AnyBase;
 
-    template<typename T>
     using castFunction = std::function<std::any(const std::shared_ptr<AnyBase>&)>;
 
     class TypeRegistry {
@@ -49,34 +49,34 @@ namespace genogrove {
         }
 
         template<typename T>
-        T cast(const std::shared_ptr<AnyBase>& obj) {
+        static T cast(const std::shared_ptr<AnyBase>& obj) {
             std::type_index type = typeid(T);
             // check if the type has been registered
-            if()
-
-
-
-
-            auto& typedCastFunctions = castFunctions<T>;
-            // check if the type has been registered
-            if(castFunctions<T>.find(type) == castFunctions<T>.end()) {
+            if (castFunctions.find(type) == castFunctions.end()) {
                 std::cerr << "Type " << type.name() << " has not been registered" << std::endl;
+                throw std::runtime_error("Type not registered");
                 return EXIT_FAILURE;
+            }
+
+            // perform the cast
+            std::any result = castFunctions[type](obj);
+            if (result.has_value()) {
+                return std::any_cast<T>(result);
             } else {
-                return castFunctions<T>[type](obj);
+                throw std::bad_any_cast();
             }
         }
 
     private:
         TypeRegistry() = default;
         static std::unordered_map<std::type_index, std::string> typeNames;
-        template<typename T>
-        static std::unordered_map<std::type_index, castFunction<T>> castFunctions;
+        static std::unordered_map<std::type_index, castFunction> castFunctions;
     };
 }
 
-//    template<typename T>
-//    std::unordered_map<std::type_index, genogrove::castFunction<T>> genogrove::TypeRegistry::castFunctions;
+template<typename T>
+std::unordered_map<std::type_index, genogrove::castFunction> castFunctions;
+std::unordered_map<std::type_index, std::string> typeNames;
 
 
 #endif //GENOGROVE_TYPEREGISTRY_HPP
