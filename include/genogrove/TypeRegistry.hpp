@@ -74,9 +74,5 @@ namespace genogrove {
     };
 }
 
-template<typename T>
-std::unordered_map<std::type_index, genogrove::castFunction> castFunctions;
-std::unordered_map<std::type_index, std::string> typeNames;
-
 
 #endif //GENOGROVE_TYPEREGISTRY_HPP
