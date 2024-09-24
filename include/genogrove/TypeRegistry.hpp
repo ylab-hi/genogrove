@@ -15,7 +15,6 @@
 
 // Class
 #include "AnyType.hpp"
-#include "TypedData.hpp"
 
 namespace genogrove {
     class AnyBase;

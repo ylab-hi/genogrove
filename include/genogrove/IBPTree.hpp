@@ -6,7 +6,6 @@
 
 // Class
 #include "Node.hpp"
-#include "TypedData.hpp"
 
 namespace genogrove {
     class Node; // forward declaration
