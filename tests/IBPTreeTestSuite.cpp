@@ -25,7 +25,7 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     }
     auto endInsertion = std::chrono::steady_clock::now();
     std::chrono::duration<double> insertionDuration = endInsertion - startInsertion;
-    std::cout << "Time taken for insertion: " << insertionDuration.count() << " seconds\n\n";
+    std::cout << "Time taken for insertion: " << insertionDuration.count() << " seconds\n";
     std::cout << "#### Searching for data within the tree ####\n";
     auto startSearch = std::chrono::steady_clock::now();
     for(auto& intvl : intervals) {
@@ -35,11 +35,9 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
         EXPECT_EQ(searchResult.size(), 1) << "The search result for interval [" << intvl.first.getStart()
                                           << "," << intvl.first.getEnd() << "] was not correct (count mismatch)";
         // cast the data to the correct type
-//        std::type_index dataTypeName = searchResult[0]->getDataType();
         int typed = genogrove::TypeRegistry::cast<int>(searchResult[0]);
         EXPECT_EQ(typed, intvl.second) << "The search result for interval ["
             << intvl.first.getStart() << "," << intvl.first.getEnd() << "] was not correct (data mismatch)";
-
     }
     auto endSearch = std::chrono::steady_clock::now();
     std::chrono::duration<double> searchDuration = endSearch - startSearch;
