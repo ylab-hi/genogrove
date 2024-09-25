@@ -32,8 +32,8 @@ namespace genogrove {
         TypeRegistry &operator=(const TypeRegistry &) = delete;
 
         template<typename T>
-        static void registerType(std::string typeName) {
-            typeNames[typeid(T)] = typeName; // store the type name
+        static void registerType() {
+//            typeNames[typeid(T)] = typeName; // store the type name
             std::type_index typeIndex = typeid(T);
             if (castFunctions.find(typeIndex) == castFunctions.end()) {
                 castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> T {
@@ -64,6 +64,11 @@ namespace genogrove {
             } else {
                 throw std::bad_any_cast();
             }
+        }
+
+        template<typename T>
+        static bool checktype(std::shared_ptr<AnyBase>& obj) {
+            return typeid(T) == obj->getDataTypeIndex();
         }
 
     private:

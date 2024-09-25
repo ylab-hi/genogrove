@@ -11,7 +11,7 @@ namespace genogrove {
     public:
         virtual ~AnyBase() = default;
 //        virtual std::string getDataTypeName() const = 0; // return name of stored type
-        virtual std::type_index getDataType() const = 0; // return type of stored data
+        virtual std::type_index getDataTypeIndex() const = 0; // return type of stored data
         //virtual bool hasData() const = 0;
     };
 
@@ -19,14 +19,14 @@ namespace genogrove {
     class AnyType : public AnyBase {
         private:
             T data; // always store value (not reference)
-            std::type_index dataType;
+            std::type_index dataTypeIndex;
 
         public:
             // constructors
-            AnyType() : dataType(typeid(T)) {}
+            AnyType() : dataTypeIndex(typeid(T)) {}
 
-            AnyType(const T& data) : data(data), dataType(typeid(T)) {} // Constructor for lvalue references
-            AnyType(T&& data) : data(std::forward(data)), dataType(typeid(T)) {} // Constructor for rvalue references
+            AnyType(const T& data) : data(data), dataTypeIndex(typeid(T)) {} // Constructor for lvalue references
+            AnyType(T&& data) : data(std::forward(data)), dataTypeIndex(typeid(T)) {} // Constructor for rvalue references
 
             ~AnyType() override = default; // needs to be defined explicitly (otherwise delete due to use of std::optional)
 
@@ -34,8 +34,8 @@ namespace genogrove {
             T& getData() { return data; }
 
             //std::string getDataTypeName() const override { return typeid(T).name();}
-            std::type_index getDataType() const override { return dataType; }
-            void setDataType(std::type_index datatype) { dataType = datatype; }
+            std::type_index getDataTypeIndex() const override { return dataTypeIndex; }
+            void setDataType(std::type_index datatype) { dataTypeIndex = datatype; }
             //bool hasData() const override { return data.has_value(); }
     };
 };

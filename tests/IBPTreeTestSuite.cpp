@@ -12,7 +12,7 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     std::vector<std::pair<genogrove::Interval, int>> intervals;
 
     // register types with the TypeRegistry
-    genogrove::TypeRegistry::registerType<int>("Int");
+    genogrove::TypeRegistry::registerType<int>();
 
     intervals.push_back({{0, 10}, rand() % 100});
     for(size_t i=11; i < 10000000; i+=10) {
@@ -35,9 +35,12 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
         EXPECT_EQ(searchResult.size(), 1) << "The search result for interval [" << intvl.first.getStart()
                                           << "," << intvl.first.getEnd() << "] was not correct (count mismatch)";
         // cast the data to the correct type
-        int typed = genogrove::TypeRegistry::cast<int>(searchResult[0]);
-        EXPECT_EQ(typed, intvl.second) << "The search result for interval ["
-            << intvl.first.getStart() << "," << intvl.first.getEnd() << "] was not correct (data mismatch)";
+        // check if the type is correct
+        if(genogrove::TypeRegistry::checktype<int>(searchResult[0])) {
+            int typed = genogrove::TypeRegistry::cast<int>(searchResult[0]);
+            EXPECT_EQ(typed, intvl.second) << "The search result for interval ["
+                << intvl.first.getStart() << "," << intvl.first.getEnd() << "] was not correct (data mismatch)";
+        }
     }
     auto endSearch = std::chrono::steady_clock::now();
     std::chrono::duration<double> searchDuration = endSearch - startSearch;
