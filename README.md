@@ -15,6 +15,9 @@ In the source directory, configure the build by running cmake:
     cmake -S . -B build
     cmake --build build
 ```
+If required, custom compilers can be specified by adding the option `-DCMAKE_CXX_COMPILER=<compiler>` and 
+`-DCMAKE_C_COMPILER=<compiler>`. 
+
 Once you have the source code, change to the source directory and install the library by running the following commands:
 ```
     cmake --install build
