@@ -81,21 +81,32 @@ install(EXPORT genogrove-targets
 )
 
 ##### Tests #####
-include(FetchContent)
-FetchContent_Declare(
-        googletest
-        GIT_REPOSITORY https://github.com/google/googletest.git
-        GIT_TAG        v1.15.0
-)
-FetchContent_MakeAvailable(googletest)
-enable_testing() # enable the testing framework
-include(GoogleTest)
+option(TESTS "building unit tests" OFF)
+if(TESTS)
+    message(STATUS "Building unit tests")
+    include(FetchContent)
+    FetchContent_Declare(
+            googletest
+            GIT_REPOSITORY https://github.com/google/googletest.git
+            GIT_TAG        v1.15.0
+    )
+    FetchContent_MakeAvailable(googletest)
+    enable_testing() # enable the testing framework
+    include(GoogleTest)
 
-file(GLOB SOURCES "src/*.cpp")
-file(GLOB TEST_SOURCES "tests/*.cpp")
-add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
-target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-target_link_libraries(IBPTree_Test GTest::gtest_main)
+    file(GLOB SOURCES "src/*.cpp")
+    file(GLOB TEST_SOURCES "tests/*.cpp")
+    add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
+    target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+    target_link_libraries(IBPTree_Test GTest::gtest_main)
 
-gtest_discover_tests(IBPTree_Test)
+    gtest_discover_tests(IBPTree_Test)
+else()
+    message(STATUS "Building unit tests disabled")
+endif()
+
+
+
+
+
 
