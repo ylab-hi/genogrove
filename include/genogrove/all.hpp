@@ -1,6 +1,6 @@
 #ifndef GENOGROVE_HPP
 #define GENOGROVE_HPP
 
-#include "IBPTree.hpp"
+#include "genogrove/IBPTree.hpp"
 
 #endif //GENOGROVE_HPP
