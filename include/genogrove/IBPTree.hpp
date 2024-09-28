@@ -54,6 +54,8 @@ namespace genogrove {
             AnyVector overlaps(std::string key, Interval interval);
             void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
 
+            void serialize(std::ostream& os) const;
+
             /*
              *
              */

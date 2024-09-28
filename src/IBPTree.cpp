@@ -130,5 +130,14 @@ namespace genogrove {
             }
         }
     }
+
+    void IBPTree::serialize(std::ostream& os) const {
+        // write the order of the tree
+        os.write(reinterpret_cast<const char*>(&this->order), sizeof(this->order));
+
+        // write the root nodes
+        size_t numberRootNodes = this->rootnodes.size();
+        os.write(reinterpret_cast<const char*>(&numberRootNodes), sizeof(numberRootNodes));
+    }
 } // namespace
 
