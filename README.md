@@ -16,14 +16,14 @@ In the source directory, configure the build by running cmake:
     cmake --build build
 ```
 If required, custom compilers can be specified by adding the option `-DCMAKE_CXX_COMPILER=<compiler>` and 
-`-DCMAKE_C_COMPILER=<compiler>`. 
+`-DCMAKE_C_COMPILER=<compiler>`. Note, that the compiler used to build the library must be the same as the one used.
 
 Once you have the source code, change to the source directory and install the library by running the following commands:
 ```
     cmake --install build
 ```
-Optionally, you can specify a custom installation directory by adding the option `--prefix <desired/install/path>` to the
-install command.
+Optionally, you can specify a custom installation directory by adding the option `--prefix <desired/install/path>` to 
+the install command.
 
 ### Usage
 
