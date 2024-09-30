@@ -45,6 +45,48 @@ namespace genogrove {
     }
     Node *Node::getChild(int index) { return this->children[index]; }
 
+    // serialize the node
+    void Node::serialize(std::ostream& os) const {
+        // write ifLeaf
+        os.write(reinterpret_cast<const char*>(&this->isLeaf), sizeof(this->isLeaf));
+
+        // write number of keys
+        size_t numberKeys = this->keys.size();
+        os.write(reinterpret_cast<const char*>(&numberKeys), sizeof(numberKeys));
+
+        // write each key
+        for(auto& key : this->keys) {
+            key.serialize(os);
+        }
+
+        // if not a leaf, serialize child nodes
+        if(!this->isLeaf) {
+            for(const auto& child : children) {
+                child->serialize(os);
+            }
+        }
+    }
+
+    Node* Node::deserialize(std::istream& is, int order) {
+        Node* node = new Node(order);
+
+        // read if the node is a leaf
+        is.read(reinterpret_cast<char*>(&node->isLeaf), sizeof(node->isLeaf));
+
+        // read the number of keys
+        size_t numberKeys;
+        is.read(reinterpret_cast<char*>(&numberKeys), sizeof(numberKeys));
+
+        for(size_t i=0; i < numberKeys; i++) { // read each key
+            node->keys.push_back(Key::deserialize(is));
+        }
+
+        if(!node->isLeaf) {
+            for(size_t i=0; i < order; ++i) {
+                node->children.push_back(Node::deserialize(is, order));
+            }
+        }
+    }
 }
 
 /*

@@ -138,6 +138,16 @@ namespace genogrove {
         // write the root nodes
         size_t numberRootNodes = this->rootnodes.size();
         os.write(reinterpret_cast<const char*>(&numberRootNodes), sizeof(numberRootNodes));
+
+        // serialize the root noded
+        for(const auto& [chr, rootnode] : this->rootnodes) {
+            size_t chrNameLength = chr.size();
+            os.write(reinterpret_cast<const char*>(&chrNameLength), sizeof(chrNameLength));
+            os.write(chr.c_str(), chrNameLength);
+
+            // serialize the rootnode and its subtree
+            rootnode->serialize(os);
+        }
     }
 } // namespace
 
