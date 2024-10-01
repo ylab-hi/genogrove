@@ -66,6 +66,10 @@ namespace genogrove {
     //
     //        void addData(dtp::Interval interval, std::shared_ptr<void> data);
 
+            // serialize the node
+            void serialize(std::ostream& os) const;
+            static Node* deserialize(std::istream& is, int order);
+
         private:
             int order; // order of the Node
             std::vector<Key> keys;

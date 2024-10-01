@@ -65,6 +65,10 @@ namespace genogrove {
         std::vector<Key*> getMultiLink();
         void setMultiLink(std::vector<Key*> multiLink);
 
+        // serialize the key
+        void serialize(std::ostream& os) const;
+        static Key deserialize(std::istream& is);
+
     private:
         Interval interval;
         std::shared_ptr<AnyBase> data;

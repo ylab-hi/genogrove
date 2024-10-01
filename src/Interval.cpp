@@ -41,5 +41,17 @@ namespace genogrove {
         return intvl.getStart() <= intvl.getEnd();
     }
 
+    void Interval::serialize(std::ostream& os) const {
+        os.write(reinterpret_cast<const char*>(&this->start), sizeof(this->start));
+        os.write(reinterpret_cast<const char*>(&this->end), sizeof(this->end));
+    }
+
+    Interval Interval::deserialize(std::istream& is) {
+        Interval intvl;
+        is.read(reinterpret_cast<char*>(&intvl.start), sizeof(intvl.start));
+        is.read(reinterpret_cast<char*>(&intvl.end), sizeof(intvl.end));
+        return intvl;
+    }
+
 } // namespace
 

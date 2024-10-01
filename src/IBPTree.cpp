@@ -149,5 +149,27 @@ namespace genogrove {
             rootnode->serialize(os);
         }
     }
+
+    IBPTree IBPTree::deserialize(std::istream& is) {
+        int order;
+        is.read(reinterpret_cast<char*>(&order), sizeof(order));
+        IBPTree tree(order);
+
+        size_t rootnodeCount;
+        is.read(reinterpret_cast<char*>(&rootnodeCount), sizeof(rootnodeCount));
+
+        for(size_t i=0; i < rootnodeCount; ++i) {
+            size_t chrNameLength;
+            is.read(reinterpret_cast<char*>(&chrNameLength), sizeof(chrNameLength));
+            std::string chrName(chrNameLength, '\0');
+            is.read(&chrName[0], chrNameLength);
+
+            tree.rootnodes[chrName] = Node::deserialize(is, order);
+        }
+        return tree;
+    }
+
+
+
 } // namespace
 

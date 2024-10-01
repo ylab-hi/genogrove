@@ -55,6 +55,7 @@ namespace genogrove {
             void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
 
             void serialize(std::ostream& os) const;
+            IBPTree deserialize(std::istream& is);
 
             /*
              *

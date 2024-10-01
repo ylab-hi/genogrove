@@ -5,14 +5,16 @@
 #include <string>
 #include <typeindex>
 
+
 namespace genogrove {
 
     class AnyBase {
     public:
         virtual ~AnyBase() = default;
-//        virtual std::string getDataTypeName() const = 0; // return name of stored type
         virtual std::type_index getDataTypeIndex() const = 0; // return type of stored data
-        //virtual bool hasData() const = 0;
+        virtual void serialize(std::ostream& os) const = 0;
+        static std::shared_ptr<AnyBase> deserialize(std::istream& is);
+
     };
 
     template<typename T>
@@ -37,6 +39,29 @@ namespace genogrove {
             std::type_index getDataTypeIndex() const override { return dataTypeIndex; }
             void setDataType(std::type_index datatype) { dataTypeIndex = datatype; }
             //bool hasData() const override { return data.has_value(); }
+
+            void serialize(std::ostream& os) const override {
+                std::string dataTypeName = dataTypeIndex.name();
+                size_t dataTypeNameLen = dataTypeName.size();
+                os.write(reinterpret_cast<const char*>(&dataTypeNameLen), sizeof(dataTypeNameLen));
+                os.write(dataTypeName.c_str(), dataTypeNameLen);
+
+                // write the data
+                os.write(reinterpret_cast<const char*>(&data), sizeof(T));
+            }
+
+            static std::shared_ptr<AnyType> deserialize(std::istream& is) {
+                size_t dataTypeNameLen;
+                is.read(reinterpret_cast<char*>(&dataTypeNameLen), sizeof(dataTypeNameLen));
+                std::string dataTypeName(dataTypeNameLen, '\0');
+                is.read(&dataTypeName[0], dataTypeNameLen);
+
+                // read the data
+                T data;
+                is.read(reinterpret_cast<char*>(&data), sizeof(T));
+
+                return std::make_shared<AnyType<T>>(data);
+            }
     };
 };
 

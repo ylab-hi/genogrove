@@ -4,6 +4,7 @@
 // Standard
 #include <cstddef>
 #include <string>
+#include <iostream>
 
 namespace genogrove {
     class Interval {
@@ -29,6 +30,9 @@ namespace genogrove {
             void setStart(size_t start);
             size_t getEnd() const;
             void setEnd(size_t end);
+
+            void serialize(std::ostream& os) const;
+            static Interval deserialize(std::istream& is);
 
         private:
             size_t start;

@@ -86,6 +86,7 @@ namespace genogrove {
                 node->children.push_back(Node::deserialize(is, order));
             }
         }
+        return node;
     }
 }
 

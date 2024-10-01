@@ -24,5 +24,24 @@ namespace genogrove {
     std::vector<Key*> Key::getMultiLink() { return this->multiLink; }
     void Key::setMultiLink(std::vector<Key*> multiLink) { this->multiLink = multiLink; }
 
+    // serialize
+    void Key::serialize(std::ostream& os) const {
+        interval.serialize(os);
+
+        // serialize the data
+        std::string typeName = data->getDataTypeIndex().name();
+        os.write(reinterpret_cast<const char*>(&typeName), typeName.size());
+        os.write(typeName.c_str(), typeName.size());
+
+        data->serialize(os);
+    }
+
+    Key Key::deserialize(std::istream& is) {
+        Key key = Key::deserialize(is);
+
+        return key;
+
+    }
+
 }
 
