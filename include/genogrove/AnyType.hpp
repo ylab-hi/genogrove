@@ -13,7 +13,7 @@ namespace genogrove {
         virtual ~AnyBase() = default;
         virtual std::type_index getDataTypeIndex() const = 0; // return type of stored data
         virtual void serialize(std::ostream& os) const = 0;
-        static std::shared_ptr<AnyBase> deserialize(std::istream& is);
+        virtual std::shared_ptr<AnyBase> deserialize(std::istream& is) = 0;
 
     };
 
@@ -50,7 +50,7 @@ namespace genogrove {
                 os.write(reinterpret_cast<const char*>(&data), sizeof(T));
             }
 
-            static std::shared_ptr<AnyType> deserialize(std::istream& is) {
+            std::shared_ptr<AnyBase> deserialize(std::istream& is) {
                 size_t dataTypeNameLen;
                 is.read(reinterpret_cast<char*>(&dataTypeNameLen), sizeof(dataTypeNameLen));
                 std::string dataTypeName(dataTypeNameLen, '\0');
