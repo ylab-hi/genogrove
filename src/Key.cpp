@@ -27,20 +27,37 @@ namespace genogrove {
     // serialize
     void Key::serialize(std::ostream& os) const {
         interval.serialize(os);
+        if(data) {
+            bool hasData = false;
+            os.write(reinterpret_cast<const char*>(&hasData), sizeof(hasData));
 
-        // serialize the data
-        std::string typeName = data->getDataTypeIndex().name();
-        os.write(reinterpret_cast<const char*>(&typeName), typeName.size());
-        os.write(typeName.c_str(), typeName.size());
+            // get the type name
+            std::string typeName = data->getDataTypeIndex().name();
+            size_t typeNameLength = typeName.size();
+            os.write(reinterpret_cast<const char*>(&typeNameLength), sizeof(typeNameLength));
+            os.write(typeName.c_str(), typeNameLength);
 
-        data->serialize(os);
+            data->serialize(os);
+        } else {
+            bool hasData = false;
+            os.write(reinterpret_cast<const char*>(&hasData), sizeof(hasData));
+        }
     }
 
     Key Key::deserialize(std::istream& is) {
         Key key = Key::deserialize(is);
 
-        return key;
+        // deserialize the data
+        size_t typeNameLength;
+        is.read(reinterpret_cast<char*>(&typeNameLength), sizeof(typeNameLength));
+        std::string typeName(typeNameLength, '\0');
+        is.read(&typeName[0], typeNameLength);
 
+        std::shared_ptr<AnyBase> data = data->deserialize(is);
+
+
+
+        return key;
     }
 
 }
