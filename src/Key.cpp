@@ -64,31 +64,6 @@ namespace genogrove {
             // deserialize the data
             key.data = key.data->deserialize(is);
         }
-
-
-
-
-
-        // read the type name
-        std::string typeName(typeNameLength, '\0');
-
-
-
-
-
-
-        Key key = Key::deserialize(is);
-
-        // deserialize the data
-        size_t typeNameLength;
-        is.read(reinterpret_cast<char*>(&typeNameLength), sizeof(typeNameLength));
-        std::string typeName(typeNameLength, '\0');
-        is.read(&typeName[0], typeNameLength);
-
-        std::shared_ptr<AnyBase> data = data->deserialize(is);
-
-
-
         return key;
     }
 
