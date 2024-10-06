@@ -42,9 +42,41 @@ namespace genogrove {
             bool hasData = false;
             os.write(reinterpret_cast<const char*>(&hasData), sizeof(hasData));
         }
+
+        // TODO: add serialization of singleLink and multiLink
     }
 
     Key Key::deserialize(std::istream& is) {
+        Interval interval = Interval::deserialize(is);
+        Key key(interval);
+
+        // check of there is data to deserialize
+        bool hasData;
+        is.read(reinterpret_cast<char*>(&hasData), sizeof(hasData));
+
+        if(hasData) {
+            size_t typeNameLength;
+            is.read(reinterpret_cast<char*>(&typeNameLength), sizeof(typeNameLength));
+
+            std::string typeName(typeNameLength, '\0');
+            is.read(&typeName[0], typeNameLength);
+
+            // deserialize the data
+            key.data = key.data->deserialize(is);
+        }
+
+
+
+
+
+        // read the type name
+        std::string typeName(typeNameLength, '\0');
+
+
+
+
+
+
         Key key = Key::deserialize(is);
 
         // deserialize the data
