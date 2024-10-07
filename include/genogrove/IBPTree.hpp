@@ -3,6 +3,7 @@
 
 // Standard
 #include <map>
+#include <fstream>
 
 // Class
 #include "Node.hpp"
@@ -56,10 +57,10 @@ namespace genogrove {
 
             void serialize(std::ostream& os) const;
             IBPTree deserialize(std::istream& is);
+            void store(std::string filename);
 
-            /*
-             *
-             */
+
+
             void tree2SIF(std::string filename);
 
         private:

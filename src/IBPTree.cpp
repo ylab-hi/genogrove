@@ -132,6 +132,7 @@ namespace genogrove {
     }
 
     void IBPTree::serialize(std::ostream& os) const {
+        std::cout << "Serializing tree" << std::endl;
         // write the order of the tree
         os.write(reinterpret_cast<const char*>(&this->order), sizeof(this->order));
 
@@ -139,14 +140,12 @@ namespace genogrove {
         size_t numberRootNodes = this->rootnodes.size();
         os.write(reinterpret_cast<const char*>(&numberRootNodes), sizeof(numberRootNodes));
 
-        // serialize the root noded
+        // serialize the rootnodes
         for(const auto& [chr, rootnode] : this->rootnodes) {
             size_t chrNameLength = chr.size();
             os.write(reinterpret_cast<const char*>(&chrNameLength), sizeof(chrNameLength));
-            os.write(chr.c_str(), chrNameLength);
-
-            // serialize the rootnode and its subtree
-            rootnode->serialize(os);
+            os.write(chr.c_str(), chrNameLength); // write the chromosome name
+            rootnode->serialize(os); // serialize the rootnode and its subtree
         }
     }
 
@@ -169,7 +168,9 @@ namespace genogrove {
         return tree;
     }
 
-
-
+    void IBPTree::store(std::string filename) {
+        std::ofstream ofs(filename, std::ios::binary);
+        this->serialize(ofs);
+    }
 } // namespace
 
