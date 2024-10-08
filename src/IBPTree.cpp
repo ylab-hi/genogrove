@@ -165,12 +165,17 @@ namespace genogrove {
 
             tree.rootnodes[chrName] = Node::deserialize(is, order);
         }
-        return tree;
+        return std::move(tree);
     }
 
     void IBPTree::store(std::string filename) {
         std::ofstream ofs(filename, std::ios::binary);
         this->serialize(ofs);
+    }
+
+    void IBPTree::load(std::string filename) {
+        std::ifstream ifs(filename, std::ios::binary);
+        genogrove::IBPTree::deserialize(ifs);
     }
 } // namespace
 

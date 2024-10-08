@@ -56,12 +56,17 @@ namespace genogrove {
             void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
 
             void serialize(std::ostream& os) const;
-            IBPTree deserialize(std::istream& is);
+            static IBPTree deserialize(std::istream& is);
+
+            /*
+             * @brief store the genogrove index/tree in a (binary) file
+             */
             void store(std::string filename);
 
-
-
-            void tree2SIF(std::string filename);
+            /*
+             * @brief load the genogrove index/tree from a (binary) file
+             */
+            static void load(std::string filename);
 
         private:
             std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree
