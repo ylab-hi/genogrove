@@ -3,6 +3,7 @@
 namespace genogrove {
     // constructor
     IBPTree::IBPTree(int k) : order(k), rootnodes{} {}
+    IBPTree::IBPTree(): order(3), rootnodes{} {}
     IBPTree::~IBPTree() {}
 
     int IBPTree::getOrder() { return this->order; }
@@ -175,7 +176,7 @@ namespace genogrove {
 
     void IBPTree::load(std::string filename) {
         std::ifstream ifs(filename, std::ios::binary);
-        genogrove::IBPTree::deserialize(ifs);
+        genogrove::IBPTree tree = genogrove::IBPTree::deserialize(ifs);
     }
 } // namespace
 

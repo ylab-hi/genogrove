@@ -16,6 +16,7 @@ namespace genogrove {
     class IBPTree {
         public:
             IBPTree(int k); // create a new IBPTree with a given order k
+            IBPTree(); // create a new IBPTree with default order
             ~IBPTree(); // destructor
 
             // getter & setter
