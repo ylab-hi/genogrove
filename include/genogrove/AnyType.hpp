@@ -12,6 +12,8 @@ namespace genogrove {
     public:
         virtual ~AnyBase() = default;
         virtual std::type_index getDataTypeIndex() const = 0; // return type of stored data
+
+        // serialization
         virtual void serialize(std::ostream& os) const = 0;
         virtual std::shared_ptr<AnyBase> deserialize(std::istream& is) = 0;
 
@@ -26,12 +28,13 @@ namespace genogrove {
         public:
             // constructors
             AnyType() : dataTypeIndex(typeid(T)) {}
-
             AnyType(const T& data) : data(data), dataTypeIndex(typeid(T)) {} // Constructor for lvalue references
             AnyType(T&& data) : data(std::forward(data)), dataTypeIndex(typeid(T)) {} // Constructor for rvalue references
 
+            // descructor
             ~AnyType() override = default; // needs to be defined explicitly (otherwise delete due to use of std::optional)
 
+            // accessors
             const T& getData() const { return *data; }
             T& getData() { return data; }
 

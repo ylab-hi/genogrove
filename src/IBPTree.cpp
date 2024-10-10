@@ -133,7 +133,6 @@ namespace genogrove {
     }
 
     void IBPTree::serialize(std::ostream& os) const {
-        std::cout << "Serializing tree" << std::endl;
         // write the order of the tree
         os.write(reinterpret_cast<const char*>(&this->order), sizeof(this->order));
 
@@ -174,9 +173,9 @@ namespace genogrove {
         this->serialize(ofs);
     }
 
-    void IBPTree::load(std::string filename) {
+    IBPTree IBPTree::load(std::string filename) {
         std::ifstream ifs(filename, std::ios::binary);
-        genogrove::IBPTree tree = genogrove::IBPTree::deserialize(ifs);
+        return genogrove::IBPTree::deserialize(ifs);
     }
 } // namespace
 

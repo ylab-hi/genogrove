@@ -67,7 +67,7 @@ namespace genogrove {
             /*
              * @brief load the genogrove index/tree from a (binary) file
              */
-            static void load(std::string filename);
+            static IBPTree load(std::string filename);
 
         private:
             std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree

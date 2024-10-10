@@ -46,102 +46,79 @@ namespace genogrove {
     Node *Node::getChild(int index) { return this->children[index]; }
 
     // serialize the node
-    void Node::serialize(std::ostream& os) const {
-        // write ifLeaf
-        os.write(reinterpret_cast<const char*>(&this->isLeaf), sizeof(this->isLeaf));
+    void Node::serialize(std::ostream& os) {
+        std::cout << "serialize node" << std::endl;
+        os.write(reinterpret_cast<const char*>(&this->isLeaf), sizeof(this->isLeaf)); // write ifLeaf
 
-        // write number of keys
-        size_t numberKeys = this->keys.size();
+        size_t numberKeys = this->keys.size(); // write the number of keys
         os.write(reinterpret_cast<const char*>(&numberKeys), sizeof(numberKeys));
 
-        // write each key
-        for(auto& key : this->keys) {
+        std::cout << "\titerate through keys" << std::endl;
+        for(auto& key : this->getKeys()) { // write each key
+            std::cout << "\t\tkey: " << key.getInterval().getStart() << "," << key.getInterval().getEnd() << std::endl;
             key.serialize(os);
         }
 
+
         // if not a leaf, serialize child nodes
         if(!this->isLeaf) {
-            for(const auto& child : children) {
-                child->serialize(os);
+            size_t numberChildren = this->children.size(); // write number of children
+            os.write(reinterpret_cast<const char*>(&numberChildren), sizeof(numberChildren));
+
+            for(int i=0; i < numberChildren; ++i) {
+                this->getChildren()[i]->serialize(os);
             }
         }
     }
 
     Node* Node::deserialize(std::istream& is, int order) {
-        Node* node = new Node(order);
+        std::cout << "deserialize node" << std::endl;
+        Node* node = new Node(order); // new node with given order
 
-        // read if the node is a leaf
-        is.read(reinterpret_cast<char*>(&node->isLeaf), sizeof(node->isLeaf));
-
-        // read the number of keys
-        size_t numberKeys;
+        is.read(reinterpret_cast<char*>(&node->isLeaf), sizeof(node->isLeaf)); // deserialize ifLeaf
+//
+        size_t numberKeys; // deserialize the number of keys in the node
         is.read(reinterpret_cast<char*>(&numberKeys), sizeof(numberKeys));
 
-        for(size_t i=0; i < numberKeys; i++) { // read each key
-            node->keys.push_back(Key::deserialize(is));
+        if(numberKeys > order -1) {
+            std::cout << "numberKeys: " << numberKeys << std::endl;
+            std::cerr << "Error: number of keys in node is larger than order of the tree" << std::endl;
+            exit(1);
         }
 
-        if(!node->isLeaf) {
-            for(size_t i=0; i < order; ++i) {
-                node->children.push_back(Node::deserialize(is, order));
+        // deserialize each key and
+        std::cout << "\tnumberKeys: " << numberKeys << std::endl;
+        for(size_t i=0; i < numberKeys; i++) { // read each key
+            std::cout << "\tdeserialize key: " << i << std::endl;
+            node->getKeys().push_back(Key::deserialize(is));
+        }
+
+        std::cout << "ifleaf: " << node->getIsLeaf() << std::endl;
+
+        if(!node->getIsLeaf()) {
+            std::cout << "\t\tdeserialize children" << std::endl;
+            size_t numberChildren;
+            is.read(reinterpret_cast<char*>(&numberChildren), sizeof(numberChildren));
+
+            std::cout << "\t\tnumberChildren: " << numberChildren << std::endl;
+
+            for(size_t i=0; i < numberChildren; ++i) {
+                Node* child = Node::deserialize(is, order);
             }
         }
+
+//        if(!node->getIsLeaf()) {
+//            size_t numberChildren;
+//            is.read(reinterpret_cast<char*>(&numberChildren), sizeof(numberChildren));
+//
+//            for(size_t i=0; i < numberChildren; ++i) {
+//                std::cout << "deserialize child: " << i << std::endl;
+//                Node* child = Node::deserialize(is, order);
+////                node->children.push_back(Node::deserialize(is, order));
+//            }
+//        }
         return node;
     }
 }
-
-/*
-void Node::updateKey(Node* node) {
-    dtp::Interval intvl = {std::string::npos, 0};
-    for(int i=0; )
-
-}
-*/
-
-
-//void Node::assignKeys(std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator start,
-//                      std::vector<std::pair<dtp::Interval, std::shared_ptr<void>>>::iterator end) {
-//    this->keys.assign(start, end);
-//}
-//
-///*
-// * This method moves the keys from one node to another
-// */
-//void Node::moveKeys(int mid, Node* child) {
-//    this->keys.assign(child->getKeys().begin() + mid, child->getKeys().end());
-//}
-//void Node::resizeKeys() { this->keys.resize(this->order-1); }
-//
-//dtp::Interval Node::updateKey() {
-//    dtp::Interval intvl = {std::string::npos, 0};
-//    for(int i=0; i < keys.size(); i++) {
-//        if(keys[i].first.first < intvl.first) { intvl.first = keys[i].first.first; }
-//        if(keys[i].first.second > intvl.second) { intvl.second = keys[i].first.second; }
-//    }
-//    return intvl;
-//}
-//
-//void Node::assignChilds(std::vector<Node*>::iterator start,
-//                        std::vector<Node*>::iterator end) {
-//    this->children.assign(start, end);
-//}
-
-
-//void Node::resizeChildren(int size) { this->children.resize(size); }
-//
-///*
-// * This method adds a new data element to the Node. It compares the intervals of the node
-// */
-///*
-//void Node::addData(dtp::Interval interval, std::shared_ptr<void> data) {
-//    int i=0;
-//    while(i < this->keys.size() && this->keys[i].first.first < interval.first) { i++; }
-//    this->keys.insert(this->keys.begin() + i, {interval, data});
-//}*/
-//
-//
-//
-
-
 
 

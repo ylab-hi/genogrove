@@ -26,10 +26,14 @@ namespace genogrove {
 
     // serialize
     void Key::serialize(std::ostream& os) const {
+        std::cout << "\t\tserialize key" << std::endl;
         interval.serialize(os);
+        bool hasData = false;
+        if(data != nullptr) { hasData = true; }
+
+        std::cout << "\t\thasData: " << hasData << std::endl;
+        os.write(reinterpret_cast<const char*>(&hasData), sizeof(hasData));
         if(data) {
-            bool hasData = false;
-            os.write(reinterpret_cast<const char*>(&hasData), sizeof(hasData));
 
             // get the type name
             std::string typeName = data->getDataTypeIndex().name();
@@ -38,23 +42,36 @@ namespace genogrove {
             os.write(typeName.c_str(), typeNameLength);
 
             data->serialize(os);
-        } else {
-            bool hasData = false;
-            os.write(reinterpret_cast<const char*>(&hasData), sizeof(hasData));
-        }
 
-        // TODO: add serialization of singleLink and multiLink
+            bool hasSingleLink = (singleLink != nullptr);
+            os.write(reinterpret_cast<const char*>(&hasSingleLink), sizeof(hasSingleLink));
+            if(hasSingleLink) {
+                singleLink->serialize(os);
+            }
+
+            size_t multiLinkSize = multiLink.size();
+            os.write(reinterpret_cast<const char*>(&multiLinkSize), sizeof(multiLinkSize));
+            for(auto& link : multiLink) {
+                link->serialize(os);
+            }
+        }
     }
 
     Key Key::deserialize(std::istream& is) {
         Interval interval = Interval::deserialize(is);
+        std::cout << "\tkey boundaries: " << interval.getStart() << "," << interval.getEnd() << std::endl;
         Key key(interval);
+
+        std::cout << "\t\tcheck if there is data" << std::endl;
 
         // check of there is data to deserialize
         bool hasData;
         is.read(reinterpret_cast<char*>(&hasData), sizeof(hasData));
 
+        std::cout << "\t\thasData: " << hasData << std::endl;
+
         if(hasData) {
+            std::cout << "\t\t\tdeserialize data" << std::endl;
             size_t typeNameLength;
             is.read(reinterpret_cast<char*>(&typeNameLength), sizeof(typeNameLength));
 
@@ -62,10 +79,27 @@ namespace genogrove {
             is.read(&typeName[0], typeNameLength);
 
             // deserialize the data
-            key.data = key.data->deserialize(is);
+            //key.data->deserialize(is);
+        } else {
+            key.data = nullptr;
         }
+
+        // deserialize singleLink
+//        bool hasSingleLink;
+//        is.read(reinterpret_cast<char*>(&hasSingleLink), sizeof(hasSingleLink));
+//        if(hasSingleLink) {
+//            key.singleLink = new Key(Key::deserialize(is));
+//        }
+//
+//        // deserialize multiLink
+//        size_t multiLinkSize;
+//        is.read(reinterpret_cast<char*>(&multiLinkSize), sizeof(multiLinkSize));
+//        key.multiLink.resize(multiLinkSize);
+//        for(size_t i=0; i < multiLinkSize; ++i) {
+//            key.multiLink[i] = new Key(Key::deserialize(is));
+//        }
+
         return key;
     }
-
 }
 
