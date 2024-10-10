@@ -54,7 +54,6 @@ namespace genogrove {
             if (castFunctions.find(type) == castFunctions.end()) {
                 std::cerr << "Type " << type.name() << " has not been registered" << std::endl;
                 throw std::runtime_error("Type not registered");
-                return EXIT_FAILURE;
             }
 
             // perform the cast
