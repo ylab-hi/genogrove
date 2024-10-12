@@ -23,6 +23,7 @@ namespace genogrove {
 
     class TypeRegistry {
     public:
+        // singleton pattern to ensure a single instance
         static TypeRegistry &instance() {
             static TypeRegistry instance;
             return instance;
@@ -44,16 +45,19 @@ namespace genogrove {
                     }
                     return castedObj->getData();
                 };
+
+                // register the type name for later serialization
+                typeNames[typeIndex] = typeid(T).name();
             }
         }
 
+        // cast a type back from the registered function
         template<typename T>
         static T cast(const std::shared_ptr<AnyBase>& obj) {
             std::type_index type = typeid(T);
             // check if the type has been registered
             if (castFunctions.find(type) == castFunctions.end()) {
-                std::cerr << "Type " << type.name() << " has not been registered" << std::endl;
-                throw std::runtime_error("Type not registered");
+                throw std::runtime_error("The type has not been registered");
             }
 
             // perform the cast
@@ -69,6 +73,11 @@ namespace genogrove {
         static bool checktype(std::shared_ptr<AnyBase>& obj) {
             return typeid(T) == obj->getDataTypeIndex();
         }
+
+        // serialize and deserialize the TypeRegistry
+        static void serialize(std::ostream& os, const std::type_index& typeIndex);
+        static std::shared_ptr<AnyBase> deserialize(std::istream& is);
+
 
     private:
         TypeRegistry() = default;
