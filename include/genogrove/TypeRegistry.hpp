@@ -75,7 +75,7 @@ namespace genogrove {
         }
 
         // serialize and deserialize the TypeRegistry
-        static void serialize(std::ostream& os, const std::type_index& typeIndex);
+        static void serialize(std::ostream& os);
         static std::shared_ptr<AnyBase> deserialize(std::istream& is);
 
 
