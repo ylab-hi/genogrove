@@ -16,14 +16,15 @@ namespace genogrove {
         }
     }
 
-    std::shared_ptr<AnyBase> TypeRegistry::deserialize(std::istream& is) {
+    void TypeRegistry::deserialize(std::istream& is) {
         size_t typeCount;
-        is.read(reinterpret_cast<char*>(&typeCount), sizeof(typeCount));
+        is.read(reinterpret_cast<char *>(&typeCount), sizeof(typeCount));
 
-        for(size_t i=0; i < typeCount; ++i) {
+        for (size_t i = 0; i < typeCount; ++i) {
             size_t typeNameLength;
-            is.read(reinterpret_cast<char*>(&typeNameLength), sizeof(typeNameLength));
+            is.read(reinterpret_cast<char *>(&typeNameLength), sizeof(typeNameLength));
             std::string typeName(typeNameLength, '\0');
             is.read(&typeName[0], typeNameLength);
         }
+    }
 }
