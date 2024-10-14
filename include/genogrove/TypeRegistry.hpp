@@ -34,8 +34,8 @@ namespace genogrove {
 
         template<typename T>
         static void registerType() {
-//            typeNames[typeid(T)] = typeName; // store the type name
             std::type_index typeIndex = typeid(T);
+
             if (castFunctions.find(typeIndex) == castFunctions.end()) {
                 castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> std::any {
                     auto castedObj = std::dynamic_pointer_cast<
@@ -47,7 +47,7 @@ namespace genogrove {
                 };
 
                 // register the type name for later serialization
-                typeNames[typeIndex] = typeid(T).name();
+                typeNames[typeIndex] = typeid(T).name(); // store the type name
             }
         }
 
@@ -74,10 +74,11 @@ namespace genogrove {
             return typeid(T) == obj->getDataTypeIndex();
         }
 
-        // serialize and deserialize the TypeRegistry
-        static void serialize(std::ostream& os);
-        static void deserialize(std::istream& is);
+        // getter & setter
+        static std::unordered_map<std::type_index, std::string> getTypeNames();
+        static std::unordered_map<std::type_index, castFunction> getCastFunctions();
 
+        static void reset();
 
     private:
         TypeRegistry() = default;
