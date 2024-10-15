@@ -69,6 +69,10 @@ namespace genogrove {
              */
             static IBPTree load(std::string filename);
 
+            void exportTree(std::string filename, std::string format);
+
+
+
         private:
             std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree
             int order; // order of the IBPTree

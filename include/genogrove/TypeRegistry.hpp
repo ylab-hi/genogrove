@@ -35,9 +35,10 @@ namespace genogrove {
         template<typename T>
         static void registerType() {
             std::type_index typeIndex = typeid(T);
+            std::string typeName = typeid(T).name();
 
-            if (castFunctions.find(typeIndex) == castFunctions.end()) {
-                castFunctions[typeIndex] = [](const std::shared_ptr<AnyBase>& obj) -> std::any {
+            if (castFunctions.find(typeName) == castFunctions.end()) {
+                castFunctions[typeName] = [](const std::shared_ptr<AnyBase>& obj) -> std::any {
                     auto castedObj = std::dynamic_pointer_cast<
                             AnyType<typename std::remove_reference<T>::type>>(obj);
                     if(!castedObj) {
@@ -54,14 +55,14 @@ namespace genogrove {
         // cast a type back from the registered function
         template<typename T>
         static T cast(const std::shared_ptr<AnyBase>& obj) {
-            std::type_index type = typeid(T);
+            std::string typeName = typeid(T).name();
             // check if the type has been registered
-            if (castFunctions.find(type) == castFunctions.end()) {
+            if (castFunctions.find(typeName) == castFunctions.end()) {
                 throw std::runtime_error("The type has not been registered");
             }
 
             // perform the cast
-            std::any result = castFunctions[type](obj);
+            std::any result = castFunctions[typeName](obj);
             if (result.has_value()) {
                 return std::any_cast<T>(result);
             } else {
@@ -71,19 +72,19 @@ namespace genogrove {
 
         template<typename T>
         static bool checktype(std::shared_ptr<AnyBase>& obj) {
-            return typeid(T) == obj->getDataTypeIndex();
+            return typeid(T).name() == obj->getTypeName();
         }
 
         // getter & setter
         static std::unordered_map<std::type_index, std::string> getTypeNames();
-        static std::unordered_map<std::type_index, castFunction> getCastFunctions();
+        static std::unordered_map<std::string, castFunction> getCastFunctions();
 
         static void reset();
 
     private:
         TypeRegistry() = default;
         static std::unordered_map<std::type_index, std::string> typeNames;
-        static std::unordered_map<std::type_index, castFunction> castFunctions;
+        static std::unordered_map<std::string, castFunction> castFunctions;
     };
 }
 
