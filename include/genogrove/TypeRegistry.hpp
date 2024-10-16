@@ -20,6 +20,7 @@ namespace genogrove {
     class AnyBase;
 
     using castFunction = std::function<std::any(const std::shared_ptr<AnyBase>&)>;
+    using factoryFunction = std::function<std::shared_ptr<AnyBase>()>;
 
     class TypeRegistry {
     public:
@@ -37,7 +38,7 @@ namespace genogrove {
             std::type_index typeIndex = typeid(T);
             std::string typeName = typeid(T).name();
 
-            if (castFunctions.find(typeName) == castFunctions.end()) {
+            if(castFunctions.find(typeName) == castFunctions.end()) {
                 castFunctions[typeName] = [](const std::shared_ptr<AnyBase>& obj) -> std::any {
                     auto castedObj = std::dynamic_pointer_cast<
                             AnyType<typename std::remove_reference<T>::type>>(obj);
@@ -46,9 +47,16 @@ namespace genogrove {
                     }
                     return castedObj->getData();
                 };
+            }
 
-                // register the type name for later serialization
+            if(typeNames.find(typeIndex) == typeNames.end()) {
                 typeNames[typeIndex] = typeid(T).name(); // store the type name
+            }
+
+            if(factoryFunctions.find(typeName) == factoryFunctions.end()) {
+                factoryFunctions[typeName] = []() -> std::shared_ptr<AnyBase> {
+                    return std::make_shared<AnyType<T>>();
+                };
             }
         }
 
@@ -79,12 +87,17 @@ namespace genogrove {
         static std::unordered_map<std::type_index, std::string> getTypeNames();
         static std::unordered_map<std::string, castFunction> getCastFunctions();
 
+        /*
+         * @brief Reset te TypeRegistry
+         */
         static void reset();
+        static std::shared_ptr<AnyBase> create(const std::string& typeName);
 
     private:
         TypeRegistry() = default;
         static std::unordered_map<std::type_index, std::string> typeNames;
         static std::unordered_map<std::string, castFunction> castFunctions;
+        static std::unordered_map<std::string, factoryFunction> factoryFunctions;
     };
 }
 
