@@ -70,7 +70,8 @@ namespace genogrove {
             is.read(&typeName[0], typeNameLength);
 
             // deserialize the data
-
+            key.data = TypeRegistry::create(typeName);
+            key.data->deserialize(is);
 
             bool hasSingleLink;
             is.read(reinterpret_cast<char*>(&hasSingleLink), sizeof(hasSingleLink));
