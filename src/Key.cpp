@@ -26,7 +26,7 @@ namespace genogrove {
 
     // serialize
     void Key::serialize(std::ostream& os) const {
-        std::cout << "\t\tserialize key" << std::endl;
+//        std::cout << "\t\tserialize key" << std::endl;
         interval.serialize(os);
 
         bool hasData = (data != nullptr); // check if there is data
@@ -56,14 +56,14 @@ namespace genogrove {
 
     Key Key::deserialize(std::istream& is) {
         Interval interval = Interval::deserialize(is);
-        std::cout << "\tkey boundaries: " << interval.getStart() << "," << interval.getEnd() << std::endl;
+//        std::cout << "\tkey boundaries: " << interval.getStart() << "," << interval.getEnd() << std::endl;
         Key key(interval);
 
         bool hasData;
         is.read(reinterpret_cast<char*>(&hasData), sizeof(hasData));
 
         if(hasData) {
-            std::cout << "\t\t\tdeserialize data" << std::endl;
+//            std::cout << "\t\t\tdeserialize data" << std::endl;
             size_t typeNameLength;
             is.read(reinterpret_cast<char*>(&typeNameLength), sizeof(typeNameLength));
             std::string typeName(typeNameLength, '\0');

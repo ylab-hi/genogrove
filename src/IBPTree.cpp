@@ -165,8 +165,43 @@ namespace genogrove {
 
             tree.rootnodes[chrName] = Node::deserialize(is, order);
         }
+
+        tree.rebuildNext(); // rebuild the next pointers of the nodes
+
         return std::move(tree);
     }
+
+    void IBPTree::rebuildNext() {
+        for(auto& [chr, root] : this->rootnodes) {
+            rebuildNextSubTree(root);
+        }
+    }
+
+    void IBPTree::rebuildNextSubTree(Node* node) {
+        if(node == nullptr) { return; }
+        // if the node is a leaf, then there is no need to go deeper
+        if(!node->getIsLeaf()) {
+            node->setNext(nullptr);
+            Node* prev = nullptr;
+
+            // traverse through the children (of the current node)
+            for(auto* child : node->getChildren()) {
+                if(child != nullptr) {
+                    rebuildNextSubTree(child);
+
+                    // if the child is a leaf, the link it to the previous node
+                    if(child->getIsLeaf()) {
+                        if(prev != nullptr) {
+                            prev->setNext(child);
+                        }
+                        prev = child;
+                    }
+                }
+            }
+        }
+    }
+
+
 
     void IBPTree::store(std::string filename) {
         std::ofstream ofs(filename, std::ios::binary);
@@ -177,5 +212,17 @@ namespace genogrove {
         std::ifstream ifs(filename, std::ios::binary);
         return genogrove::IBPTree::deserialize(ifs);
     }
+
+    void IBPTree::exportTreeSIF(std::string filename) {
+
+    }
+
+
+
+
+//    void IBPTree::printTree() {
+//
+//    }
+
 } // namespace
 

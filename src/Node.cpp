@@ -47,15 +47,15 @@ namespace genogrove {
 
     // serialize the node
     void Node::serialize(std::ostream& os) {
-        std::cout << "serialize node" << std::endl;
+//        std::cout << "serialize node" << std::endl;
         os.write(reinterpret_cast<const char*>(&this->isLeaf), sizeof(this->isLeaf)); // write ifLeaf
 
         size_t numberKeys = this->keys.size(); // write the number of keys
         os.write(reinterpret_cast<const char*>(&numberKeys), sizeof(numberKeys));
 
-        std::cout << "\titerate through keys" << std::endl;
+//        std::cout << "\titerate through keys" << std::endl;
         for(auto& key : this->getKeys()) { // write each key
-            std::cout << "\t\tkey: " << key.getInterval().getStart() << "," << key.getInterval().getEnd() << std::endl;
+//            std::cout << "\t\tkey: " << key.getInterval().getStart() << "," << key.getInterval().getEnd() << std::endl;
             key.serialize(os);
         }
 
@@ -65,14 +65,14 @@ namespace genogrove {
             os.write(reinterpret_cast<const char*>(&numberChildren), sizeof(numberChildren));
 
             for(int i=0; i < numberChildren; ++i) {
-                std::cout << "\t\tserialize child: " << i << std::endl;
+//                std::cout << "\t\tserialize child: " << i << std::endl;
                 this->getChildren()[i]->serialize(os);
             }
         }
     }
 
     Node* Node::deserialize(std::istream& is, int order) {
-        std::cout << "deserialize node" << std::endl;
+//        std::cout << "deserialize node" << std::endl;
         Node* node = new Node(order); // new node with given order
         is.read(reinterpret_cast<char*>(&node->isLeaf), sizeof(node->isLeaf)); // deserialize ifLeaf
 
@@ -80,20 +80,20 @@ namespace genogrove {
         is.read(reinterpret_cast<char*>(&numberKeys), sizeof(numberKeys));
 
         // deserialize each key and
-        std::cout << "\tnumberKeys: " << numberKeys << std::endl;
+//        std::cout << "\tnumberKeys: " << numberKeys << std::endl;
         for(size_t i=0; i < numberKeys; i++) { // read each key
-            std::cout << "\tdeserialize key: " << i << std::endl;
+//            std::cout << "\tdeserialize key: " << i << std::endl;
             node->getKeys().push_back(Key::deserialize(is));
         }
 
-        std::cout << "\tifleaf: " << node->getIsLeaf() << std::endl;
+//        std::cout << "\tifleaf: " << node->getIsLeaf() << std::endl;
 
         if(!node->getIsLeaf()) {
-            std::cout << "\tdeserialize children" << std::endl;
+//            std::cout << "\tdeserialize children" << std::endl;
             size_t numberChildren;
             is.read(reinterpret_cast<char*>(&numberChildren), sizeof(numberChildren));
 
-            std::cout << "\tnumberChildren: " << numberChildren << std::endl;
+//            std::cout << "\tnumberChildren: " << numberChildren << std::endl;
 
             for(size_t i=0; i < numberChildren; ++i) {
                 node->getChildren().push_back(Node::deserialize(is, order));

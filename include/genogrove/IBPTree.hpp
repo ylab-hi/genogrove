@@ -60,6 +60,17 @@ namespace genogrove {
             static IBPTree deserialize(std::istream& is);
 
             /*
+             * @brief rebuild the next pointers of the nodes in the tree
+             */
+            void rebuildNext();
+
+            /*
+             * @brief rebuild the next pointers of the nodes in the tree
+             */
+            void rebuildNextSubTree(Node* node);
+
+
+            /*
              * @brief store the genogrove index/tree in a (binary) file
              */
             void store(std::string filename);
@@ -70,6 +81,17 @@ namespace genogrove {
             static IBPTree load(std::string filename);
 
             void exportTree(std::string filename, std::string format);
+
+            /*
+             * @brief export the tree in the SIF format (for debugging purposes)
+             */
+            void exportTreeSIF(std::string filename);
+
+            /*
+             * @brief prints the tree (cirrently only for debugging purposes)
+             */
+            void printTree();
+
 
 
 
