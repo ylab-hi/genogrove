@@ -18,24 +18,6 @@ TEST(SerializationTestSuite, StoreAndLoadTree) {
         tree.insertData("chr1", intvl.first, intvl.second);
     }
     std::cout << "Building tree" << std::endl;
-//    // print rootnode
-//    for(auto& [key, root] : tree.getRootnodes()) {
-//        std::cout << "rootnode: " << key << std::endl;
-//        for(int i=0; i < root->getKeys().size(); i++) {
-//            std::cout << "key: " << i << std::endl;
-//            std::cout << "interval: " << root->getKeys()[i].getInterval().getStart() << ","
-//                      << root->getKeys()[i].getInterval().getEnd() << std::endl;
-//        }
-//        // iterate through the child nodes
-//        std::cout << "number of children " << root->getChildren().size() << std::endl;
-//        for(int j=0; j < root->getChildren().size(); j++) {
-//            std::cout << "number of keys " << root->getChildren()[j]->getKeys().size() << std::endl;
-//            for(auto& key : root->getChildren()[j]->getKeys()) {
-//                std::cout << "key: " << key.getInterval().getStart() << "," << key.getInterval().getEnd() << std::endl;
-//            }
-//        }
-//    }
-
     std::cout << "####### Storing tree ######" << std::endl;
     tree.store("/output/test.gg");
 
@@ -51,3 +33,4 @@ TEST(SerializationTestSuite, StoreAndLoadTree) {
                                           << "," << intvl.first.getEnd() << "] was not correct (count mismatch)";
     }
 }
+
