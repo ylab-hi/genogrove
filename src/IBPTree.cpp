@@ -2,14 +2,16 @@
 
 namespace genogrove {
     // constructor
-    IBPTree::IBPTree(int k) : order(k), rootnodes{} {}
-    IBPTree::IBPTree(): order(3), rootnodes{} {}
+    IBPTree::IBPTree(int k) : order(k), rootnodes{}, rightMostNode{} {}
+    IBPTree::IBPTree(): order(3), rootnodes{}, rightMostNode{} {}
     IBPTree::~IBPTree() {}
 
     int IBPTree::getOrder() { return this->order; }
     void IBPTree::setOrder(int k) { this->order = k; }
     std::map<std::string, Node*> IBPTree::getRootnodes() { return this->rootnodes; }
     void IBPTree::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
+    Node* IBPTree::getRightMostNode(std::string chrom) { return this->rightMostNode[chrom]; }
+    void IBPTree::setRightMostNode(std::string chrom, Node* node) { this->rightMostNode[chrom] = node; }
 
     Node* IBPTree::getRoot(std::string key) {
         Node *root = nullptr;
@@ -24,6 +26,7 @@ namespace genogrove {
         Node* root = new Node(this->order);
         root->setIsLeaf(true); // root node becomes a leaf node
         this->rootnodes.insert(std::make_pair(key, root));
+        this->rightMostNode.insert(std::make_pair(key, root)); // set as the right most node
         return root;
     }
 

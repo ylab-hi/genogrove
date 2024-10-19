@@ -24,6 +24,8 @@ namespace genogrove {
             void setOrder(int k);
             std::map<std::string, Node*> getRootnodes();
             void setRootnodes(std::map<std::string, Node*> rootnodes);
+            Node* getRightMostNode(std::string chrom);
+            void setRightMostNode(std::string chrom, Node* node);
 
             /*
              * @brief get the root node of the IBPTree for a given key
@@ -92,11 +94,9 @@ namespace genogrove {
              */
             void printTree();
 
-
-
-
         private:
             std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree
+            std::map<std::string, Node*> rightMostNode; // right most node of the IBPTree (for easy insertion)
             int order; // order of the IBPTree
     }; // class
 }; // namspace
