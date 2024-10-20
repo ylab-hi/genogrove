@@ -76,6 +76,14 @@ namespace genogrove {
         if(child->getIsLeaf()) {
             newChild->setNext(child->getNext());
             child->setNext(newChild);
+
+            // update rightMostNode if necessaru
+            for(auto& [chrom, rightmost] : this->rightMostNode) {
+                if(rightmost == child) {
+                    this->rightMostNode[chrom] = newChild;
+                    break;
+                }
+            }
         } else {
             newChild->getChildren().assign(child->getChildren().begin() + mid, child->getChildren().end());
             child->getChildren().resize(mid + 1);
