@@ -18,6 +18,8 @@ namespace genogrove {
              */
             bool operator<(const Interval& other) const;
             bool operator>(const Interval& other) const;
+            bool operator<=(const Interval& other) const;
+            bool operator>=(const Interval& other) const;
 
             /*
              * @brief check if provided interval is left of class interval (no overlaps)

@@ -21,6 +21,20 @@ namespace genogrove {
         }
     }
 
+    bool Interval::operator<=(const Interval& other) const {
+        if(this->getStart() == other.getStart()) {
+            return this->getEnd() <= other.getEnd(); // if start is equal, then check end
+        } else {
+            return this->getStart() <= other.getStart();
+        }
+    }
+
+    bool Interval::operator>=(const Interval& other) const {
+        if(this->getStart() == other.getStart()) {
+            return this->getEnd() >= other.getEnd(); // if start is equal, then check end
+        }
+    }
+
     // getter & setter
     size_t Interval::getStart() const { return this->start; }
     void Interval::setStart(size_t start) { this->start = start; }
