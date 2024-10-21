@@ -2,7 +2,7 @@
 
 namespace genogrove {
     // constructor
-    Node::Node(int k) : order(k), keys{}, children{}, next{}, isLeaf{false} {}
+    Node::Node(int k) : order(k), keys{}, children{}, parent{}, next{}, isLeaf{false} {}
 
     // getter & setter
     int Node::getOrder() { return this->order; }
@@ -11,8 +11,10 @@ namespace genogrove {
     void Node::setKeys(std::vector<Key> &keys) { this->keys = keys; }
     std::vector<Node *> &Node::getChildren() { return this->children; }
     void Node::setChildren(std::vector<Node *> children) { this->children = children; }
+    Node* Node::getParent() { return this->parent; }
+    void Node::setParent(Node* parent) { this->parent = parent; }
     void Node::setNext(Node *next) { this->next = next; }
-    Node *Node::getNext() { return this->next; }
+    Node* Node::getNext() { return this->next; }
     void Node::setIsLeaf(bool leaf) { this->isLeaf = leaf; }
     bool Node::getIsLeaf() { return this->isLeaf; }
 

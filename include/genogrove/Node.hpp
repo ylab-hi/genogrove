@@ -26,6 +26,8 @@ namespace genogrove {
             void setKeys(std::vector<Key>& keys);
             std::vector<Node*>& getChildren();
             void setChildren(std::vector<Node*> children);
+            Node* getParent();
+            void setParent(Node* parent);
             void setNext(Node* next);
             Node* getNext();
             void setIsLeaf(bool leaf);
@@ -74,6 +76,7 @@ namespace genogrove {
             int order; // order of the Node
             std::vector<Key> keys;
             std::vector<Node*> children; // children of the Node
+            Node* parent;
             Node* next;
             bool isLeaf; // is the Node a leaf
 
