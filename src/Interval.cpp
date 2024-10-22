@@ -5,6 +5,15 @@ namespace genogrove {
     Interval::Interval(size_t start, size_t end) : start(start), end(end) {}
     Interval::~Interval() {}
 
+    std::strong_ordering Interval::operator<=>(const Interval& other) const {
+        if(this->getStart() == other.getStart()) {
+            return this->getEnd() <=> other.getEnd();
+        } else {
+            return this->getStart() <=> other.getEnd();
+        }
+    }
+
+    /*
     bool Interval::operator<(const Interval& other) const {
         if(this->getStart() == other.getStart()) {
             return this->getEnd() < other.getEnd(); // if start is equal, then check end
@@ -32,7 +41,13 @@ namespace genogrove {
     bool Interval::operator>=(const Interval& other) const {
         if(this->getStart() == other.getStart()) {
             return this->getEnd() >= other.getEnd(); // if start is equal, then check end
+        } else {
+            return this->getStart() >= other.getStart();
         }
+    }*/
+
+    std::string Interval::toString() const {
+        return std::to_string(this->start) + "-" + std::to_string(this->end);
     }
 
     // getter & setter

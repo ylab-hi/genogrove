@@ -5,6 +5,7 @@
 #include <cstddef>
 #include <string>
 #include <iostream>
+#include <compare>
 
 namespace genogrove {
     class Interval {
@@ -16,10 +17,15 @@ namespace genogrove {
             /*
              * @brief operator overloading that compares are non-overlapping (left-most end < right-most start)
              */
+            std::strong_ordering operator<=>(const Interval& other) const;
+            /*
             bool operator<(const Interval& other) const;
             bool operator>(const Interval& other) const;
             bool operator<=(const Interval& other) const;
-            bool operator>=(const Interval& other) const;
+            bool operator>=(const Interval& other) const;*/
+
+            std::string toString() const;
+
 
             /*
              * @brief check if provided interval is left of class interval (no overlaps)
