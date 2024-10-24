@@ -2,7 +2,7 @@
 
 namespace genogrove {
     // constructor
-    Node::Node(int k) : order(k), keys{}, children{}, parent{}, next{}, isLeaf{false} {}
+    Node::Node(int k) : order(k), keys{}, children{}, parent{nullptr}, next{nullptr}, isLeaf{false} {}
 
     // getter & setter
     int Node::getOrder() { return this->order; }
