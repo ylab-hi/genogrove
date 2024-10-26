@@ -47,6 +47,16 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
     std::cout << "Time taken for search: " << searchDuration.count() << " seconds\n\n";
 }
 
+TEST(IBPTreeTestSuite, CreateTreeSorted) {
+    std::srand(std::time(nullptr));
+
+    genogrove::TypeRegistry::registerType<int>(); // register int type
+
+
+}
+
+
+
 
 TEST(IBPTreeTestSuite, benchmark) {
 //
