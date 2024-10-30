@@ -4,14 +4,25 @@
 // Standard
 #include <bitset>
 #include <unordered_map>
+#include <stdexcept>
 
-class Chroms {
+namespace genogrove {
+    static constexpr size_t BITS = 6; // 2^6 = 64 chromosomes (should be enough for now...)
+
+    class Chroms {
     public:
         Chroms();
 
+        //
+        std::bitset<BITS> registerChrom(const std::string& chrom);
+        std::bitset<BITS> getNextBitset() const;
+        std::bitset<BITS> getBitset(std::string chrom) const;
+
     private:
-        static constexpr size_t BITS = 6; // 2^6 = 64 chromosomes (should be enough for now...)
-        std::unordered_map<std::string, std::bitset<BITS>> chromsMap;
-};
+        std::unordered_map<std::string, std::bitset<BITS>> chromosomes;
+        size_t nextValue;
+    };
+}
+
 
 #endif //GENOGROVE_CHROMS_HPP
