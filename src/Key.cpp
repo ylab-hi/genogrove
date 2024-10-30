@@ -15,6 +15,8 @@ namespace genogrove {
     bool Key::operator>(const Key& other) const { return this->interval > other.interval; }
 
     // getter & setter
+    void Key::setStrand(char strand) { this->strand = strand; }
+    char Key::getStrand() { return this->strand; }
     Interval Key::getInterval() { return this->interval; }
     void Key::setInterval(Interval interval) { this->interval = interval; }
     std::shared_ptr<AnyBase> Key::getData() { return this->data; }

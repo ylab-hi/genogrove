@@ -7,12 +7,14 @@
 #include <typeindex>
 #include <optional>
 #include <any>
+#include <bitset>
 
 // Class
 #include "DataTypes.hpp"
 #include "Interval.hpp"
 #include "TypeRegistry.hpp"
 #include "AnyType.hpp"
+#include "Constants.hpp"
 
 /**
  * @file Key.hpp
@@ -56,6 +58,8 @@ namespace genogrove {
         bool operator>(const Key& other) const;
 
         // getter & setter
+        void setStrand(char strand);
+        char getStrand();
         Interval getInterval();
         void setInterval(Interval interval);
         std::shared_ptr<AnyBase> getData();
@@ -70,6 +74,7 @@ namespace genogrove {
         static Key deserialize(std::istream& is);
 
     private:
+        char strand;
         Interval interval;
         std::shared_ptr<AnyBase> data;
         Key* singleLink;
