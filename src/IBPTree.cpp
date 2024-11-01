@@ -1,5 +1,6 @@
 #include "genogrove/IBPTree.hpp"
 
+
 namespace genogrove {
     // constructor
     IBPTree::IBPTree(int k) : order(k), rootnodes{}, rightMostNode{} {}
@@ -22,11 +23,11 @@ namespace genogrove {
         return root;
     }
 
-    Node* IBPTree::insertRoot(std::string key) {
+    Node* IBPTree::insertRoot(std::string chrom) {
         Node* root = new Node(this->order);
         root->setIsLeaf(true); // root node becomes a leaf node
-        this->rootnodes.insert(std::make_pair(key, root));
-        this->rightMostNode.insert(std::make_pair(key, root)); // set as the right most node
+        this->rootnodes.insert(std::make_pair(chrom, root));
+        this->rightMostNode.insert(std::make_pair(chrom, root)); // set as the right most node
         return root;
     }
 
@@ -45,12 +46,23 @@ namespace genogrove {
         }
     }
 
+
     void IBPTree::insertIter(Node* node, Key& key) {
+        if(!node) { throw std::runtime_error("Null node in insertIter"); }
+
         if(node->getIsLeaf()) {
-            node->insertKey(key);
+            try {
+//                std::cout << "Inserting key into leaf node with "
+//                          << node->getKeys().size() << " keys (max: " << this->order << ")" << std::endl;
+                node->insertKey(key);
+            } catch (const std::exception& e) {
+                std::cerr << "Failed to insert key into leaf node: " << e.what() << std::endl;
+                throw;
+            }
         } else {
             int childnum = 0;
             while(childnum < node->getKeys().size() && key > node->getKeys()[childnum]) { childnum++; }
+
             insertIter(node->getChild(childnum), key);
             if(node->getChild(childnum)->getKeys().size() == this->order) {
                 splitNode(node, childnum);
@@ -65,8 +77,10 @@ namespace genogrove {
 
         // move overflowing keys to new child node (and resize the original node)
         newChild->setIsLeaf(child->getIsLeaf());
+
+
         newChild->getKeys().assign(child->getKeys().begin() + mid, child->getKeys().end());
-        child->getKeys().resize(this->order-1); // resize the original node
+        child->getKeys().resize(mid); // resize the original node
 
         // update parent (new child node)
         parent->getChildren().insert(parent->getChildren().begin() + index + 1, newChild);
@@ -90,16 +104,79 @@ namespace genogrove {
         }
     }
 
-    AnyVector IBPTree::overlaps(std::string key, Interval interval) {
-        AnyVector searchResult{};
-//
-        Node* root = getRoot(key); // get the root node
-        if(root == nullptr) { return searchResult; } // return empty vector, as there is no root node for the given key
-        searchIter(root, interval, searchResult);
-        return searchResult;
+    void IBPTree::insertSorted(std::string chrom, Key& key) {
+        // get the root node for the given chromosome (or create a new tree if it does not exist)
+        Node* root = getRoot(chrom);
+        if(root == nullptr) {
+            root = insertRoot(chrom);
+            insertIter(root, key); // For the first key, use regular insert
+            return;
+        }
+
+        // get the rightmost node and check if the key is sorted (greater than the rightmost key)
+        Node* rightMost = getRightMostNode(chrom);
+        if(!rightMost->getKeys().empty() &&
+           key.getInterval() <= rightMost->getKeys().back().getInterval()) {
+            throw std::runtime_error("Key with Interval: " + key.getInterval().toString() + " is not sorted");
+        }
+
+        // insert the key into the rightmost node
+        rightMost->insertKey(key); // insert the key into the rightMost node
+        if(rightMost->getKeys().size() == this->order) {
+            splitNodeSorted(rightMost, chrom);
+        }
     }
 
-    void IBPTree::searchIter(Node* node, const Interval& interval, AnyVector& searchResult) {
+    void IBPTree::splitNodeSorted(Node* node, const std::string& chrom) {
+        if(node == rootnodes[chrom]) { // if node is root - use regular split operation
+            Node* newRoot = new Node(this->order);
+            newRoot->addChild(node, 0);
+            splitNode(newRoot, 0);
+            rootnodes[chrom] = newRoot;
+            return;
+        }
+
+        int childnum = 0;
+        while(childnum < node->getParent()->getChildren().size()) {
+            if(node->getParent()->getChild(childnum) == node) {
+                break;
+            }
+            childnum++;
+        }
+
+        // split the node
+        splitNode(node->getParent(), childnum);
+        if(node->getParent()->getChildren().size() == this->order) {
+            splitNodeSorted(node->getParent(), chrom);
+        }
+    }
+
+    dtp::Hits IBPTree::overlaps(dtp::Coordinate& query) {
+        dtp::Hits hits(query);
+        Node* root = getRoot(query.chromosome);
+        if(root == nullptr) { return hits; } // return empty vector, as there is no root node for the given key
+        searchIter(root, query, hits);
+
+//        AnyVector searchResult{};
+//
+//        Node* root = getRoot(key); // get the root node
+//        if(root == nullptr) { return searchResult; } // return empty vector, as there is no root node for the given key
+//        searchIter(root, interval, searchResult);
+//        return searchResult;
+
+        return hits;
+    }
+
+    dtp::Hits IBPTree::overlaps(std::string chrom, char strand, Interval interval) {
+        dtp::Coordinate query(chrom, strand, interval);
+        dtp::Hits hits(query);
+        Node* root = getRoot(query.chromosome);
+        if(root == nullptr) { return hits; }
+        searchIter(root, query, hits);
+        return hits;
+    }
+
+    void IBPTree::searchIter(Node* node, const dtp::Coordinate& query, dtp::Hits& hits) {
         if(node->getIsLeaf()) {
 //            std::cout << "searchIter: leaf node" << std::endl;
 //            std::cout << "searchIter: interval: " << interval.getStart() << "," << interval.getEnd() << std::endl;
@@ -108,10 +185,18 @@ namespace genogrove {
 //            std::cout << "iterate through keys" << std::endl;
             for(int i = 0; i < node->getKeys().size(); ++i) {
 //                std::cout << "key: " << node->getKeys()[i].getInterval().getStart() << "," << node->getKeys()[i].getInterval().getEnd() << std::endl;
-                if(Interval::overlap(node->getKeys()[i].getInterval(), interval)) {
+                if(Interval::overlap(node->getKeys()[i].getInterval(), query.interval)) {
                     lastMatch = i;
+                    hits.addHit(dtp::Hit(
+                            dtp::Coordinate(
+                                    query.chromosome,
+                                    node->getKeys()[i].getStrand(),
+                                    node->getKeys()[i].getInterval()
+                            ), // coordinate
+                            node->getKeys()[i].getData())); // data
+
 //                    std::cout << "overlap found" << std::endl;
-                    searchResult.push_back(node->getKeys()[i].getData());
+//                    searchResult.push_back(node->getKeys()[i].getData());
                 }
             }
 
@@ -131,14 +216,14 @@ namespace genogrove {
 //                }
 //            }
         } else {
-            if(node->getKeys()[0].getInterval().leftOf(interval)) { return; } // check if interval is left of first key
+            if(node->getKeys()[0].getInterval().leftOf(query.interval)) { return; } // check if interval is left of first key
 
             int i = 0;
             while(i < node->getKeys().size() &&
-                  (interval.getStart() > node->getKeys()[i].getInterval().getStart() &&
-                   interval.getStart() > node->getKeys()[i].getInterval().getEnd())) { i++; }
+                  (query.interval.getStart() > node->getKeys()[i].getInterval().getStart() &&
+                   query.interval.getStart() > node->getKeys()[i].getInterval().getEnd())) { i++; }
             if(node->getChildren()[i] != nullptr) {
-                searchIter(node->getChildren()[i], interval, searchResult);
+                searchIter(node->getChildren()[i], query, hits);
             }
         }
     }
