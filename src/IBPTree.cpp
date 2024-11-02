@@ -52,8 +52,8 @@ namespace genogrove {
 
         if(node->getIsLeaf()) {
             try {
-//                std::cout << "Inserting key into leaf node with "
-//                          << node->getKeys().size() << " keys (max: " << this->order << ")" << std::endl;
+                std::cout << "Inserting key into leaf node with "
+                          << node->getKeys().size() << " keys (max: " << this->order << ")" << std::endl;
                 node->insertKey(key);
             } catch (const std::exception& e) {
                 std::cerr << "Failed to insert key into leaf node: " << e.what() << std::endl;

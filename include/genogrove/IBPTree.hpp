@@ -7,6 +7,8 @@
 
 // Class
 #include "Node.hpp"
+#include "Chroms.hpp"
+#include "DataTypes.hpp"
 
 namespace genogrove {
     class Node; // forward declaration
@@ -38,25 +40,67 @@ namespace genogrove {
              */
             Node* insertRoot(std::string key);
 
+            /*
+             * @brief insert a new data element into the IBPTree
+             */
             template<typename T>
             void insertData(std::string chrom, Interval intvl, T data) {
-                Key key(intvl, data);
+                Key key(intvl, '\0', data);
                 insert(chrom, key);
             }
+
+            template<typename T>
+            void insertData(std::string chrom, Interval intvl, char strand, T data) {
+                Key key(intvl, strand, data);
+                insert(chrom, key);
+            }
+
+            /*
+             * @brief insert a new data element into the IBPTree (sorted)
+             */
+            template<typename T>
+            void insertDataSorted(std::string chrom, Interval intvl, T data) {
+                Key key(intvl, data);
+                insertSorted(chrom, key);
+            }
+
 
             /*
              * @brief insert a new data element into the IBPTree
              * @param the data element to insert
              */
             void insert(std::string chrom, Key& key);
+
+
             void insertIter(Node* node, Key& key);
             /*
              * @brief split a node in the IBPTree
              */
             void splitNode(Node* parent, int index);
 
-            AnyVector overlaps(std::string key, Interval interval);
-            void searchIter(Node* node, const Interval& interval, AnyVector& searchResult);
+            /*
+             * @brief insert a new key into the IBPTree
+             */
+            void insertSorted(std::string, Key& key);
+            /*
+             * @brief split a node in the IBPTree (if the inserted key is sorted)
+             */
+            void splitNodeSorted(Node* node, const std::string& chrom);
+
+            /*
+             * @brief determine the overlaps of a query (dtp::Coordinate) within the tree
+             */
+            dtp::Hits overlaps(dtp::Coordinate& query);
+
+            /*
+             * @brief determine the overlaps of a query (chromosome, strand, interval) within the tree
+             */
+            dtp::Hits overlaps(std::string chrom, char strand, Interval interval);
+
+            /*
+             * @brief
+             */
+            void searchIter(Node* node, const dtp::Coordinate& coordinate, dtp::Hits& hits);
 
             void serialize(std::ostream& os) const;
             static IBPTree deserialize(std::istream& is);
@@ -95,9 +139,10 @@ namespace genogrove {
             void printTree();
 
         private:
+            int order; // order of the IBPTree
+            Chroms chroms;
             std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree
             std::map<std::string, Node*> rightMostNode; // right most node of the IBPTree (for easy insertion)
-            int order; // order of the IBPTree
     }; // class
 }; // namspace
 
