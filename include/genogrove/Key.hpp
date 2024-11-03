@@ -44,11 +44,14 @@ namespace genogrove {
          * @param data element of the key
          */
         template<typename T>
-        Key(Interval intvl, T&& data) :
+        Key(Interval intvl, char strand, T&& data) :
             interval(intvl),
+            strand(strand),
             data(std::make_shared<AnyType<std::decay_t<T>>>(data)),
             singleLink(nullptr),
             multiLink(std::vector<Key*>()) {}
+
+
         /**
          * @brief Destructor of the Key class
          */
@@ -58,10 +61,10 @@ namespace genogrove {
         bool operator>(const Key& other) const;
 
         // getter & setter
-        void setStrand(char strand);
-        char getStrand();
         Interval getInterval();
         void setInterval(Interval interval);
+        char getStrand();
+        void setStrand(char strand);
         std::shared_ptr<AnyBase> getData();
         void setData(std::shared_ptr<AnyBase> data);
         Key* getSingleLink();
@@ -74,8 +77,8 @@ namespace genogrove {
         static Key deserialize(std::istream& is);
 
     private:
-        char strand;
         Interval interval;
+        char strand;
         std::shared_ptr<AnyBase> data;
         Key* singleLink;
         std::vector<Key*> multiLink;
