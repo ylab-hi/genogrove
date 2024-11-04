@@ -23,6 +23,9 @@ namespace genogrove {
 
             Hit(Coordinate coordinate, std::shared_ptr<AnyBase> data) :
                 coordinate(coordinate), data(data) {}
+
+//            Interval getInterval() { return coordinate.interval; }
+//            void setInterval(Interval interval) { coordinate.interval = interval; }
         };
 
         struct Hits {
