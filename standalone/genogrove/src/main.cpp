@@ -26,7 +26,8 @@ std::map<std::string, std::string> parseArgs(int argc, char* argv[], std::vector
 }
 
 int main(int argc, char* argv[]) {
-    std::map<std::string, std::string> options = parseArgs(argc, argv);
+    std::vector<std::string> positional;
+    std::map<std::string, std::string> options = parseArgs(argc, argv, positional);
 
     if(options.count("--help") || options.count("-h")) {
         std::cout << "genogrove: A C++ library for the Interval B+ Tree (IBPTree) data structure" << std::endl;
@@ -36,7 +37,4 @@ int main(int argc, char* argv[]) {
         std::cout << "    -v, --version: Print the version of genogrove" << std::endl;
         return 0;
     }
-
-
-
 }
