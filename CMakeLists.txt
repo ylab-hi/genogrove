@@ -1,112 +1,40 @@
 cmake_minimum_required(VERSION 3.22)
-project(genogrove VERSION 0.1.0)
+project(genogrove_all VERSION 0.1.0)
 set(CMAKE_CXX_STANDARD 20)
 
-configure_file(include/genogrove/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/genogrove/Config.hpp)
+message(STATUS "Building all subprojects")
+include(cmake/tools.cmake)
 
-##### genogrove library #####
-#file(GLOB SOURCES "src/*.cpp")
-#
-##add_library(genogrove ${SOURCES})
-##target_include_directories(genogrove PUBLIC
-##        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-##        $<INSTALL_INTERFACE:include>
-##)
-#add_executable(genogrove ${SOURCES})
-#target_include_directories(genogrove PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
+list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-##### Add GenoGrove as a library #####
-file(GLOB SOURCES "src/*.cpp")
-add_library(genogrove ${SOURCES})
-target_include_directories(genogrove PUBLIC
-        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-        $<INSTALL_INTERFACE:include>
-)
-include(GenerateExportHeader)
-generate_export_header(genogrove)
+option(GENOGROVE_BUILD_STANDALONE "Build standalone" ON)
+option(GENOGROVE_BUILD_PYTHON "Build python binding" ON)
+option(GENOGROVE_BUILD_TESTS "Build tests" OFF)
+option(GENOGROVE_BUILD_BENCHMARK "Build benchmark" OFF)
+option(GENOGROVE_BUILD_DOCUMENTS "Build DOCUMENTS" OFF)
 
-set_target_properties(genogrove PROPERTIES
-        ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-        LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib
-        RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-)
+message(STATUS "Building standalone: ${GENOGROVE_BUILD_STANDALONE}")
+message(STATUS "Building benchmark: ${GENOGROVE_BUILD_BENCHMARK}")
+message(STATUS "Building python binding: ${GENOGROVE_BUILD_PYTHON}")
+message(STATUS "Building tests: ${GENOGROVE_BUILD_TESTS}")
+message(STATUS "Building documents: ${GENOGROVE_BUILD_DOCUMENTS}")
 
-
-# install targets
-install(TARGETS genogrove
-        EXPORT genogrove-targets
-        LIBRARY DESTINATION lib
-        ARCHIVE DESTINATION lib
-        RUNTIME DESTINATION bin
-        INCLUDES DESTINATION include
-)
-
-install(FILES include/genogrove/all.hpp DESTINATION include/genogrove)
-install(DIRECTORY include/genogrove
-        DESTINATION include/genogrove
-        FILES_MATCHING PATTERN "*.hpp"
-)
-install(FILES ${CMAKE_CURRENT_BINARY_DIR}/genogrove_export.h DESTINATION include/genogrove)
-
-export(EXPORT genogrove-targets
-        FILE "${CMAKE_CURRENT_BINARY_DIR}/genogrove-targets.cmake"
-        NAMESPACE genogrove::
-)
-
-include(CMakePackageConfigHelpers)
-write_basic_package_version_file(
-        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
-        VERSION ${PROJECT_VERSION}
-        COMPATIBILITY SameMajorVersion
-)
-
-# create Config.cmake file
-configure_package_config_file(
-        "${CMAKE_CURRENT_SOURCE_DIR}/cmake/genogrove-config.cmake.in"
-        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
-        INSTALL_DESTINATION lib/cmake/genogrove
-)
-
-install(FILES
-        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config.cmake"
-        "${CMAKE_CURRENT_BINARY_DIR}/genogrove-config-version.cmake"
-        DESTINATION lib/cmake/genogrove
-)
-
-# generate and install cmake config files
-install(EXPORT genogrove-targets
-        FILE genogrove-targets.cmake
-        NAMESPACE genogrove::
-        DESTINATION lib/cmake/genogrove
-)
-
-##### Tests #####
-option(TESTS "building unit tests" OFF)
-if(TESTS)
-    message(STATUS "Building unit tests")
-    include(FetchContent)
-    FetchContent_Declare(
-            googletest
-            GIT_REPOSITORY https://github.com/google/googletest.git
-            GIT_TAG        v1.15.0
-    )
-    FetchContent_MakeAvailable(googletest)
-    enable_testing() # enable the testing framework
-    include(GoogleTest)
-
-    file(GLOB SOURCES "src/*.cpp")
-    file(GLOB TEST_SOURCES "tests/*.cpp")
-    add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
-    target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
-    target_link_libraries(IBPTree_Test GTest::gtest_main)
-
-    gtest_discover_tests(IBPTree_Test)
+if(GENOGROVE_BUILD_STANDALONE)
+    add_subdirectory(standalone ${CMAKE_BINARY_DIR}/standalone)
 else()
-    message(STATUS "Building unit tests disabled")
+    add_subdirectory(library ${CMAKE_BINARY_DIR}/library)
 endif()
 
+if (GENOGROVE_BUILD_BENCHMARK)
+    add_subdirectory(benchmark ${CMAKE_BINARY_DIR}/benchmark)
+endif()
 
+if (GENOGROVE_BUILD_PYTHON)
+    add_subdirectory(python ${CMAKE_BINARY_DIR}/python)
+endif()
 
-
-
-
+if(GENOGROVE_BUILD_TESTS)
+    # needed to generate test target
+    enable_testing()
+    add_subdirectory(tests ${CMAKE_BINARY_DIR}/tests)
+endif()
