@@ -28,12 +28,6 @@ find_package(Threads REQUIRED)
 # PackageProject.cmake will be used to make our target installable
 CPMAddPackage("gh:TheLartians/PackageProject.cmake@1.8.0")
 
-CPMAddPackage(
-        NAME spdlog
-        GITHUB_REPOSITORY gabime/spdlog
-        VERSION 1.14.0
-        OPTIONS "SPDLOG_INSTALL YES"
-)
 
 # ---- Add source files ----
 add_library(
@@ -63,19 +57,10 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 # being a cross-platform target, we enforce standards conformance on MSVC
 target_compile_options(${PROJECT_NAME} PUBLIC "$<$<COMPILE_LANG_AND_ID:CXX,MSVC>:/permissive->")
 target_compile_options(${PROJECT_NAME} PUBLIC -Wall -Wextra -Wnon-virtual-dtor -pedantic)
-target_link_libraries(
-        ${PROJECT_NAME}
-        PRIVATE Threads::Threads
-        PUBLIC spdlog::spdlog
-)
-
-target_include_directories(${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${HTSlib_INCLUDE_DIRS}>)
-
 target_include_directories(
         ${PROJECT_NAME} PUBLIC $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/include>
         $<INSTALL_INTERFACE:include/${PROJECT_NAME}-${PROJECT_VERSION}>
 )
-
 set_target_properties(${PROJECT_NAME} PROPERTIES CXX_EXTENSIONS OFF)
 
 # ---- Create an installable target ----
@@ -94,5 +79,4 @@ packageProject(
         INCLUDE_DESTINATION library/include/${PROJECT_NAME}-${PROJECT_VERSION}
         VERSION_HEADER "${VERSION_HEADER_LOCATION}"
         COMPATIBILITY SameMajorVersion
-        DEPENDENCIES "spdlog 1.14.0"
 )
