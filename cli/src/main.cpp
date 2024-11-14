@@ -21,7 +21,7 @@ std::unique_ptr<Subcall> createSubcall(const std::string& subcall) {
 void printGeneralHelp(cxxopts::Options& options) {
     std::cout << options.help() << "\n";
     std::cout << "Available subcommands: \n";
-    std::cout << "\tindex:\tIndex an Interval File\n";
+    std::cout << "\tindex:\t\tIndex an Interval File\n";
     std::cout << "\toverlap:\tSearch for interval overlaps in the index\n";
     std::cout << "For more details on a subcommand, use the --help option with the subcommand.\n";
 }
@@ -39,15 +39,11 @@ int main(int argc, char** argv) {
     auto args = options.parse(argc, argv);
 
     // check if the help option was selected (on the main level)
-    if(args.count("help") || !args.count("subcall")) {
-        std::cout << options.help() << std::endl;
-        return 0;
-    }
-
-    if(!args.count("subcall")) {
-        std::cerr << "Error: No subcommand has been specified.\n";
-        std::cerr << options.help() << std::endl;
-        return 1;
+    if(args.count("help")) {
+        if(!args.count("subcall")) {
+            printGeneralHelp(options);
+            return 0;
+        }
     }
 
     std::string subcall = args["subcall"].as<std::string>();
@@ -61,6 +57,10 @@ int main(int argc, char** argv) {
 
     // parse additional options for the subcommand
     auto subcallArgs = command->parseArgs(argc, argv);
+    if(subcallArgs.count("help")) {
 
+        command->printHelp(options);
+        return 0;
+    }
 }
 
