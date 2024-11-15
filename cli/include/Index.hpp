@@ -12,6 +12,7 @@ class Index : public Subcall {
     public:
         cxxopts::ParseResult parseArgs(int argc, char** argv) override;
         void execute(const cxxopts::ParseResult& args) override;
+
 };
 
 #endif //GENOGROVE_INDEX_HPP

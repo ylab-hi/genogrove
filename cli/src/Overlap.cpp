@@ -1,25 +1,28 @@
 #include "Overlap.hpp"
 
 cxxopts::ParseResult Overlap::parseArgs(int argc, char** argv) {
-    cxxopts::Options options("overlap", "Search for interval overlaps in the index");
+    cxxopts::Options options("index", "Index an Interval File");
     options.add_options()
-            ("input", "The search string or file to search for",
-                    cxxopts::value<std::string>())
-            ("o, output", "The output file to store the overlaps",
-                    cxxopts::value<std::string>())
+            ("inputfile", "The input file to be indexed",
+             cxxopts::value<std::string>())
+            ("-o, outputfile", "Write the index to the specified file",
+             cxxopts::value<std::string>()->default_value(""))
+            ("k, order", "The order of the tree (default: 3)",
+             cxxopts::value<int>()->default_value("3"))
             ;
-    options.parse_positional({"input"});
+    options.parse_positional({"inputfile"});
     return options.parse(argc, argv);
 }
 
+
 void Overlap::execute(const cxxopts::ParseResult& args) {
-    if(args.count("input")) {
-        std::string input = args["input"].as<std::string>();
-        std::cout << "Searching for overlaps in file: " << input << std::endl;
+    if(args.count("inputfile")) {
+        std::string inputfile = args["inputfile"].as<std::string>();
+        std::cout << "Indexing file: " << inputfile << std::endl;
     }
 
-    if(args.count("output")) {
-        std::string output = args["output"].as<std::string>();
-        std::cout << "Writing overlaps to file: " << output << std::endl;
+    if(args.count("outputfile")) {
+        std::string outputfile = args["outputfile"].as<std::string>();
+        std::cout << "Writing index to file: " << outputfile << std::endl;
     }
 }

@@ -56,11 +56,7 @@ int main(int argc, char** argv) {
     }
 
     // parse additional options for the subcommand
-    auto subcallArgs = command->parseArgs(argc, argv);
-    if(subcallArgs.count("help")) {
-
-        command->printHelp(options);
-        return 0;
-    }
+    cxxopts::ParseResult subcallArgs = command->parseArgs(argc, argv);
+    command->execute(subcallArgs);
 }
 

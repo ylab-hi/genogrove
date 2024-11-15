@@ -5,14 +5,22 @@ cxxopts::ParseResult Index::parseArgs(int argc, char** argv) {
     options.add_options()
             ("inputfile", "The input file to be indexed",
                     cxxopts::value<std::string>())
-            ("-o, outputfile", "Write the index to the specified file",
+            ("o, outputfile", "Write the index to the specified file",
                     cxxopts::value<std::string>())
             ("k, order", "The order of the tree (default: 3)",
                     cxxopts::value<int>()->default_value("3"))
+            ("h, help", "Print help")
+
             ;
     options.parse_positional({"inputfile"});
-    return options.parse(argc, argv);
+    cxxopts::ParseResult args = options.parse(argc, argv);
+
+    if(args.count("help")) {
+        options.help();
+    }
+    return args;
 }
+
 
 void Index::execute(const cxxopts::ParseResult& args) {
     if(args.count("inputfile")) {
