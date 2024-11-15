@@ -1,6 +1,9 @@
 #ifndef GENOGROVE_INDEX_HPP
 #define GENOGROVE_INDEX_HPP
 
+// Standard
+#include <cstdlib>
+
 // Class
 #include "genogrove/all.hpp"
 #include "Subcall.hpp"
@@ -10,7 +13,7 @@
 
 class Index : public Subcall {
     public:
-        cxxopts::ParseResult parseArgs(int argc, char** argv) override;
+        cxxopts::Options parseArgs(int argc, char** argv) override;
         void execute(const cxxopts::ParseResult& args) override;
 
 };

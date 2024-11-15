@@ -12,7 +12,7 @@
 
 class Overlap : public Subcall {
     public:
-        cxxopts::ParseResult parseArgs(int argc, char** argv) override;
+        cxxopts::Options parseArgs(int argc, char** argv) override;
         void execute(const cxxopts::ParseResult& args) override;
 
         // getter & setter

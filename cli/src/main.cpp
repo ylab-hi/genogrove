@@ -56,7 +56,12 @@ int main(int argc, char** argv) {
     }
 
     // parse additional options for the subcommand
-    cxxopts::ParseResult subcallArgs = command->parseArgs(argc, argv);
-    command->execute(subcallArgs);
+    cxxopts::Options subcallOptions = command->parseArgs(argc, argv);
+    cxxopts::ParseResult subcallArgs = subcallOptions.parse(argc, argv);
+
+    if(subcallArgs.count("help")) {
+        std::cout << subcallOptions.help() << "\n";
+        return 0;
+    }
 }
 

@@ -1,6 +1,6 @@
 #include "Overlap.hpp"
 
-cxxopts::ParseResult Overlap::parseArgs(int argc, char** argv) {
+cxxopts::Options Overlap::parseArgs(int argc, char** argv) {
     cxxopts::Options options("index", "Index an Interval File");
     options.add_options()
             ("inputfile", "The input file to be indexed",
@@ -11,7 +11,7 @@ cxxopts::ParseResult Overlap::parseArgs(int argc, char** argv) {
              cxxopts::value<int>()->default_value("3"))
             ;
     options.parse_positional({"inputfile"});
-    return options.parse(argc, argv);
+    return options;
 }
 
 

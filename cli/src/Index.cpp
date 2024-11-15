@@ -1,7 +1,7 @@
 #include "Index.hpp"
 
-cxxopts::ParseResult Index::parseArgs(int argc, char** argv) {
-    cxxopts::Options options("index", "Index an Interval File");
+cxxopts::Options Index::parseArgs(int argc, char** argv) {
+    cxxopts::Options options("genogrove index", "Index an Interval File");
     options.add_options()
             ("inputfile", "The input file to be indexed",
                     cxxopts::value<std::string>())
@@ -13,14 +13,10 @@ cxxopts::ParseResult Index::parseArgs(int argc, char** argv) {
 
             ;
     options.parse_positional({"inputfile"});
-    cxxopts::ParseResult args = options.parse(argc, argv);
+    options.positional_help("inputfile");
 
-    if(args.count("help")) {
-        options.help();
-    }
-    return args;
+    return options;
 }
-
 
 void Index::execute(const cxxopts::ParseResult& args) {
     if(args.count("inputfile")) {
