@@ -21,7 +21,7 @@ namespace genogrove {
 
     class FileTypeDetector {
         public:
-            std::tuple<FileType, std::bitset<1>> detectFileType(const std::filesystem::path& filepath);
+            std::tuple<FileType, bool> detectFileType(const std::filesystem::path& filepath);
     };
 }
 
