@@ -7,6 +7,7 @@
 // Class
 #include "genogrove/all.hpp"
 #include "Subcall.hpp"
+#include "FileValidatorFactory.hpp"
 
 // CXXopts
 #include "cxxopts.hpp"
