@@ -1,8 +1,16 @@
-//
-// Created by Richard Albin Schaefer on 11/17/24.
-//
-
 #ifndef GENOGROVE_FILEREADER_HPP
 #define GENOGROVE_FILEREADER_HPP
+
+// Class
+#include "genogrove/Interval.hpp"
+#include "FileEntry.hpp"
+
+class FileReader {
+    public:
+        virtual bool readNext(FileEntry& entry) = 0;
+        virtual bool hasNext() = 0;
+        virtual std::string getErrorMessage() = 0;
+        virtual ~FileReader() = default;
+};
 
 #endif //GENOGROVE_FILEREADER_HPP

@@ -22,14 +22,20 @@ CPMAddPackage(
             "CXXOPTS_BUILD_EXAMPLES OFF"
             "CXXOPTS_BUILD_TESTS OFF"
 )
+CPMAddPackage(
+        NAME zlib
+        GITHUB_REPOSITORY madler/zlib
+        GIT_TAG v1.3.1
+)
 
 file(GLOB GG_LIB_SOURCES "../src/*.cpp")
 file(GLOB GG_CLI_SOURCES "src/*.cpp")
 
 add_executable(genogrove_cli ${GG_LIB_SOURCES} ${GG_CLI_SOURCES})
-target_include_directories(genogrove_cli PUBLIC "${cxxopts_SOURCE_DIR}/include/")
-target_include_directories(genogrove_cli PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../include/")
-target_link_libraries(genogrove_cli cxxopts)
+target_include_directories(genogrove_cli PUBLIC "${cxxopts_SOURCE_DIR}/include/") # cxxopts header files
+target_include_directories(genogrove_cli PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/../include/") # genogrove header files
+target_include_directories(genogrove_cli PUBLIC include) # cli header files
+target_link_libraries(genogrove_cli cxxopts zlibstatic)
 
 # set the output directory for the executable
 set_target_properties(genogrove_cli PROPERTIES
