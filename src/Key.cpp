@@ -4,9 +4,9 @@ namespace genogrove {
     /**
      * @details The default constructor create an empty Key object
      */
-    Key::Key() : interval(std::string::npos, std::string::npos), strand('\0'), data(nullptr),
+    Key::Key() : interval(std::string::npos, std::string::npos), strand('.'), data(nullptr),
         singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
-    Key::Key(Interval intvl) : interval(intvl), strand('\0'), data(nullptr),
+    Key::Key(Interval intvl) : interval(intvl), strand('.'), data(nullptr),
         singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
     Key::~Key() {}
 

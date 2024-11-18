@@ -40,20 +40,30 @@ namespace genogrove {
              */
             Node* insertRoot(std::string key);
 
+
             /*
              * @brief insert a new data element into the IBPTree
+             * @param chromosome to be inserted
+             * @param interval to be inserted
+             * @param strand to be inserted
+             * @param data to be inserted
              */
-            template<typename T>
-            void insertData(std::string chrom, Interval intvl, T data) {
-                Key key(intvl, '\0', data);
-                insert(chrom, key);
-            }
-
             template<typename T>
             void insertData(std::string chrom, Interval intvl, char strand, T data) {
                 Key key(intvl, strand, data);
                 insert(chrom, key);
             }
+
+            /*
+             * @brief insert a new data element into the IBPTree (without data)
+             * @param chromosome to be inserted
+             * @param interval to be inserted
+             * @param strand to be inserted
+             */
+            void insertData(std::string chrom, Interval intvl, char strand) {
+                Key key(intvl, strand, nullptr);
+            }
+
 
             /*
              * @brief insert a new data element into the IBPTree (sorted)
