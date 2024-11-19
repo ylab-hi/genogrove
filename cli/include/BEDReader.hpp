@@ -5,6 +5,7 @@
 #include <string>
 #include <filesystem>
 #include <istream>
+#include <fstream>
 #include <algorithm>
 
 // Class
@@ -18,9 +19,10 @@ class BEDReader : public FileReader {
         bool readNext(FileEntry& entry) override;
         bool hasNext() override;
         std::string getErrorMessage() override;
+        size_t getCurrentLine() override;
 
     private:
-        std::unique_ptr<std::istream> inputStream;
+        std::unique_ptr<std::ifstream> inputStream;
         std::string errorMessage;
         size_t lineNum;
 };

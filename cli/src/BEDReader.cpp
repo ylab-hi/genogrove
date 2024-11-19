@@ -6,7 +6,10 @@ BEDReader::BEDReader(const std::filesystem::path& filepath, bool gzipped) {
     if(gzipped) {
         // open file gzipped
     } else {
-//        inputStream = std::make_unique<std::ifstream>(filepath);
+        inputStream = std::make_unique<std::ifstream>(filepath);
+        if(!inputStream->is_open()) {
+            throw std::runtime_error("Failed to open file: " + filepath.string());
+        }
     }
 }
 
@@ -39,7 +42,12 @@ bool BEDReader::readNext(FileEntry& entry) {
             errorMessage = "Start coordinate must be less than end coordinate at line " + std::to_string(lineNum);
             return false;
         }
-        FileEntry entry(chrom, genogrove::Interval{startNum, endNum}, '\0');
+
+        // modify the passen entry
+        entry.chrom = chrom;
+        entry.interval = genogrove::Interval{startNum, endNum};
+        entry.strand = '.';
+
         lineNum++;
         return true;
 
@@ -55,5 +63,9 @@ bool BEDReader::hasNext() {
 
 std::string BEDReader::getErrorMessage() {
     return errorMessage;
+}
+
+size_t BEDReader::getCurrentLine() {
+    return lineNum;
 }
 

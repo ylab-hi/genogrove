@@ -21,46 +21,34 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
 
 void Index::execute(const cxxopts::ParseResult& args) {
     std::cout << "Indexing file: " << args["inputfile"].as<std::string>() << std::endl;
-    genogrove::IBPTree tree(args["order"].as<int>());
-    genogrove::BEDfileValidator validator;
 
-    std::string inputfile = args["inputfile"].as<std::string>();
-    // detect the file type
-    auto [filetype, gzipped] = genogrove::FileTypeDetector().detectFileType(inputfile);
-    // validate the file
-    std::string errorMessage;
-    if(!genogrove::FileValidatorFactory::validate(inputfile, filetype, gzipped, errorMessage)) {
-        std::cerr << "Error validating file: " << errorMessage << "\n";
-        return;
+    std::filesystem::path inputfile = std::filesystem::path(args["inputfile"].as<std::string>());
+    auto [filetype, gzipped] = FileTypeDetector().detectFileType(inputfile); // detect the file type
+    // create the reader (according to the file type) - FileReaderFactory
+    std::unique_ptr<FileReader> reader = FileReaderFactory::create(inputfile, filetype, gzipped);
+
+    genogrove::IBPTree tree(args["order"].as<int>()); // create the tree (with the specified order)
+    FileEntry entry;
+    while(reader->hasNext()) {
+//        std::cout << "Reading entry: " << reader->getCurrentLine() << std::endl;
+        if(!reader->readNext(entry)) {
+            std::cerr << reader->getErrorMessage() << std::endl;
+            return;
+        }
+        std::cout << "chrom: " << entry.chrom << std::endl;
+        tree.insertData(entry.chrom, entry.interval, entry.strand);
     }
 
-    std::cout << "Successfully validated file\n";
-
-
-
-
-
-
-//    if(!validator.validate(inputfile)) {
-//        std::cerr << validator.getErrorMessage() << std::endl;
-//        return;
-//    }
-//
-//
-
-
-
-
-
-
-
-    if(args.count("inputfile")) {
-        std::string inputfile = args["inputfile"].as<std::string>();
-        std::cout << "Indexing file: " << inputfile << std::endl;
-    }
-
-    if(args.count("outputfile")) {
-        std::string outputfile = args["outputfile"].as<std::string>();
+    // write the tree to a file
+    std::filesystem::path outputfile;
+    if(args.count("outputfile")) { // check if an output file was specified
+        outputfile = std::filesystem::path(args["outputfile"].as<std::string>());
+    } else { // if not, write to inputfile.gg (with a .gg extension)
+        outputfile = inputfile.replace_extension(".gg");
         std::cout << "Writing index to file: " << outputfile << std::endl;
     }
+
+    // serialize the tree
+    tree.store(outputfile);
+
 }

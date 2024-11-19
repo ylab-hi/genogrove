@@ -62,6 +62,7 @@ namespace genogrove {
              */
             void insertData(std::string chrom, Interval intvl, char strand) {
                 Key key(intvl, strand, nullptr);
+                insert(chrom, key);
             }
 
 

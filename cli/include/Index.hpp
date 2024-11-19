@@ -7,7 +7,11 @@
 // Class
 #include "genogrove/all.hpp"
 #include "Subcall.hpp"
-#include "FileValidatorFactory.hpp"
+#include "FileReader.hpp"
+#include "BEDReader.hpp"
+#include "FileEntry.hpp"
+#include "FileTypeDetector.hpp"
+#include "FileReaderFactory.hpp"
 
 // CXXopts
 #include "cxxopts.hpp"

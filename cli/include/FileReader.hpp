@@ -10,6 +10,7 @@ class FileReader {
         virtual bool readNext(FileEntry& entry) = 0;
         virtual bool hasNext() = 0;
         virtual std::string getErrorMessage() = 0;
+        virtual size_t getCurrentLine() = 0;
         virtual ~FileReader() = default;
 };
 
