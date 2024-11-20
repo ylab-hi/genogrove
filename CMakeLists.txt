@@ -1,19 +1,10 @@
 cmake_minimum_required(VERSION 3.22)
 project(genogrove VERSION 0.1.0)
+
 set(CMAKE_CXX_STANDARD 20)
 
 configure_file(include/genogrove/Config.hpp.in ${CMAKE_CURRENT_SOURCE_DIR}/include/genogrove/Config.hpp)
 
-##### genogrove library #####
-#file(GLOB SOURCES "src/*.cpp")
-#
-##add_library(genogrove ${SOURCES})
-##target_include_directories(genogrove PUBLIC
-##        $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
-##        $<INSTALL_INTERFACE:include>
-##)
-#add_executable(genogrove ${SOURCES})
-#target_include_directories(genogrove PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 ##### Add GenoGrove as a library #####
 file(GLOB SOURCES "src/*.cpp")
@@ -80,6 +71,13 @@ install(EXPORT genogrove-targets
         DESTINATION lib/cmake/genogrove
 )
 
+# Build the CLI (if requested)
+option(BUILD_CLI "Building the command line interface" OFF)
+if(BUILD_CLI)
+    message(STATUS "Building the command line interface")
+    add_subdirectory(cli)
+endif()
+
 ##### Tests #####
 option(TESTS "building unit tests" OFF)
 if(TESTS)
@@ -95,6 +93,7 @@ if(TESTS)
     include(GoogleTest)
 
     file(GLOB SOURCES "src/*.cpp")
+    list(REMOVE_ITEM SOURCES "tests/main.cpp") # remove the main.cpp file from the test sources
     file(GLOB TEST_SOURCES "tests/*.cpp")
     add_executable(IBPTree_Test ${SOURCES} ${TEST_SOURCES})
     target_include_directories(IBPTree_Test PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
