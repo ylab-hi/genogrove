@@ -137,6 +137,9 @@ namespace genogrove {
              */
             static IBPTree load(std::string filename);
 
+            /*
+             * @brief export the tree as standard interaction format (SIF)
+             */
             void exportTree(std::string filename, std::string format);
 
             /*
