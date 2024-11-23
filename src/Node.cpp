@@ -103,6 +103,13 @@ namespace genogrove {
         }
         return node;
     }
+
+    void Node::printKeys(std::ostream& os, std::string sep) {
+        for(auto& key : this->getKeys()) {
+            os << key.getStrand() << ":" << key.getInterval().toString() << sep;
+        }
+        os << "\n";
+    }
 }
 
 

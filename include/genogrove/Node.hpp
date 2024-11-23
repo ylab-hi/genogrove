@@ -72,6 +72,11 @@ namespace genogrove {
             void serialize(std::ostream& os);
             static Node* deserialize(std::istream& is, int order);
 
+            /*
+             * @brief prints the keys of the node to an output stream
+             */
+            void printKeys(std::ostream& os, std::string sep="\t");
+
         private:
             int order; // order of the Node
             std::vector<Key> keys;
