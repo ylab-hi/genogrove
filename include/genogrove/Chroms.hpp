@@ -6,20 +6,22 @@
 #include <unordered_map>
 #include <stdexcept>
 
+// Class
+#include "Constants.hpp"
+
 namespace genogrove {
-    static constexpr size_t BITS = 6; // 2^6 = 64 chromosomes (should be enough for now...)
 
     class Chroms {
     public:
         Chroms();
 
         //
-        std::bitset<BITS> registerChrom(const std::string& chrom);
-        std::bitset<BITS> getNextBitset() const;
-        std::bitset<BITS> getBitset(std::string chrom) const;
+        std::bitset<constants::BITS> registerChrom(const std::string& chrom);
+        std::bitset<constants::BITS> getNextBitset() const;
+        std::bitset<constants::BITS> getBitset(std::string chrom) const;
 
     private:
-        std::unordered_map<std::string, std::bitset<BITS>> chromosomes;
+        std::unordered_map<std::string, std::bitset<constants::BITS>> chromosomes;
         size_t nextValue;
     };
 }

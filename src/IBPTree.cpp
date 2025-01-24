@@ -52,8 +52,8 @@ namespace genogrove {
 
         if(node->getIsLeaf()) {
             try {
-                std::cout << "Inserting key into leaf node with "
-                          << node->getKeys().size() << " keys (max: " << this->order << ")" << std::endl;
+//                std::cout << "Inserting key into leaf node with "
+//                          << node->getKeys().size() << " keys (max: " << this->order << ")" << std::endl;
                 node->insertKey(key);
             } catch (const std::exception& e) {
                 std::cerr << "Failed to insert key into leaf node: " << e.what() << std::endl;
@@ -310,7 +310,18 @@ namespace genogrove {
     }
 
     void IBPTree::exportTreeSIF(std::string filename) {
+        std::ofstream ofs(filename);
 
+//        for(auto& [chrom, root] : this->rootnodes) {
+//            // traverse through the trees
+//            std::cout << "chrom: " << chrom << std::endl;
+//            ofs <<
+//
+//
+//
+//
+//
+//        }
     }
 
 
