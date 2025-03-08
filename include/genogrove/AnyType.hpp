@@ -5,9 +5,11 @@
 #include <string>
 #include <typeindex>
 
+namespace genogrove::core {
 
-namespace genogrove {
-
+    /*
+     * @brief This is an abstract class for storing any type of data
+     */
     class AnyBase {
     public:
         virtual ~AnyBase() = default;
@@ -20,6 +22,9 @@ namespace genogrove {
 
     };
 
+    /*
+     * @brief This is a template class for storing any type of data
+     */
     template<typename T>
     class AnyType : public AnyBase {
         private:
