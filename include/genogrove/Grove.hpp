@@ -10,16 +10,16 @@
 #include "Chroms.hpp"
 #include "DataTypes.hpp"
 
-namespace genogrove {
+namespace genogrove::structure {
     class Node; // forward declaration
 
-    using AnyVector = std::vector<std::shared_ptr<genogrove::AnyBase>>;
+    using AnyVector = std::vector<std::shared_ptr<genogrove::structure::AnyBase>>;
 
-    class IBPTree {
+    class Grove {
         public:
-            IBPTree(int k); // create a new IBPTree with a given order k
-            IBPTree(); // create a new IBPTree with default order
-            ~IBPTree(); // destructor
+            Grove(int k); // create a new Grove with a given order k
+            Grove(); // create a new Grove with default order
+            ~Grove(); // destructor
 
             // getter & setter
             int getOrder();
@@ -30,19 +30,19 @@ namespace genogrove {
             void setRightMostNode(std::string chrom, Node* node);
 
             /*
-             * @brief get the root node of the IBPTree for a given key
+             * @brief get the root node of the Grove for a given key
              * @param the key associated with the root node
              */
             Node* getRoot(std::string key);
 
             /*
-             * @brief insert a new root node into the IBPTree
+             * @brief insert a new root node into the Grove
              */
             Node* insertRoot(std::string key);
 
 
             /*
-             * @brief insert a new data element into the IBPTree
+             * @brief insert a new data element into the Grove
              * @param chromosome to be inserted
              * @param interval to be inserted
              * @param strand to be inserted
@@ -55,7 +55,7 @@ namespace genogrove {
             }
 
             /*
-             * @brief insert a new data element into the IBPTree (without data)
+             * @brief insert a new data element into the Grove (without data)
              * @param chromosome to be inserted
              * @param interval to be inserted
              * @param strand to be inserted
@@ -67,7 +67,7 @@ namespace genogrove {
 
 
             /*
-             * @brief insert a new data element into the IBPTree (sorted)
+             * @brief insert a new data element into the Grove (sorted)
              */
             template<typename T>
             void insertDataSorted(std::string chrom, Interval intvl, T data) {
@@ -77,7 +77,7 @@ namespace genogrove {
 
 
             /*
-             * @brief insert a new data element into the IBPTree
+             * @brief insert a new data element into the Grove
              * @param the data element to insert
              */
             void insert(std::string chrom, Key& key);
@@ -85,16 +85,16 @@ namespace genogrove {
 
             void insertIter(Node* node, Key& key);
             /*
-             * @brief split a node in the IBPTree
+             * @brief split a node in the Grove
              */
             void splitNode(Node* parent, int index);
 
             /*
-             * @brief insert a new key into the IBPTree
+             * @brief insert a new key into the Grove
              */
             void insertSorted(std::string, Key& key);
             /*
-             * @brief split a node in the IBPTree (if the inserted key is sorted)
+             * @brief split a node in the Grove (if the inserted key is sorted)
              */
             void splitNodeSorted(Node* node, const std::string& chrom);
 
@@ -114,7 +114,7 @@ namespace genogrove {
             void searchIter(Node* node, const dtp::Coordinate& coordinate, dtp::Hits& hits);
 
             void serialize(std::ostream& os) const;
-            static IBPTree deserialize(std::istream& is);
+            static Grove deserialize(std::istream& is);
 
             /*
              * @brief rebuild the next pointers of the nodes in the tree
@@ -135,7 +135,7 @@ namespace genogrove {
             /*
              * @brief load the genogrove index/tree from a (binary) file
              */
-            static IBPTree load(std::string filename);
+            static Grove load(std::string filename);
 
             /*
              * @brief export the tree as standard interaction format (SIF)
@@ -153,10 +153,10 @@ namespace genogrove {
             void printTree();
 
         private:
-            int order; // order of the IBPTree
+            int order; // order of the Grove
             Chroms chroms;
-            std::map<std::string, Node*> rootnodes; // root nodes of the IBPTree
-            std::map<std::string, Node*> rightMostNode; // right most node of the IBPTree (for easy insertion)
+            std::map<std::string, Node*> rootnodes; // root nodes of the Grove
+            std::map<std::string, Node*> rightMostNode; // right most node of the Grove (for easy insertion)
     }; // class
 }; // namspace
 

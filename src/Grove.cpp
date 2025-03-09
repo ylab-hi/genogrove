@@ -1,11 +1,11 @@
-#include "genogrove/IBPTree.hpp"
+#include "genogrove/Grove.hpp"
 
 
-namespace genogrove {
+namespace genogrove::structure {
     // constructor
-    IBPTree::IBPTree(int k) : order(k), rootnodes{}, rightMostNode{} {}
-    IBPTree::IBPTree(): order(3), rootnodes{}, rightMostNode{} {}
-    IBPTree::~IBPTree() {}
+    Grove::Grove(int k) : order(k), rootnodes{}, rightMostNode{} {}
+    Grove::Grove(): order(3), rootnodes{}, rightMostNode{} {}
+    Grove::~Grove() {}
 
     int IBPTree::getOrder() { return this->order; }
     void IBPTree::setOrder(int k) { this->order = k; }
@@ -248,7 +248,7 @@ namespace genogrove {
     IBPTree IBPTree::deserialize(std::istream& is) {
         int order;
         is.read(reinterpret_cast<char*>(&order), sizeof(order));
-        IBPTree tree(order);
+        Grove tree(order);
 
         size_t rootnodeCount;
         is.read(reinterpret_cast<char*>(&rootnodeCount), sizeof(rootnodeCount));
@@ -306,7 +306,7 @@ namespace genogrove {
 
     IBPTree IBPTree::load(std::string filename) {
         std::ifstream ifs(filename, std::ios::binary);
-        return genogrove::IBPTree::deserialize(ifs);
+        return genogrove::Grove::deserialize(ifs);
     }
 
     void IBPTree::exportTreeSIF(std::string filename) {
@@ -327,7 +327,7 @@ namespace genogrove {
 
 
 
-//    void IBPTree::printTree() {
+//    void Grove::printTree() {
 //
 //    }
 
