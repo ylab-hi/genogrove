@@ -1,6 +1,6 @@
 #include "genogrove/Node.hpp"
 
-namespace genogrove {
+namespace genogrove::structure {
     // constructor
     Node::Node(int k) : order(k), keys{}, children{}, parent{nullptr}, next{nullptr}, isLeaf{false} {}
 

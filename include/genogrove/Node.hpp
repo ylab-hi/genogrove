@@ -10,7 +10,7 @@
 #include "Key.hpp"
 #include "DataTypes.hpp"
 
-namespace genogrove {
+namespace genogrove::structure {
     class Key; // forward declaration
     using KeyPtr = std::shared_ptr<Key>;
 
