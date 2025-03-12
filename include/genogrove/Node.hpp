@@ -10,6 +10,8 @@
 #include "Key.hpp"
 #include "DataTypes.hpp"
 
+namespace ggt = genogrove::type;
+
 namespace genogrove::structure {
     class Key; // forward declaration
     using KeyPtr = std::shared_ptr<Key>;
@@ -43,7 +45,7 @@ namespace genogrove::structure {
             /*
              * @brief calculates the (parent) node interval based on the keys (of the child)
              */
-            Interval calcParentKey();
+            ggt::Interval calcParentKey();
     //
     //        /*
     //         * @brief moves keys from one node to another

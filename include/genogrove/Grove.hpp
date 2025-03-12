@@ -10,10 +10,12 @@
 #include "Chroms.hpp"
 #include "DataTypes.hpp"
 
+namespace ggt = genogrove::type;
+
 namespace genogrove::structure {
     class Node; // forward declaration
 
-    using AnyVector = std::vector<std::shared_ptr<genogrove::structure::AnyBase>>;
+    using AnyVector = std::vector<std::shared_ptr<ggt::AnyBase>>;
 
     class Grove {
         public:

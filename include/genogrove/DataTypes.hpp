@@ -6,7 +6,7 @@
 #include "AnyType.hpp"
 
 namespace genogrove {
-    namespace dtp {
+    namespace type {
         // genomic coordinates
         struct Coordinate {
             std::string chromosome;

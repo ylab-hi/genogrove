@@ -5,7 +5,7 @@
 #include <string>
 #include <typeindex>
 
-namespace genogrove::core {
+namespace genogrove::type {
 
     /*
      * @brief This is an abstract class for storing any type of data

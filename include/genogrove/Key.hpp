@@ -16,16 +16,18 @@
 #include "AnyType.hpp"
 #include "Constants.hpp"
 
+namespace ggt = genogrove::type;
+
 /**
  * @file Key.hpp
  */
-namespace genogrove {
+namespace genogrove::structure {
     // \brief forward declaration of the Interval class
     class Interval; // forward declaration
 
     /**
      * @brief The Key class
-     * @details The Key class is used to store the Key of the node in the IBPTree.
+     * @details The Key class is used to store the Key of the node in the Grove.
      */
     class Key {
     public:
@@ -37,17 +39,17 @@ namespace genogrove {
          * @brief Constructor for a key with an interval
          * @param Interval of the key
          */
-        Key(Interval interval);
+        Key(ggt::Interval interval);
         /**
          * @brief Constructor of a key with an Interval and (arbitrary) data element
          * @param Interval of the key
          * @param data element of the key
          */
         template<typename T>
-        Key(Interval intvl, char strand, T&& data) :
+        Key(ggt::Interval intvl, char strand, T&& data) :
             interval(intvl),
             strand(strand),
-            data(std::make_shared<AnyType<std::decay_t<T>>>(data)),
+            data(std::make_shared<ggt::AnyType<std::decay_t<T>>>(data)),
             singleLink(nullptr),
             multiLink(std::vector<Key*>()) {}
 
@@ -61,12 +63,12 @@ namespace genogrove {
         bool operator>(const Key& other) const;
 
         // getter & setter
-        Interval getInterval();
-        void setInterval(Interval interval);
+        ggt::Interval getInterval();
+        void setInterval(ggt::Interval interval);
         char getStrand();
         void setStrand(char strand);
-        std::shared_ptr<AnyBase> getData();
-        void setData(std::shared_ptr<AnyBase> data);
+        std::shared_ptr<ggt::AnyBase> getData();
+        void setData(std::shared_ptr<ggt::AnyBase> data);
         Key* getSingleLink();
         void setSingleLink(Key* singleLink);
         std::vector<Key*> getMultiLink();
@@ -77,9 +79,9 @@ namespace genogrove {
         static Key deserialize(std::istream& is);
 
     private:
-        Interval interval;
+        ggt::Interval interval;
         char strand;
-        std::shared_ptr<AnyBase> data;
+        std::shared_ptr<ggt::AnyBase> data;
         Key* singleLink;
         std::vector<Key*> multiLink;
     };

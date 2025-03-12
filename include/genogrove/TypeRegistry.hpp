@@ -16,7 +16,9 @@
 // Class
 #include "AnyType.hpp"
 
-namespace genogrove {
+namespace ggt = genogrove::type;
+
+namespace genogrove::type {
     class AnyBase;
 
     using castFunction = std::function<std::any(const std::shared_ptr<AnyBase>&)>;
@@ -100,6 +102,5 @@ namespace genogrove {
         static std::unordered_map<std::string, factoryFunction> factoryFunctions;
     };
 }
-
 
 #endif //GENOGROVE_TYPEREGISTRY_HPP

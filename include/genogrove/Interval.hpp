@@ -7,7 +7,7 @@
 #include <iostream>
 #include <compare>
 
-namespace genogrove {
+namespace genogrove::type {
     class Interval {
         public:
             Interval();
