@@ -9,8 +9,8 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
                     cxxopts::value<std::string>())
             ("k, order", "The order of the tree",
                     cxxopts::value<int>()->default_value("3"))
+//            ("s, sorted", "Interval in the input file are sorted")
             ("h, help", "Print help")
-
             ;
     options.parse_positional({"inputfile"});
     options.positional_help("inputfile");
@@ -20,6 +20,11 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
 
 
 void Index::execute(const cxxopts::ParseResult& args) {
+
+    auto startProgram = std::chrono::steady_clock::now();
+
+
+
     std::cout << "Indexing file: " << args["inputfile"].as<std::string>() << std::endl;
 
     std::filesystem::path inputfile = std::filesystem::path(args["inputfile"].as<std::string>());
@@ -29,15 +34,27 @@ void Index::execute(const cxxopts::ParseResult& args) {
 
     genogrove::IBPTree tree(args["order"].as<int>()); // create the tree (with the specified order)
     FileEntry entry;
+
+    // stop the time
+    auto startInsertion = std::chrono::steady_clock::now();
+
     while(reader->hasNext()) {
 //        std::cout << "Reading entry: " << reader->getCurrentLine() << std::endl;
         if(!reader->readNext(entry)) {
+            if(reader->getErrorMessage().empty()) {
+                break; // this is just an EOF
+            }
             std::cerr << reader->getErrorMessage() << std::endl;
             return;
         }
-        std::cout << "chrom: " << entry.chrom << std::endl;
         tree.insertData(entry.chrom, entry.interval, entry.strand);
     }
+
+    std::cout << "Finished inserting data into the tree" << std::endl;
+    auto endInsertion = std::chrono::steady_clock::now();
+    std::chrono::duration<double> insertionDuration = endInsertion - startInsertion;
+    std::cout << "Time taken for insertion: " << insertionDuration.count() << " seconds\n";
+
 
     // write the tree to a file
     std::filesystem::path outputfile;
@@ -50,5 +67,11 @@ void Index::execute(const cxxopts::ParseResult& args) {
 
     // serialize the tree
     tree.store(outputfile);
+
+    // whole program time
+    auto endProgram = std::chrono::steady_clock::now();
+    std::chrono::duration<double> programDuration = endProgram - startProgram;
+    std::cout << "Time taken for whole program: " << programDuration.count() << " seconds\n";
+
 
 }

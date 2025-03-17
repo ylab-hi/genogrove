@@ -51,7 +51,7 @@ namespace genogrove::structure {
              * @param data to be inserted
              */
             template<typename T>
-            void insertData(std::string chrom, Interval intvl, char strand, T data) {
+            void insertData(std::string chrom, ggt::Interval intvl, char strand, T data) {
                 Key key(intvl, strand, data);
                 insert(chrom, key);
             }
@@ -62,7 +62,7 @@ namespace genogrove::structure {
              * @param interval to be inserted
              * @param strand to be inserted
              */
-            void insertData(std::string chrom, Interval intvl, char strand) {
+            void insertData(std::string chrom, ggt::Interval intvl, char strand) {
                 Key key(intvl, strand, nullptr);
                 insert(chrom, key);
             }
@@ -72,7 +72,7 @@ namespace genogrove::structure {
              * @brief insert a new data element into the Grove (sorted)
              */
             template<typename T>
-            void insertDataSorted(std::string chrom, Interval intvl, T data) {
+            void insertDataSorted(std::string chrom, ggt::Interval intvl, T data) {
                 Key key(intvl, data);
                 insertSorted(chrom, key);
             }
@@ -103,17 +103,17 @@ namespace genogrove::structure {
             /*
              * @brief determine the overlaps of a query (dtp::Coordinate) within the tree
              */
-            dtp::Hits overlaps(dtp::Coordinate& query);
+            ggt::Hits overlaps(ggt::Coordinate& query);
 
             /*
              * @brief determine the overlaps of a query (chromosome, strand, interval) within the tree
              */
-            dtp::Hits overlaps(std::string chrom, char strand, Interval interval);
+            ggt::Hits overlaps(std::string chrom, char strand, ggt::Interval interval);
 
             /*
              * @brief
              */
-            void searchIter(Node* node, const dtp::Coordinate& coordinate, dtp::Hits& hits);
+            void searchIter(Node* node, const ggt::Coordinate& coordinate, ggt::Hits& hits);
 
             void serialize(std::ostream& os) const;
             static Grove deserialize(std::istream& is);

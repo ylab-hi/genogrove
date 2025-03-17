@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "genogrove/IBPTree.hpp"
+#include "genogrove/Grove.hpp"
 
 TEST(SerializationTestSuite, StoreAndLoadTree) {
     int k = 3;

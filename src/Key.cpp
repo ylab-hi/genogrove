@@ -1,12 +1,12 @@
 #include "genogrove/Key.hpp"
 
-namespace genogrove {
+namespace genogrove::structure {
     /**
      * @details The default constructor create an empty Key object
      */
     Key::Key() : interval(std::string::npos, std::string::npos), strand('.'), data(nullptr),
         singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
-    Key::Key(Interval intvl) : interval(intvl), strand('.'), data(nullptr),
+    Key::Key(ggt::Interval intvl) : interval(intvl), strand('.'), data(nullptr),
         singleLink(nullptr),  multiLink(std::vector<Key*>()) {}
     Key::~Key() {}
 
@@ -15,12 +15,12 @@ namespace genogrove {
     bool Key::operator>(const Key& other) const { return this->interval > other.interval; }
 
     // getter & setter
-    Interval Key::getInterval() { return this->interval; }
-    void Key::setInterval(Interval interval) { this->interval = interval; }
+    ggt::Interval Key::getInterval() { return this->interval; }
+    void Key::setInterval(ggt::Interval interval) { this->interval = interval; }
     char Key::getStrand() { return this->strand; }
     void Key::setStrand(char strand) { this->strand = strand; }
-    std::shared_ptr<AnyBase> Key::getData() { return this->data; }
-    void Key::setData(std::shared_ptr<AnyBase> data) {this->data = data;}
+    std::shared_ptr<ggt::AnyBase> Key::getData() { return this->data; }
+    void Key::setData(std::shared_ptr<ggt::AnyBase> data) {this->data = data;}
     Key* Key::getSingleLink() { return this->singleLink; }
     void Key::setSingleLink(Key* singleLink) { this->singleLink = singleLink; }
     std::vector<Key*> Key::getMultiLink() { return this->multiLink; }
@@ -57,7 +57,7 @@ namespace genogrove {
     }
 
     Key Key::deserialize(std::istream& is) {
-        Interval interval = Interval::deserialize(is);
+        ggt::Interval interval = ggt::Interval::deserialize(is);
 //        std::cout << "\tkey boundaries: " << interval.getStart() << "," << interval.getEnd() << std::endl;
         Key key(interval);
 
@@ -72,7 +72,7 @@ namespace genogrove {
             is.read(&typeName[0], typeNameLength);
 
             // deserialize the data
-            key.data = TypeRegistry::create(typeName);
+            key.data = ggt::TypeRegistry::create(typeName);
             key.data->deserialize(is);
 
             bool hasSingleLink;

@@ -1,20 +1,19 @@
 #include "genogrove/Grove.hpp"
 
-
 namespace genogrove::structure {
     // constructor
     Grove::Grove(int k) : order(k), rootnodes{}, rightMostNode{} {}
     Grove::Grove(): order(3), rootnodes{}, rightMostNode{} {}
     Grove::~Grove() {}
 
-    int IBPTree::getOrder() { return this->order; }
-    void IBPTree::setOrder(int k) { this->order = k; }
-    std::map<std::string, Node*> IBPTree::getRootnodes() { return this->rootnodes; }
-    void IBPTree::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
-    Node* IBPTree::getRightMostNode(std::string chrom) { return this->rightMostNode[chrom]; }
-    void IBPTree::setRightMostNode(std::string chrom, Node* node) { this->rightMostNode[chrom] = node; }
+    int Grove::getOrder() { return this->order; }
+    void Grove::setOrder(int k) { this->order = k; }
+    std::map<std::string, Node*> Grove::getRootnodes() { return this->rootnodes; }
+    void Grove::setRootnodes(std::map<std::string, Node*> rootnodes) { this->rootnodes = rootnodes; }
+    Node* Grove::getRightMostNode(std::string chrom) { return this->rightMostNode[chrom]; }
+    void Grove::setRightMostNode(std::string chrom, Node* node) { this->rightMostNode[chrom] = node; }
 
-    Node* IBPTree::getRoot(std::string key) {
+    Node* Grove::getRoot(std::string key) {
         Node *root = nullptr;
         // check if there is a root node for the given key
         if (this->rootnodes.find(key) != this->rootnodes.end()) {
@@ -23,7 +22,7 @@ namespace genogrove::structure {
         return root;
     }
 
-    Node* IBPTree::insertRoot(std::string chrom) {
+    Node* Grove::insertRoot(std::string chrom) {
         Node* root = new Node(this->order);
         root->setIsLeaf(true); // root node becomes a leaf node
         this->rootnodes.insert(std::make_pair(chrom, root));
@@ -31,7 +30,7 @@ namespace genogrove::structure {
         return root;
     }
 
-    void IBPTree::insert(std::string chrom, Key& key) {
+    void Grove::insert(std::string chrom, Key& key) {
         // get the root node for the given chromosome (or create a new tree if it does not exist)
         Node* root = getRoot(chrom);
         if(root == nullptr) { root = insertRoot(chrom);}
@@ -47,7 +46,7 @@ namespace genogrove::structure {
     }
 
 
-    void IBPTree::insertIter(Node* node, Key& key) {
+    void Grove::insertIter(Node* node, Key& key) {
         if(!node) { throw std::runtime_error("Null node in insertIter"); }
 
         if(node->getIsLeaf()) {
@@ -70,7 +69,7 @@ namespace genogrove::structure {
         }
     }
 
-    void IBPTree::splitNode(Node* parent, int index) {
+    void Grove::splitNode(Node* parent, int index) {
         Node* child = parent->getChild(index);
         Node* newChild = new Node(this->order);
         int mid = ((this->order+2-1)/2); // value for order=6
@@ -104,7 +103,7 @@ namespace genogrove::structure {
         }
     }
 
-    void IBPTree::insertSorted(std::string chrom, Key& key) {
+    void Grove::insertSorted(std::string chrom, Key& key) {
         // get the root node for the given chromosome (or create a new tree if it does not exist)
         Node* root = getRoot(chrom);
         if(root == nullptr) {
@@ -127,7 +126,7 @@ namespace genogrove::structure {
         }
     }
 
-    void IBPTree::splitNodeSorted(Node* node, const std::string& chrom) {
+    void Grove::splitNodeSorted(Node* node, const std::string& chrom) {
         if(node == rootnodes[chrom]) { // if node is root - use regular split operation
             Node* newRoot = new Node(this->order);
             newRoot->addChild(node, 0);
@@ -151,8 +150,8 @@ namespace genogrove::structure {
         }
     }
 
-    dtp::Hits IBPTree::overlaps(dtp::Coordinate& query) {
-        dtp::Hits hits(query);
+    ggt::Hits Grove::overlaps(ggt::Coordinate& query) {
+        ggt::Hits hits(query);
         Node* root = getRoot(query.chromosome);
         if(root == nullptr) { return hits; } // return empty vector, as there is no root node for the given key
         searchIter(root, query, hits);
@@ -167,16 +166,16 @@ namespace genogrove::structure {
         return hits;
     }
 
-    dtp::Hits IBPTree::overlaps(std::string chrom, char strand, Interval interval) {
-        dtp::Coordinate query(chrom, strand, interval);
-        dtp::Hits hits(query);
+    ggt::Hits Grove::overlaps(std::string chrom, char strand, ggt::Interval interval) {
+        ggt::Coordinate query(chrom, strand, interval);
+        ggt::Hits hits(query);
         Node* root = getRoot(query.chromosome);
         if(root == nullptr) { return hits; }
         searchIter(root, query, hits);
         return hits;
     }
 
-    void IBPTree::searchIter(Node* node, const dtp::Coordinate& query, dtp::Hits& hits) {
+    void Grove::searchIter(Node* node, const ggt::Coordinate& query, ggt::Hits& hits) {
         if(node->getIsLeaf()) {
 //            std::cout << "searchIter: leaf node" << std::endl;
 //            std::cout << "searchIter: interval: " << interval.getStart() << "," << interval.getEnd() << std::endl;
@@ -185,10 +184,10 @@ namespace genogrove::structure {
 //            std::cout << "iterate through keys" << std::endl;
             for(int i = 0; i < node->getKeys().size(); ++i) {
 //                std::cout << "key: " << node->getKeys()[i].getInterval().getStart() << "," << node->getKeys()[i].getInterval().getEnd() << std::endl;
-                if(Interval::overlap(node->getKeys()[i].getInterval(), query.interval)) {
+                if(ggt::Interval::overlap(node->getKeys()[i].getInterval(), query.interval)) {
                     lastMatch = i;
-                    hits.addHit(dtp::Hit(
-                            dtp::Coordinate(
+                    hits.addHit(ggt::Hit(
+                            ggt::Coordinate(
                                     query.chromosome,
                                     node->getKeys()[i].getStrand(),
                                     node->getKeys()[i].getInterval()
@@ -228,7 +227,7 @@ namespace genogrove::structure {
         }
     }
 
-    void IBPTree::serialize(std::ostream& os) const {
+    void Grove::serialize(std::ostream& os) const {
         // write the order of the tree
         os.write(reinterpret_cast<const char*>(&this->order), sizeof(this->order));
 
@@ -245,7 +244,7 @@ namespace genogrove::structure {
         }
     }
 
-    IBPTree IBPTree::deserialize(std::istream& is) {
+    Grove Grove::deserialize(std::istream& is) {
         int order;
         is.read(reinterpret_cast<char*>(&order), sizeof(order));
         Grove tree(order);
@@ -267,13 +266,13 @@ namespace genogrove::structure {
         return std::move(tree);
     }
 
-    void IBPTree::rebuildNext() {
+    void Grove::rebuildNext() {
         for(auto& [chr, root] : this->rootnodes) {
             rebuildNextSubTree(root);
         }
     }
 
-    void IBPTree::rebuildNextSubTree(Node* node) {
+    void Grove::rebuildNextSubTree(Node* node) {
         if(node == nullptr) { return; }
         // if the node is a leaf, then there is no need to go deeper
         if(!node->getIsLeaf()) {
@@ -299,17 +298,17 @@ namespace genogrove::structure {
 
 
 
-    void IBPTree::store(std::string filename) {
+    void Grove::store(std::string filename) {
         std::ofstream ofs(filename, std::ios::binary);
         this->serialize(ofs);
     }
 
-    IBPTree IBPTree::load(std::string filename) {
+    Grove Grove::load(std::string filename) {
         std::ifstream ifs(filename, std::ios::binary);
-        return genogrove::Grove::deserialize(ifs);
+        return genogrove::structure::Grove::deserialize(ifs);
     }
 
-    void IBPTree::exportTreeSIF(std::string filename) {
+    void Grove::exportTreeSIF(std::string filename) {
         std::ofstream ofs(filename);
 
 //        for(auto& [chrom, root] : this->rootnodes) {

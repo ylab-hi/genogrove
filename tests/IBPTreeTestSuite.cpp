@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "genogrove/IBPTree.hpp"
+#include "genogrove/Grove.hpp"
 
 #include <stdlib.h>
 #include <fstream>
@@ -56,13 +56,22 @@ TEST(IBPTreeTestSuite, CreateIBPTree) {
 TEST(IBPTreeTestSuite, CreateTreeFromBED) {
     std::srand(std::time(nullptr));
 
-    // Define a range of k values to test
+    // Define a range of k values to test the order
     std::vector<int> k_values = {3, 4, 5, 6, 7, 8, 9, 10, 15, 20, 25, 30, 35, 40, 45, 50}; // Adjust this list as needed
 
     std::cout << "k, Insertion Time (s), Search Time (s)\n"; // Header for Excel
     genogrove::TypeRegistry::registerType<int>();
 
-    std::string filename = "/bedfiles/bed_2M_sorted.bed";
+    // read in bedfile
+    std::string filename = ""
+
+
+
+
+
+//    std::string filename = "/bedfiles/bed_2M_sorted.bed";
+
+    std::string filename = "/bedfiles/ref/100.bed";
 
     for (int k : k_values) {
         genogrove::IBPTree tree(k);
@@ -88,46 +97,70 @@ TEST(IBPTreeTestSuite, CreateTreeFromBED) {
         auto endInsertion = std::chrono::steady_clock::now();
         std::chrono::duration<double> insertionDuration = endInsertion - startInsertion;
 
-        auto startSearch = std::chrono::steady_clock::now();
-        std::ifstream infile2(filename);
-        while (std::getline(infile2, line)) {
-            std::istringstream iss(line);
-            std::string chrom;
-            int start, end, data;
-            iss >> chrom >> start >> end;
-            data = 1;
-            auto searchResult = tree.overlaps(chrom, '+', genogrove::Interval{size_t(start), size_t(end)});
 
-//            EXPECT_EQ(searchResult.hits.size(), 1) << "The search result for interval [" << start << "," << end << "] was not correct (count mismatch)";
-//            if (genogrove::TypeRegistry::checktype<int>(searchResult.hits[0].data)) {
-//                int typed = genogrove::TypeRegistry::cast<int>(searchResult.hits[0].data);
-//            }
+        // iterate through different files
+
+        std::vector<std::pair<std::string, std::string>> filenames = {
+                {"perfect", "/bedfiles/basic/query/perfect/100_100p.bed"},
+                {"5p-partial", "/bedfiles/basic/query/5p-partial/100_100p.bed"},
+                {"3p-partial", "/bedfiles/basic/query/3p-partial/100_100p.bed"},
+                {"contained", "/bedfiles/basic/query/contained/100_100p.bed"},
+                {"enclosed", "/bedfiles/basic/query/enclosed/100_100p.bed"},
+                {"perfect-gap", "/bedfiles/basic/query/perfect-gap/100_100p.bed"},
+                {"left-adjacent-gap", "/bedfiles/basic/query/left-adjacent-gap/100_100p.bed"},
+                {"right-adjacent-gap", "/bedfiles/basic/query/right-adjacent-gap/100_100p.bed"},
+                {"mid-gap1", "/bedfiles/basic/query/mid-gap1/100_100p.bed"},
+                {"mid-gap2", "/bedfiles/basic/query/mid-gap2/100_100p.bed"},
+                {"mult", "/bedfiles/complex/query/mult/100_100bin.bed"}
+        };
+
+        for(auto& query : filenames) {
+
+            auto startSearch = std::chrono::steady_clock::now();
+            std::ifstream infile2(query.second);
+            while (std::getline(infile2, line)) {
+                std::istringstream iss(line);
+                std::string chrom;
+                int start, end, data;
+                iss >> chrom >> start >> end;
+                data = 1;
+                auto searchResult = tree.overlaps(chrom, '+', genogrove::Interval{size_t(start), size_t(end)});
+
+                //            EXPECT_EQ(searchResult.hits.size(), 1) << "The search result for interval [" << start << "," << end << "] was not correct (count mismatch)";
+                //            if (genogrove::TypeRegistry::checktype<int>(searchResult.hits[0].data)) {
+                //                int typed = genogrove::TypeRegistry::cast<int>(searchResult.hits[0].data);
+                //            }
+            }
+
+            auto endSearch = std::chrono::steady_clock::now();
+            std::chrono::duration<double> searchDuration = endSearch - startSearch;
+
+            // Print k, insertion time, and search time in one line for Excel
+//            std::cout << k << ", " << filename << ", " << insertionDuration.count() << ", " << searchDuration.count() << "\n";
+
+            std::cout << "100\tbasic\t" << query.first << "\t" << "\t" << searchDuration.count() << "\t" << 0.0 << "\n";
         }
-
-        auto endSearch = std::chrono::steady_clock::now();
-        std::chrono::duration<double> searchDuration = endSearch - startSearch;
-
-        // Print k, insertion time, and search time in one line for Excel
-        std::cout << k << ", " << insertionDuration.count() << ", " << searchDuration.count() << "\n";
+        std::cout << insertionDuration.count() << std::endl;
     }
-}
-
-
-
-
-
-TEST(IBPTreeTestSuite, CreateTreeSorted) {
-    std::srand(std::time(nullptr));
-
-    genogrove::TypeRegistry::registerType<int>(); // register int type
-
 
 }
 
 
 
 
-TEST(IBPTreeTestSuite, benchmark) {
+
+//TEST(IBPTreeTestSuite, CreateTreeSorted) {
+//    std::srand(std::time(nullptr));
+//
+//    genogrove::TypeRegistry::registerType<int>(); // register int type
+//
+//
+//}
+
+
+
+
+//TEST(IBPTreeTestSuite, benchmark) {
 //
 //    std::vector<int> orders = {20};
 //
@@ -156,7 +189,7 @@ TEST(IBPTreeTestSuite, benchmark) {
 //
 //        for(int j=0; j < unsorted.size(); j++) {
 //            auto startInsertion = std::chrono::steady_clock::now();
-//            genogrove::IBPTree tree(orders[i]);
+//            genogrove::Grove tree(orders[i]);
 //            std::cout << unsorted[j] << std::endl;
 //            std::ifstream infile(unsorted[j]);
 //            std::string line;
@@ -184,7 +217,7 @@ TEST(IBPTreeTestSuite, benchmark) {
 //
 //
 //
-}
+//}
 
 
 
@@ -197,7 +230,7 @@ TEST(IBPTreeTestSuite, benchmark) {
 //    // time the search
 //    auto startInsertion = std::chrono::steady_clock::now();
 //
-//    genogrove::IBPTree tree(3);
+//    genogrove::Grove tree(3);
 //    genogrove::TypeRegistry::registerType<int>();
 //    // iterate through the file
 //    std::ifstream infile(filename);

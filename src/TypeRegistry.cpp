@@ -1,9 +1,9 @@
 #include "genogrove/TypeRegistry.hpp"
 
-namespace genogrove {
-    std::unordered_map<std::string, genogrove::castFunction> genogrove::TypeRegistry::castFunctions;
-    std::unordered_map<std::type_index, std::string> genogrove::TypeRegistry::typeNames;
-    std::unordered_map<std::string, genogrove::factoryFunction> genogrove::TypeRegistry::factoryFunctions;
+namespace genogrove::type {
+    std::unordered_map<std::string, ggt::castFunction> ggt::TypeRegistry::castFunctions;
+    std::unordered_map<std::type_index, std::string> ggt::TypeRegistry::typeNames;
+    std::unordered_map<std::string, ggt::factoryFunction> ggt::TypeRegistry::factoryFunctions;
 
     // getter & setter
     std::unordered_map<std::type_index, std::string> TypeRegistry::getTypeNames() { return typeNames; }

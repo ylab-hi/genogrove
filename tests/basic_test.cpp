@@ -1,9 +1,9 @@
 #include <gtest/gtest.h>
-#include "genogrove/IBPTree.hpp"
+#include "genogrove/Grove.hpp"
 
 TEST(IBPTree, Constructor) {
 //    for(int k=3; k < 10; k++) {
-//        IBPTree tree(k);
+//        Grove tree(k);
 //        EXPECT_EQ(tree.getOrder(), k) << "The order k=" + std::to_string(k) + " was not set correctly";
 //    }
 }
@@ -11,7 +11,7 @@ TEST(IBPTree, Constructor) {
 TEST(IBPTree, GetRoot) {
 //
 //    int k = 3;
-//    IBPTree tree(k);
+//    Grove tree(k);
 //    std::vector<std::string> keys = {"chr1", "chr2", "chr3", "chr4", "chr5", "chr6", "chr7", "chr8", "chr9", "chr10"};
 //    for(std::string key : keys) {
 //        Node *root = tree.getRoot(key);

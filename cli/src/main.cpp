@@ -27,7 +27,7 @@ void printGeneralHelp(cxxopts::Options& options) {
 }
 
 int main(int argc, char** argv) {
-    cxxopts::Options options("genogrove", "A C++ library for the Interval B+ Tree (IBPTree) data structure");
+    cxxopts::Options options("genogrove", "A C++ library for the Interval B+ Tree (Grove) data structure");
     options.add_options()
             ("subcall", "The subcommand to be executed", cxxopts::value<std::string>())
             ("h, help", "Print help")
