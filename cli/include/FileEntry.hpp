@@ -7,13 +7,15 @@
 // Class
 #include "genogrove/Interval.hpp"
 
+namespace ggt = genogrove::type;
+
 struct FileEntry {
     std::string chrom;
-    genogrove::Interval interval;
+    ggt::Interval interval;
     char strand;
 
     FileEntry() : chrom(""), interval(0, 0), strand('.') {}
-    FileEntry(std::string chrom, genogrove::Interval interval, char strand) :
+    FileEntry(std::string chrom, ggt::Interval interval, char strand) :
         chrom(chrom), interval(interval), strand(strand) {}
 };
 
