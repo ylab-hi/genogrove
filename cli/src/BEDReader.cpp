@@ -53,7 +53,7 @@ bool BEDReader::readNext(FileEntry& entry) {
             return false;
         }
         entry.chrom = chrom;
-        entry.interval = genogrove::Interval(startNum, endNum);
+        entry.interval = ggt::Interval(startNum, endNum);
         entry.strand = '.';
         lineNum++;
         return true;

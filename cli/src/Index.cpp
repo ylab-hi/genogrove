@@ -32,7 +32,7 @@ void Index::execute(const cxxopts::ParseResult& args) {
     // create the reader (according to the file type) - FileReaderFactory
     std::unique_ptr<FileReader> reader = FileReaderFactory::create(inputfile, filetype, gzipped);
 
-    genogrove::IBPTree tree(args["order"].as<int>()); // create the tree (with the specified order)
+    ggs::Grove tree(args["order"].as<int>()); // create the tree (with the specified order)
     FileEntry entry;
 
     // stop the time
