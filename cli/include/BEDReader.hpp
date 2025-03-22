@@ -22,6 +22,8 @@
 #include <htslib/kseq.h>
 #include <htslib/kstring.h>
 
+namespace ggt = genogrove::type;
+
 class BEDReader : public FileReader {
     public:
         BEDReader(const std::filesystem::path&, bool gzipped);

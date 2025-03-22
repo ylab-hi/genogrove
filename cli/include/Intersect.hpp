@@ -1,5 +1,5 @@
-#ifndef GENOGROVE_OVERLAP_HPP
-#define GENOGROVE_OVERLAP_HPP
+#ifndef GENOGROVE_INTERSECT_HPP
+#define GENOGROVE_INTERSECT_HPP
 
 // Standard
 #include <iostream>
@@ -10,7 +10,7 @@
 // CXXopts
 #include "cxxopts.hpp"
 
-class Overlap : public Subcall {
+class Intersect : public Subcall {
     public:
         cxxopts::Options parseArgs(int argc, char** argv) override;
         void execute(const cxxopts::ParseResult& args) override;
@@ -21,4 +21,4 @@ class Overlap : public Subcall {
 
 };
 
-#endif //GENOGROVE_OVERLAP_HPP
+#endif //GENOGROVE_INTERSECT_HPP

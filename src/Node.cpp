@@ -31,8 +31,8 @@ namespace genogrove::structure {
     /*
      * Calculates the (parent) node interval based on the keys (of the child)
      */
-    Interval Node::calcParentKey() {
-        Interval intvl{std::string::npos, 0};
+    ggt::Interval Node::calcParentKey() {
+        ggt::Interval intvl{std::string::npos, 0};
         for (int i = 0; i < keys.size(); i++) {
             if (keys[i].getInterval().getStart() < intvl.getStart()) {
                 intvl.setStart(keys[i].getInterval().getStart());

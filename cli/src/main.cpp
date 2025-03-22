@@ -6,13 +6,13 @@
 #include "genogrove/all.hpp"
 #include "Subcall.hpp"
 #include "Index.hpp"
-#include "Overlap.hpp"
+#include "Intersect.hpp"
 
 std::unique_ptr<Subcall> createSubcall(const std::string& subcall) {
     if(subcall == "index") {
         return std::make_unique<Index>();
     } else if(subcall == "overlap") {
-        return std::make_unique<Overlap>();
+        return std::make_unique<Intersect>();
     } else {
         return nullptr;
     }

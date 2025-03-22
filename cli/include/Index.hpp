@@ -16,6 +16,9 @@
 // CXXopts
 #include "cxxopts.hpp"
 
+namespace ggt = genogrove::type;
+namespace ggs = genogrove::structure;
+
 class Index : public Subcall {
     public:
         cxxopts::Options parseArgs(int argc, char** argv) override;

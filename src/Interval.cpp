@@ -1,6 +1,6 @@
 #include "genogrove/Interval.hpp"
 
-namespace genogrove {
+namespace genogrove::type {
     Interval::Interval() : start(std::string::npos), end(std::string::npos) {}
     Interval::Interval(size_t start, size_t end) : start(start), end(end) {}
     Interval::~Interval() {}
