@@ -11,7 +11,7 @@
 std::unique_ptr<Subcall> createSubcall(const std::string& subcall) {
     if(subcall == "index") {
         return std::make_unique<Index>();
-    } else if(subcall == "overlap") {
+    } else if(subcall == "intersect") {
         return std::make_unique<Intersect>();
     } else {
         return nullptr;
@@ -22,7 +22,7 @@ void printGeneralHelp(cxxopts::Options& options) {
     std::cout << options.help() << "\n";
     std::cout << "Available subcommands: \n";
     std::cout << "\tindex:\t\tIndex an Interval File\n";
-    std::cout << "\toverlap:\tSearch for interval overlaps in the index\n";
+    std::cout << "\tintersect:\tSearch for interval overlaps in the index\n";
     std::cout << "For more details on a subcommand, use the --help option with the subcommand.\n";
 }
 

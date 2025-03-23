@@ -3,8 +3,10 @@
 cxxopts::Options Intersect::parseArgs(int argc, char** argv) {
     cxxopts::Options options("index", "Index an Interval File");
     options.add_options()
-            ("inputfile", "The input file to be indexed",
+            ("-q, queryfile", "The query file to be indexed",
              cxxopts::value<std::string>())
+            ("-t, targetfile", "The target file to be index/searched against",
+                    cxxopts::value<std::string>())
             ("-o, outputfile", "Write the index to the specified file",
              cxxopts::value<std::string>()->default_value(""))
             ("k, order", "The order of the tree (default: 3)",

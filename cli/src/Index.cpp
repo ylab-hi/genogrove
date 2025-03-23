@@ -9,7 +9,10 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
                     cxxopts::value<std::string>())
             ("k, order", "The order of the tree",
                     cxxopts::value<int>()->default_value("3"))
-//            ("s, sorted", "Interval in the input file are sorted")
+            ("s, sorted", "Interval in the input file are sorted",
+                    cxxopts::value<bool>()->default_value("false"))
+            ("t, timed", "Measure the time taken for indexing",
+                    cxxopts::value<bool>()->default_value("false"))
             ("h, help", "Print help")
             ;
     options.parse_positional({"inputfile"});
@@ -20,7 +23,6 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
 
 
 void Index::execute(const cxxopts::ParseResult& args) {
-
     auto startProgram = std::chrono::steady_clock::now();
 
 
