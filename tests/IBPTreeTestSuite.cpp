@@ -7,12 +7,29 @@
 #include <filesystem>
 
 namespace fs = std::filesystem;
+namespace ggt = genogrove::type;
+namespace ggs = genogrove::structure;
 
-TEST(IBPTreeTestSuite, CreateIBPTree) {
+TEST(IBPTreeTestSuite, intersectGrove) {
     std::srand(std::time(nullptr));
-    int k = 20;
-    genogrove::IBPTree tree(k);
-    std::vector<std::pair<genogrove::Interval, int>> intervals;
+    int k = 5;
+    genogrove::structure::Grove grove(k);
+
+    // intervals to insert
+    struct entry {
+        ggt::Interval interval;
+        std::string chrom;
+        char strand;
+        std::string
+    };
+
+    std::vector<std::pair<ggt::Interval, entry>> intervals;
+    ggt::TypeRegistry::registerType<std::string>();
+    intervals.push_back()
+
+
+
+
 
     // register types with the TypeRegistry
     genogrove::TypeRegistry::registerType<int>();
