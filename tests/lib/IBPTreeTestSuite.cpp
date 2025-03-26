@@ -21,6 +21,13 @@ TEST(IBPTreeTestSuite, intersectGrove) {
         std::string chrom;
         char strand;
         std::string
+
+        entry::entry(ggt::Interval intvl, std::string chrom, char strand, std::string data) {
+            this->interval = intvl;
+            this->chrom = chrom;
+            this->strand = strand;
+            this->data = data;
+        }
     };
 
     std::vector<std::pair<ggt::Interval, entry>> intervals;
