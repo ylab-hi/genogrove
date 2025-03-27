@@ -14,6 +14,7 @@ class Intersect : public Subcall {
     public:
         cxxopts::Options parseArgs(int argc, char** argv) override;
         void execute(const cxxopts::ParseResult& args) override;
+        void validate(const cxxopts::ParseResult& args) override;
 
         // getter & setter
         cxxopts::Options getOptions();
