@@ -6,9 +6,13 @@
 
 // Class
 #include "Subcall.hpp"
+#import "genogrove/all.hpp"
 
 // CXXopts
 #include "cxxopts.hpp"
+
+namespace ggt = genogrove::type;
+namespace ggs = genogrove::structure;
 
 class Intersect : public Subcall {
     public:
