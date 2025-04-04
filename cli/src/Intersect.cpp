@@ -1,5 +1,9 @@
 #include "Intersect.hpp"
 
+// Standard
+#include <iostream>
+#include <filesystem>
+
 cxxopts::Options Intersect::parseArgs(int argc, char** argv) {
     cxxopts::Options options("index", "Index an Interval File");
     options.add_options()
@@ -16,11 +20,76 @@ cxxopts::Options Intersect::parseArgs(int argc, char** argv) {
     return options;
 }
 
+void Intersect::validate(const cxxopts::ParseResult& args) {
+    if(args.count("queryfile")) { // validate the queryfile
+        // check if file exists
+        std::string queryFilePath = args["queryfile"].as<std::string>();
+        if(!std::filesystem::exists(queryFilePath)) {
+            std::cerr << "File does not exist: " << queryFilePath << std::endl;
+            exit(1);
+        }
+    }
+    if(args.count("targetfile")) {
+        // check if path to file exists
+        std::string inputfile = args["targetfile"].as<std::string>();
+        std::filesystem::path inputfilePath(inputfile);
+        if(!std::filesystem::exists(inputfilePath.parent_path())) {
+            std::cerr << "Parent directory does not exist: " << inputfilePath.parent_path() << std::endl;
+            exit(1);
+        }
+    }
+    if(args.count("outputfile")) {
+        // check if path to file exists
+        std::string outputfile = args["outputfile"].as<std::string>();
+        std::filesystem::path outputfilePath(outputfile);
+        if(!std::filesystem::exists(outputfilePath.parent_path())) {
+            std::cerr << "Parent directory does not exist: " << outputfilePath.parent_path() << std::endl;
+            exit(1);
+        }
+    }
+    if(args.count("k")) {
+        int k = args["k"].as<int>();
+        if(k < 2) {
+            std::cerr << "Order must be at least 2" << std::endl;
+            exit(1);
+        }
+    }
+}
 
 void Intersect::execute(const cxxopts::ParseResult& args) {
-    if(args.count("inputfile")) {
-        std::string inputfile = args["inputfile"].as<std::string>();
+    validate(args); // validate the arguments
+    // first check if the targetfile has been indexed - exists targetfile.gg
+
+
+    if(args.count("targetfile")) {
+        // check if file exists - skip this for now
+        ggs::Grove grove()
+
+
+
+
+
+
+
+    }
+        std::string inputfile = args["targetfile"].as<std::string>();
         std::cout << "Indexing file: " << inputfile << std::endl;
+        ggs::Grove grove()
+
+
+
+
+
+
+    if(args.count("queryfile")) {
+        std::string inputfile = args["queryfile"].as<std::string>();
+        std::cout << "Indexing file: " << inputfile << std::endl;
+        ggs::Grove grove()
+
+
+
+    } else {
+
     }
 
     if(args.count("outputfile")) {
