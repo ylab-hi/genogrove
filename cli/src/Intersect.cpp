@@ -58,42 +58,12 @@ void Intersect::validate(const cxxopts::ParseResult& args) {
 
 void Intersect::execute(const cxxopts::ParseResult& args) {
     validate(args); // validate the arguments
-    // first check if the targetfile has been indexed - exists targetfile.gg
+    // first check if the targetfile has been indexed - exists targetfile.gg (skip this for now)
+
+    int k = args["k"].as<int>();
+    ggs::Grove grove(k);
+
+    // registry the type of the grove
 
 
-    if(args.count("targetfile")) {
-        // check if file exists - skip this for now
-        ggs::Grove grove()
-
-
-
-
-
-
-
-    }
-        std::string inputfile = args["targetfile"].as<std::string>();
-        std::cout << "Indexing file: " << inputfile << std::endl;
-        ggs::Grove grove()
-
-
-
-
-
-
-    if(args.count("queryfile")) {
-        std::string inputfile = args["queryfile"].as<std::string>();
-        std::cout << "Indexing file: " << inputfile << std::endl;
-        ggs::Grove grove()
-
-
-
-    } else {
-
-    }
-
-    if(args.count("outputfile")) {
-        std::string outputfile = args["outputfile"].as<std::string>();
-        std::cout << "Writing index to file: " << outputfile << std::endl;
-    }
 }
