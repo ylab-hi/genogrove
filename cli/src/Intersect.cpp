@@ -60,10 +60,16 @@ void Intersect::execute(const cxxopts::ParseResult& args) {
     validate(args); // validate the arguments
     // first check if the targetfile has been indexed - exists targetfile.gg (skip this for now)
 
+    // get parameters
+    std::string queryfile = args["queryfile"].as<std::string>();
     int k = args["k"].as<int>();
+
+
+
     ggs::Grove grove(k);
 
     // registry the type of the grove
 
+    auto [filetype, gzipped] = FileTypeDetector().detectFileType(inputfile); // detect the file type
 
 }
