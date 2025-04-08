@@ -7,6 +7,10 @@
 // Class
 #include "Subcall.hpp"
 #import "genogrove/all.hpp"
+#import "FileReaderFactory.hpp"
+#import "FileTypeDetector.hpp"
+
+
 
 // CXXopts
 #include "cxxopts.hpp"

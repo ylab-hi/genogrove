@@ -62,14 +62,21 @@ void Intersect::execute(const cxxopts::ParseResult& args) {
 
     // get parameters
     std::string queryfile = args["queryfile"].as<std::string>();
+    std::string targetfile = args["targetfile"].as<std::string>();
     int k = args["k"].as<int>();
 
-
+    // stream for output (either to stdout or to file)
+    std::ostream* outputStream = &std::cout;
+    if(args.count("outputfile")) {
+        std::string outputfile = args["outputfile"].as<std::string>();
+        outputStream = new std::ofstream(outputfile);
+    }
 
     ggs::Grove grove(k);
-
     // registry the type of the grove
+    ggt::TypeRegistry::registerType<std::string>(); // register the type of data to store in the grove
+    auto [filetype, gzipped] = FileTypeDetector().detectFileType(queryfile); // detect the file type
 
-    auto [filetype, gzipped] = FileTypeDetector().detectFileType(inputfile); // detect the file type
+    std::unique_ptr<FileReader> reader = FileReaderFactory::create(inputfile, filetype, gzipped);
 
 }

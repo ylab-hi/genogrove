@@ -29,13 +29,13 @@ the install command.
 
 To use the library in your project, include the genogrove header file in your source code:
 ```
-    #include "genogrove/all.hpp"
+    #import "genogrove/all.hpp"
 ```
 
 Create an instance of the `IBPTree` class and specify the order of the tree (k):
 ```
     int k = 3;
-    genogrove::IBPTree tree(k);
+    genogrove::structure::Grove grove(k);
 ```
 
 Register the types of the data you want to store in the tree with the `TypeRegistry` (e.g., `int`):

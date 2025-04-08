@@ -9,9 +9,9 @@
 #include "Intersect.hpp"
 
 std::unique_ptr<Subcall> createSubcall(const std::string& subcall) {
-    if(subcall == "index") {
+    if(subcall == "idx") {
         return std::make_unique<Index>();
-    } else if(subcall == "intersect") {
+    } else if(subcall == "isec") {
         return std::make_unique<Intersect>();
     } else {
         return nullptr;

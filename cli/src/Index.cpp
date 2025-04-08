@@ -25,8 +25,6 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
 void Index::execute(const cxxopts::ParseResult& args) {
     auto startProgram = std::chrono::steady_clock::now();
 
-
-
     std::cout << "Indexing file: " << args["inputfile"].as<std::string>() << std::endl;
 
     std::filesystem::path inputfile = std::filesystem::path(args["inputfile"].as<std::string>());
