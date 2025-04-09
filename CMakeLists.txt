@@ -94,7 +94,7 @@ if(TESTS)
 
     file(GLOB SOURCES "src/*.cpp")
     list(REMOVE_ITEM SOURCES "tests/main.cpp") # remove the main.cpp file from the test sources
-    file(GLOB TEST_SOURCES "tests/*.cpp")
+    file(GLOB TEST_SOURCES "tests/cli/*.cpp" "tests/lib/*.cpp")
     add_executable(genogrove_tests ${SOURCES} ${TEST_SOURCES})
     target_include_directories(genogrove_tests PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
     target_link_libraries(genogrove_tests GTest::gtest_main)
