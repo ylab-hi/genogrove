@@ -21,6 +21,17 @@ cxxopts::Options Index::parseArgs(int argc, char** argv) {
     return options;
 }
 
+void Index::validate(const cxxopts::ParseResult& args) {
+    if(args.count("inputfile")) {
+        std::string inputfile = args["inputfile"].as<std::string>();
+        // check if file exists
+        if(!std::filesystem::exists(inputfile)) {
+            std::cerr << "File does not exist: " << inputfile << std::endl;
+            exit(1);
+        }
+    }
+}
+
 
 void Index::execute(const cxxopts::ParseResult& args) {
     auto startProgram = std::chrono::steady_clock::now();
