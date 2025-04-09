@@ -77,6 +77,6 @@ void Intersect::execute(const cxxopts::ParseResult& args) {
     ggt::TypeRegistry::registerType<std::string>(); // register the type of data to store in the grove
     auto [filetype, gzipped] = FileTypeDetector().detectFileType(queryfile); // detect the file type
 
-    std::unique_ptr<FileReader> reader = FileReaderFactory::create(inputfile, filetype, gzipped);
+    std::unique_ptr<FileReader> reader = FileReaderFactory::create(targetfile, filetype, gzipped);
 
 }

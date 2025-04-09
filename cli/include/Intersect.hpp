@@ -6,9 +6,9 @@
 
 // Class
 #include "Subcall.hpp"
-#import "genogrove/all.hpp"
-#import "FileReaderFactory.hpp"
-#import "FileTypeDetector.hpp"
+#include "genogrove/all.hpp"
+#include "FileReaderFactory.hpp"
+#include "FileTypeDetector.hpp"
 
 
 
