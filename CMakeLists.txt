@@ -78,6 +78,11 @@ if(BUILD_CLI)
     add_subdirectory(cli)
 endif()
 
+option(BUILD_BINDINGS "Build language bindings" OFF)
+if(BUILD_BINDINGS)
+    add_subdirectory(bindings)
+endif()
+
 ##### Tests #####
 option(TESTS "building unit tests" OFF)
 if(TESTS)
