@@ -1,4 +1,4 @@
-> ⚠️ **This project has moved to its own organization: [genogrove/repo-name](https://github.com/org-name/repo-name)**
+> ⚠️ **This project has moved to its own organization: [genogrove](https://github.com/genogrove/)**
 > Please star and follow there for future updates.
 
 # genogrove
