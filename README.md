@@ -1,3 +1,6 @@
+> ⚠️ **This project has moved to its own organization: [genogrove/repo-name](https://github.com/org-name/repo-name)**
+> Please star and follow there for future updates.
+
 # genogrove
 
 [![CMake Multi Platform](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml/badge.svg)](https://github.com/ylab-hi/genogrove/actions/workflows/cmake-multi-platform.yml)
